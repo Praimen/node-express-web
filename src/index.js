@@ -1,5 +1,6 @@
 const compression = require('compression')
 const express = require('express');
+var subdomain = require('express-subdomain');
 var dropletRoute = express.Router();
 const app = express();
 var path = require('path');
@@ -32,15 +33,17 @@ app.set('views', './views');
 app.use(express.static(path.join(__dirname,'public'),options));
 /*app.use('/', router);
 app.use('/birds', birds);*/
-router.use(subdomain('droplet', dropletRoute));
+
+dropletRoute.get('/',function(req, res){
+        apiProxy.web(req, res, {target: serverOne});
+    }
+);
+
+app.use(subdomain('droplet', dropletRoute));
+
 
 app.get('/', (req, res) => res.render('index', {title: 'Hey', message: 'Hello World!'}));
-dropletRoute.get('/', (req, res) =>{
-                            apiProxy.web(req, res, {target: serverOne});
-                            res.render('index', {title: 'Proxy', message: 'Hello World! I am trying to work'});
 
-                      }
-                );
 
 
 /*
@@ -48,13 +51,7 @@ app.all("/app1/!*", function(req, res) {
   console.log('redirecting to Server1');
   apiProxy.web(req, res, {target: serverOne});
 });
-*/
 
-
-
-
-
-/*
 
 app.get('/user', function (req, res, next) {
  /!*res.sendFile(path.join(__dirname +'/public/special.html')) *!/
