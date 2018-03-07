@@ -31,10 +31,10 @@ app.set('view engine', 'pug');
 app.use(compression())
 app.set('views', './views');
 app.use(express.static(path.join(__dirname,'public'),options));
-/*app.use('/', router);
-app.use('/birds', birds);*/
+/*app.use('/', router);*/
+app.use('/birds', birds);
 
-dropletRoute.get('/',function(req, res){
+dropletRoute.all('/',function(req, res){
         apiProxy.web(req, res, {target: serverOne});
     }
 );
