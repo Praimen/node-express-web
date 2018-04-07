@@ -5,3 +5,7 @@ bower_components
 /test
 .log
 .idea/
+index.js
+gameproj
+index.js
+.env
