@@ -2,7 +2,8 @@ doctype html
 html
     head
         title= title
-        link(rel='stylesheet',href='/styles/login.css')
+        link(rel='stylesheet',href='/styles/main.css')
+        link(rel='stylesheet',href='/styles/character-select.css')
     body.login
         h2= title
         h3= message
@@ -20,4 +21,32 @@ html
                 button(type='submit') Enter Game
 
 
-        script(src='/scripts/login.js')
+        form(method='POST' action='/')
+            div
+                input(type='text' name='chractername' value="")
+
+            div
+                label(for='race') Race:
+                select(name='race')
+                    option(value="human") Human
+                    option(value="elf") Elf
+                    option(value="dragon") Dragon
+                    option(value="spider") Spider
+
+            div
+                input(type='text' name='age' value="")
+
+            div
+                label(for='archetype') Guild:
+                select(name='archetype')
+                    option(value="mage") Mage
+                    option(value="warrior") Warrior
+                    option(value="rogue") Rogue
+                    option(value="paladin") Paladin
+
+
+            div
+                button(type='submit') Add Character
+
+        script(src='/scripts/main.js')
+        script(src='/scripts/character-select.js')
