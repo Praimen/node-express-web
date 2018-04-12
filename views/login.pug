@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='/styles/login.css')
+    body.login
+        h2= title
+        h3= message
+        form(method='POST' action='/character-select')
+            div
+                label(for='username') Username:
+                input(type='text' name='username')
+            div
+                label(for='password') Password:
+                input(type='password' name='password')
+            div
+                button(type='submit')
+                    Login
+
+        script(src='/scripts/login.js')

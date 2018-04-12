@@ -1,0 +1,23 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='/styles/login.css')
+    body.login
+        h2= title
+        h3= message
+        form(method='POST' action='/babylon')
+            div
+                input(type='hidden' name='accountname' value= accountname)
+            div
+                label(for='character') Select Character:
+                select(name='character')
+                    option(value="") Please Select
+                    each character in characters
+                        option(value=character.charName)= character.charName
+
+            div
+                button(type='submit') Enter Game
+
+
+        script(src='/scripts/login.js')

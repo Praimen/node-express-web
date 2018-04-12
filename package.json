@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d ./",
-    "serve": "pm2 start index.js -i max --watch",
-    "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-server-master && npm run build && npm run serve"
+    "serve": "pm2 start index.js -i max",
+    "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-account && npm run build && npm run serve"
   },
   "author": "",
   "license": "ISC",

@@ -1,0 +1,20 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='/styles/registration.css')
+    body.registration
+        h2= title
+        h3= message
+        form(method='POST')
+            div
+                label(for='username') Username:
+                input(type='text' name='username')
+            div
+                label(for='password') Password:
+                input(type='password' name='password')
+            div
+                button(type='submit') Register
+
+
+        script(src='/scripts/registration.js')

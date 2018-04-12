@@ -71,44 +71,174 @@ app.all('/', function(req, res, next) {
 
 app.get('/',(req, res) =>{
   res.clearCookie('gameJWT');
-  res.redirect('/game.html');
+  res.redirect('/registration');
+
+});
+
+app.get('/registration',(req, res) =>{   
+    res.render('registration', {title: 'Registration Form', message: ''})
+});
+
+app.post('/registration', function (req, res) {
+
+    if(req.body.username != "" && req.body.password != ""){
+
+        var jwtToken = jwt.sign({username:req.body.username}, process.env.JWT_SECRET);
+        res.set('Authorization','Bearer '+ jwtToken);
+        res.cookie('gameJWT', jwtToken);
+        
+        mongo.connect(process.env.DB_CONN,function(err,client) {
+
+            const db = client.db('game');
+
+            let updateObj = {
+                "_id" : req.body.username,
+                "acctType" : "REG",
+                "acctStatus" : "CURRENT",
+                "acctID" : "",
+                "acctCharArr" : [ ],
+                "currSelectedChar" : { }
+            };
+
+            db.collection('account').insert(updateObj, function(err,doc){
+
+                if(!err){
+                    console.log(doc);
+                    res.redirect('/login');
+                }else{
+                    console.log(err);
+                }
+                client.close();
+            });
+
+        });
+
+        
+    }else{
+        res.clearCookie('gameJWT');
+        res.render('registration', {title: 'Registration Form', message: 'Incorrect Registration Information'});
+        /* res.status(401).json({message:"passwords did not match"});*/
+    }
 
 });
 
 
 
 
+app.get('/login',(req, res) =>{
+    res.render('login', {title: 'Login', message: ''})
+});
 
-app.post('/special.html', function (req, res) {
+app.post('/character-select', function (req, res) {
 
-  if(req.body.username == "jake" && req.body.password == "tester"){
-    var jwtToken = jwt.sign({username:req.body.username}, process.env.JWT_SECRET);
+    if(req.body.username != "" && req.body.password != ""){
 
-    res.set('Authorization','Bearer '+ jwtToken);
-    res.cookie('gameJWT', jwtToken);
-    res.redirect('/babylon')
-  }else{
-    res.render('index', {title: 'Login Error', message: 'Incorrect Login Information'})
+        var jwtToken = jwt.sign({username:req.body.username}, process.env.JWT_SECRET);
+        res.set('Authorization','Bearer '+ jwtToken);
+        res.cookie('gameJWT', jwtToken);
 
-   /* res.status(401).json({message:"passwords did not match"});*/
+        mongo.connect(process.env.DB_CONN,function(err,client) {
+
+            const db = client.db('game');
+            var query = {"_id":req.body.username};
+            var projection = {"_id":1,"acctCharArr":1};
+            var cursor = db.collection('account').find(query);
+            cursor.project(projection);
+
+            cursor.toArray(function(err,docs) {
+
+                if(!err && docs.length > 0  ){
+                   var result = docs[0];
+                    res.render('character-select', {
+                        title: 'Character Account Select/Build',
+                        message: 'select or build your character',
+                        accountname: result._id,
+                        characters: result.acctCharArr
+                    });
+
+                }else{
+                    res.redirect('/login');
+                }
+                client.close();
+            });
+
+        });
 
 
-  }
+    }else{
+        res.clearCookie('gameJWT');
+        res.render('login', {title: 'Login Form', message: 'Incorrect Login Information'});
+        /* res.status(401).json({message:"passwords did not match"});*/
+    }
 
 });
+
 
 app.use('/babylon',checkJWT, express.static(path.join(__dirname + '/public/gameproj')));
 app.get('/babylon', checkJWT,
     function (req, res) {
 
-      if(req.jwt.username == "jake"){
+        if(req.jwt.username){
 
-        res.sendFile(path.join(__dirname + '/public/gameproj/index.html'));
+            res.sendFile(path.join(__dirname + '/public/gameproj/index.html'));
 
-      }else{
-        res.status(401).json({message:"page didn't work"});
+        }
+    }
+);
 
-      }
+
+app.post('/babylon',
+    function (req, res) {
+
+        if(req.body.character != "" && req.jwt.username == req.body.accountname ){
+
+            mongo.connect(process.env.DB_CONN,function(err,client) {
+
+                const db = client.db('game');
+                var query = {"_id":req.body.accountname};
+                var characterProj = {acctCharArr: {$elemMatch:{charName: req.body.character}}};
+
+                var cursor = db.collection('account').find(query);
+                cursor.project(characterProj);
+
+                cursor.toArray(function(err,docs) {
+
+                    if(!err && docs.length == 1  ){
+
+                        console.log("here is the element match array ",docs[0]);
+
+                        db.collection('account').update(query,{$set:{currSelectedChar:docs[0].acctCharArr[0]}}).then(function(updatedDoc){
+
+                           console.log('here is the update for the account ', updatedDoc.result);
+
+                            let transformDoc = {};
+                            transformDoc["_id"] = docs[0]._id;
+                            transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
+                            db.collection('gistate').insertOne(transformDoc, function(err,insertDoc) {
+                                if(!err){
+                                    console.log('here is the doc inserted', insertDoc.result);
+                                    client.close();
+                                    res.redirect('/babylon');
+                                }else{
+                                    console.log('here is the insert Error ' ,err)
+                                }
+                            })
+                        }).catch((err)=>{console.log(err)});
+
+                    }else{
+                        client.close();
+                        res.redirect('/character-select');
+                    }
+
+                });
+
+            });
+
+
+        }else{
+            res.redirect('/character-select');
+            /* res.status(401).json({message:"passwords did not match"});*/
+        }
 
     }
 );
@@ -116,13 +246,7 @@ app.get('/babylon', checkJWT,
 
 
 
-app.get('/update', function (req, res) {
-  res.send('Got a PUT request at /update')
-});
 
-app.get('/jsontest', function (req, res) {
-  res.json({cat:"meow"})
-});
 
 
 var roomQueue = [];
@@ -131,27 +255,22 @@ var roomName;
 //key:value  --> key:client , value:room's client
 var usersConnected = {};
 
-
-io.on('connection', function(socket){
-
-    console.log("Connected succesfully to the socket ...");
-    var connection = "...cause we're connected";
-    var characterBuilder = {};
-
+function loadOtherPlayer(socket,acctID){
 
     mongo.connect(process.env.DB_CONN,function(err,client){
         console.log('trying to connect to mongodb')
         const db = client.db('game');
 
         var query = {};
-        var projection = {"playerAccountList":1,"_id":0};
 
-        var cursor = db.collection('gistate').find(query);
-        cursor.project(projection);
+        let cursor = db.collection('gistate').find(query);
 
         cursor.forEach(
             function(doc){
-                socket.emit('connected',doc);
+                if(doc._id != acctID){
+                    socket.emit('render_other_players',doc);
+                }
+
             },
             function(err){
                 console.log(err)
@@ -161,31 +280,14 @@ io.on('connection', function(socket){
 
     });
 
-    socket.on('push_player',(playerCharObj)=>{
-        console.log('push account to array');
-        mongo.connect(process.env.DB_CONN,function(err,client){
-            console.log('trying to connect to mongodb')
-            const db = client.db('game');
-            /*var playerAccount = playerCharObj._id;*/
-            console.log('push account to array',playerCharObj._id);
-
-            db.collection('gistate').find({"playerAccountList._id":playerCharObj._id}).toArray(function(err,docs) {
-
-                if(docs.length == 0 && playerCharObj._id != undefined ){
-
-                    db.collection('gistate').update({},{$push:{"playerAccountList":playerCharObj}});
+}
 
 
-                }else{
-                    console.log('There is already a character that exists: ',docs);
-                    client.close();
-                }
+io.on('connection', function(socket){
 
-            })
-
-        });
-
-    });
+    console.log("Connected succesfully to the socket ...");
+    console.log("Client " + socket.id + " connected");
+    var characterBuilder = {};
 
 
     socket.on('player_move',(playerMeshData)=>{
@@ -194,21 +296,66 @@ io.on('connection', function(socket){
 
     })
 
+    socket.on('saved_player_position',(player)=>{
+
+        mongo.connect(process.env.DB_CONN,function(err,client) {
+
+            const db = client.db('game');
+            var query = {"_id":player.id};
+
+            db.collection('gistate').update(query,{
+                $set:{
+                    "currSelectedChar.location.x": player.position.x,
+                    "currSelectedChar.location.y": player.position.y,
+                    "currSelectedChar.location.z": player.position.z
+                }
+            }).then(function(updatedDoc){
+
+                console.log('here is the update the position for a player ', updatedDoc.result);
 
 
 
+            }).catch((err)=>{console.log(err)});
 
-    console.log("Client " + socket.id + " connected");
-    socket.on('player_join_gi', function () {
 
-        roomName = "gameRoom";// this will eventually be the player location room
-        usersConnected[socket.id] = roomName;
 
-        roomQueue.push(usersConnected[socket.id]);
+        });
+
+
+    })
+
+
+    socket.on('load_player_to_gi', function (gameJWT) {
+        let decoded = jwt.verify(gameJWT, process.env.JWT_SECRET);
+        let acctID = decoded.username;
+
+        roomName = "gameRoom";// this will eventually be the character zone room
+        usersConnected[socket.id] = acctID;
+
+        //roomQueue.push(usersConnected[socket.id]);
 
         socket.join(roomName);
 
-       // socket.emit('player_joined_gi');
+        mongo.connect(process.env.DB_CONN,function(err,client){
+            console.log('trying to connect to mongodb')
+            const db = client.db('game');
+            console.log('push account to array',acctID);
+            db.collection('gistate').find({"_id":acctID}).toArray(function(err,docs) {
+
+
+                if(!err ){
+                    console.log('is the array push working',docs[0]);
+                    io.in(roomName).emit('player_joined_gi', docs[0]);
+                    loadOtherPlayer(socket,acctID)
+                }else{
+                    console.log('here is the error ',err)
+                }
+                client.close();
+
+            })
+
+        });
+
 
        // var clientsInRoom = io.sockets.adapter.rooms[room];
 
@@ -288,9 +435,36 @@ io.on('connection', function(socket){
     socket.on('disconnect', function () {
         console.log("Client " + socket.id + " disconnected");
 
+        var playerID = usersConnected[socket.id]
 
-        delete usersConnected[socket.id];
-        roomQueue.shift();
+        mongo.connect(process.env.DB_CONN,function(err,client){
+            console.log('trying to connect to mongodb');
+            const db = client.db('game');
+
+            db.collection('gistate').find({"_id":playerID}).toArray(function(err,resultDoc){
+                console.log('here is the gi resultDoc', resultDoc[0]);
+                if(!err){
+                    let character = resultDoc[0].currSelectedChar;
+                    db.collection('account').updateOne({"_id": playerID, "acctCharArr.charName": character.charName },
+                        {$set:{"acctCharArr.$.location":character.location}}).then(function(doc){
+
+                            db.collection('gistate').deleteOne({"_id":playerID}).then(function(deleteDoc){
+
+                                socket.broadcast.emit('player_disc',playerID);
+                                console.log('removed the account from the instance',deleteDoc.result);
+                                delete usersConnected[socket.id];
+                                client.close();
+
+                            }).catch((err)=>{client.close();console.log(err)});
+
+                    }).catch((err)=>{client.close();console.log(err)});
+
+                }
+            })
+        });
+
+
+        //roomQueue.shift();
 
         //socket.broadcast.to(roomClientRemoved).emit('bye', "");
     });
