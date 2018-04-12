@@ -8,7 +8,7 @@ html
         h2= title
         h3= message
         form(method='POST' action='/babylon')
-            div
+            div.select-character
                 input(type='hidden' name='accountname' value= accountname)
             div
                 label(for='character') Select Character:
@@ -21,32 +21,31 @@ html
                 button(type='submit') Enter Game
 
 
-        form(method='POST' action='/')
-            div
-                input(type='text' name='chractername' value="")
+            div.build-character
+                div
+                    input(type='text' name='chractername' value="")
 
-            div
-                label(for='race') Race:
-                select(name='race')
-                    option(value="human") Human
-                    option(value="elf") Elf
-                    option(value="dragon") Dragon
-                    option(value="spider") Spider
+                div
+                    label(for='race') Race:
+                    select(name='race')
+                        option(value="human") Human
+                        option(value="elf") Elf
+                        option(value="dragon") Dragon
+                        option(value="spider") Spider
 
-            div
-                input(type='text' name='age' value="")
+                div
+                    input(type='text' name='age' value="")
 
-            div
-                label(for='archetype') Guild:
-                select(name='archetype')
-                    option(value="mage") Mage
-                    option(value="warrior") Warrior
-                    option(value="rogue") Rogue
-                    option(value="paladin") Paladin
+                div
+                    label(for='archetype') Guild:
+                    select(name='archetype')
+                        option(value="mage") Mage
+                        option(value="warrior") Warrior
+                        option(value="rogue") Rogue
+                        option(value="paladin") Paladin
 
-
-            div
-                button(type='submit') Add Character
+                div
+                    button(type='submit') Add Character
 
         script(src='/scripts/main.js')
         script(src='/scripts/character-select.js')

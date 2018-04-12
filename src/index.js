@@ -129,7 +129,7 @@ app.get('/login',(req, res) =>{
     res.render('login', {title: 'Login', message: ''})
 });
 
-app.post('/character-select', function (req, res) {
+app.all('/character-select', function (req, res) {
 
     if(req.body.username != "" && req.body.password != ""){
 
@@ -196,41 +196,81 @@ app.post('/babylon',
 
                 const db = client.db('game');
                 var query = {"_id":req.body.accountname};
-                var characterProj = {acctCharArr: {$elemMatch:{charName: req.body.character}}};
-
                 var cursor = db.collection('account').find(query);
-                cursor.project(characterProj);
 
-                cursor.toArray(function(err,docs) {
+                if(req.body.character != ""){
 
-                    if(!err && docs.length == 1  ){
+                    var characterProj = {acctCharArr: {$elemMatch:{charName: req.body.character}}};
+                    cursor.project(characterProj);
+                    cursor.toArray(function(err,docs) {
 
-                        console.log("here is the element match array ",docs[0]);
+                        if(!err){
 
-                        db.collection('account').update(query,{$set:{currSelectedChar:docs[0].acctCharArr[0]}}).then(function(updatedDoc){
+                            console.log("here is the element match array ",docs[0]);
 
-                           console.log('here is the update for the account ', updatedDoc.result);
+                            db.collection('account').update(query,{$set:{currSelectedChar:docs[0].acctCharArr[0]}}).then(function(updatedDoc){
 
-                            let transformDoc = {};
-                            transformDoc["_id"] = docs[0]._id;
-                            transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
-                            db.collection('gistate').insertOne(transformDoc, function(err,insertDoc) {
-                                if(!err){
-                                    console.log('here is the doc inserted', insertDoc.result);
-                                    client.close();
-                                    res.redirect('/babylon');
-                                }else{
-                                    console.log('here is the insert Error ' ,err)
-                                }
-                            })
-                        }).catch((err)=>{console.log(err)});
+                                console.log('here is the update for the account ', updatedDoc.result);
 
-                    }else{
-                        client.close();
+                                let transformDoc = {};
+                                transformDoc["_id"] = docs[0]._id;
+                                transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
+                                db.collection('gistate').insertOne(transformDoc, function(err,insertDoc) {
+                                    if(!err){
+                                        console.log('here is the doc inserted', insertDoc.result);
+                                        client.close();
+                                        res.redirect('/babylon');
+                                    }else{
+                                        console.log('here is the insert Error ' ,err)
+                                    }
+                                })
+                            }).catch((err)=>{console.log(err)});
+
+                        }else{
+                            client.close();
+                            res.redirect('/character-select');
+                        }
+
+                    });
+
+                }else if(req.body.charactername){
+                    var characterName = req.body.charactername;
+                    var characterRace = req.body.race;
+                    var characterAge = req.body.age;
+                    var characterClass = req.body.archetype;
+                    var characterLocation = {x:1,y:-1,z:1,zone:""};
+
+                    cursor.next().then(function(characterDocs){
+                        console.log('here is the character document ',characterDocs)
+                    });
+                    db.collection('account').updateOne(query,{$push:{acctCharArr:{
+                        charName: characterName,
+                        age: characterAge,
+                        race: characterRace,
+                        archetype: characterClass,
+                        items:[],
+                        location: characterLocation
+
+                    }}}).then(function(updatedoc){
+                        console.log('character build', updatedoc)
+
+
+                       /* res.render('character-select', {
+                            title: 'Character Account Select/Build',
+                            message: 'select or build your character',
+                            accountname: req.body.accountname,
+                            characters: result.acctCharArr
+                        });*/
                         res.redirect('/character-select');
-                    }
+                        client.close();
+                    }).catch((err)=>{console.log(err)});
 
-                });
+
+
+
+                }
+
+
 
             });
 
