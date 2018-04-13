@@ -148,9 +148,9 @@ app.post('/login',(req,res)=>{
             let cursor = db.collection('account').find(query);
             cursor.project(projection);
 
-            cursor.next().then(function(result) {
+            cursor.toArray().then(function(result) {
 
-                let jwtToken = jwt.sign({username:result._id}, process.env.JWT_SECRET);
+                let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
                 res.redirect('/character-select');
@@ -185,7 +185,7 @@ app.get('/character-select',checkJWT, function (req, res) {
         var cursor = db.collection('account').find(query);
         cursor.project(projection);
 
-        cursor.next().then(function(err,docs) {
+        cursor.toArray().then(function(err,docs) {
 
             if(!err && docs.length > 0  ) {
                 var result = docs[0];
@@ -265,7 +265,7 @@ app.post('/character-select',checkJWT, function (req, res) {
             let characterClass = req.body.archetype;
             let characterLocation = {x: 1, y: -1, z: 1, zone: ""};
 
-            cursor.next().then(function (characterDocs) {
+            cursor.toArray().then(function (characterDocs) {
                 console.log('here is the character document ', characterDocs)
             });
             db.collection('account').updateOne(query, {
@@ -284,12 +284,6 @@ app.post('/character-select',checkJWT, function (req, res) {
                 console.log('character build', updatedoc)
 
 
-                /* res.render('character-select', {
-                 title: 'Character Account Select/Build',
-                 message: 'select or build your character',
-                 accountname: req.body.accountname,
-                 characters: result.acctCharArr
-                 });*/
                 res.redirect('/character-select');
                 client.close();
             }).catch((err) => {
