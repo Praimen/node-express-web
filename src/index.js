@@ -149,7 +149,7 @@ app.post('/login',(req,res)=>{
             cursor.project(projection);
 
             cursor.toArray().then(function(result) {
-
+                console.log('inside the login jwt')
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
@@ -185,7 +185,7 @@ app.get('/character-select',checkJWT, function (req, res) {
         var cursor = db.collection('account').find(query);
         cursor.project(projection);
 
-        cursor.toArray().then(function(err,docs) {
+        cursor.toArray().then(function(docs) {
 
             if(!err && docs.length > 0  ) {
                 var result = docs[0];
