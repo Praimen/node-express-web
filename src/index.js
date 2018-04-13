@@ -71,11 +71,12 @@ app.all('/', function(req, res, next) {
 
 app.get('/',(req, res) =>{
   res.clearCookie('gameJWT');
-  res.redirect('/registration');
+  res.redirect('/login');
 
 });
 
-app.get('/registration',(req, res) =>{   
+app.get('/registration',(req, res) =>{
+    res.clearCookie('gameJWT');
     res.render('registration', {title: 'Registration Form', message: ''})
 });
 
@@ -83,9 +84,7 @@ app.post('/registration', function (req, res) {
 
     if(req.body.username != "" && req.body.password != ""){
 
-        var jwtToken = jwt.sign({username:req.body.username}, process.env.JWT_SECRET);
-        res.set('Authorization','Bearer '+ jwtToken);
-        res.cookie('gameJWT', jwtToken);
+
         
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
@@ -100,7 +99,7 @@ app.post('/registration', function (req, res) {
                 "currSelectedChar" : { }
             };
 
-            db.collection('account').insert(updateObj, function(err,doc){
+            db.collection('account').insertOne(updateObj).then(function(doc){
 
                 if(!err){
                     console.log(doc);
@@ -109,13 +108,17 @@ app.post('/registration', function (req, res) {
                     console.log(err);
                 }
                 client.close();
+            }).catch((err)=>{
+
+                client.close();
+                res.render('registration', {title: 'Registration Form', message: 'Unable to Register Account '+ err})
             });
 
         });
 
         
     }else{
-        res.clearCookie('gameJWT');
+
         res.render('registration', {title: 'Registration Form', message: 'Incorrect Registration Information'});
         /* res.status(401).json({message:"passwords did not match"});*/
     }
@@ -126,52 +129,186 @@ app.post('/registration', function (req, res) {
 
 
 app.get('/login',(req, res) =>{
+
+    res.clearCookie('gameJWT');
     res.render('login', {title: 'Login', message: ''})
+
 });
 
-app.all('/character-select', function (req, res) {
+app.post('/login',(req,res)=>{
 
     if(req.body.username != "" && req.body.password != ""){
 
-        var jwtToken = jwt.sign({username:req.body.username}, process.env.JWT_SECRET);
-        res.set('Authorization','Bearer '+ jwtToken);
-        res.cookie('gameJWT', jwtToken);
 
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('game');
-            var query = {"_id":req.body.username};
-            var projection = {"_id":1,"acctCharArr":1};
-            var cursor = db.collection('account').find(query);
+            let query = {"_id":req.body.username};
+            let projection = {"_id":1};
+            let cursor = db.collection('account').find(query);
             cursor.project(projection);
 
-            cursor.toArray(function(err,docs) {
+            cursor.next().then(function(result) {
 
-                if(!err && docs.length > 0  ){
-                   var result = docs[0];
-                    res.render('character-select', {
-                        title: 'Character Account Select/Build',
-                        message: 'select or build your character',
-                        accountname: result._id,
-                        characters: result.acctCharArr
-                    });
+                let jwtToken = jwt.sign({username:result._id}, process.env.JWT_SECRET);
+                res.set('Authorization','Bearer '+ jwtToken);
+                res.cookie('gameJWT', jwtToken);
+                res.redirect('/character-select');
 
-                }else{
-                    res.redirect('/login');
-                }
                 client.close();
+
+            }).catch((err)=> {
+
+                client.close();
+
+                res.render('login', {title: 'Login Form', message: 'Incorrect Login Information '+ err});
             });
 
         });
 
 
     }else{
-        res.clearCookie('gameJWT');
-        res.render('login', {title: 'Login Form', message: 'Incorrect Login Information'});
+
+
         /* res.status(401).json({message:"passwords did not match"});*/
     }
 
+})
+
+app.get('/character-select',checkJWT, function (req, res) {
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('game');
+        var query = {"_id":req.jwt.username};
+        var projection = {"_id":1,"acctCharArr":1};
+        var cursor = db.collection('account').find(query);
+        cursor.project(projection);
+
+        cursor.next().then(function(err,docs) {
+
+            if(!err && docs.length > 0  ) {
+                var result = docs[0];
+                res.render('character-select', {
+                    title: 'Character Account Select/Build',
+                    message: 'select or build your character',
+                    accountname: result._id,
+                    characters: result.acctCharArr
+                });
+            }
+
+
+            client.close();
+        }).catch((err)=> {
+
+            client.close();
+
+            res.render('login', {title: 'Login Form', message: 'Incorrect Login Information '+ err});
+        });
+
+    });
+
+
+
 });
+
+
+app.post('/character-select',checkJWT, function (req, res) {
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('game');
+        let query = {"_id": req.body.accountname};
+        let cursor = db.collection('account').find(query);
+
+        if (req.body.character != "" && req.jwt.username) {
+
+
+            let characterProj = {acctCharArr: {$elemMatch: {charName: req.body.character}}};
+            cursor.project(characterProj);
+            cursor.toArray(function (err, docs) {
+
+                if (!err) {
+
+                    console.log("here is the element match array ", docs[0]);
+
+                    db.collection('account').update(query, {$set: {currSelectedChar: docs[0].acctCharArr[0]}}).then(function (updatedDoc) {
+
+                        console.log('here is the update for the account ', updatedDoc.result);
+
+                        let transformDoc = {};
+                        transformDoc["_id"] = docs[0]._id;
+                        transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
+                        db.collection('gistate').insertOne(transformDoc, function (err, insertDoc) {
+                            if (!err) {
+                                console.log('here is the doc inserted', insertDoc.result);
+                                client.close();
+                                res.redirect('/babylon');
+                            } else {
+                                console.log('here is the insert Error ', err)
+                            }
+                        })
+                    }).catch((err) => {
+                        console.log(err)
+                    });
+
+                } else {
+                    client.close();
+                    res.redirect('/character-select');
+                }
+
+            });
+
+        } else if (req.body.charactername) {
+            let characterName = req.body.charactername;
+            let characterRace = req.body.race;
+            let characterAge = req.body.age;
+            let characterClass = req.body.archetype;
+            let characterLocation = {x: 1, y: -1, z: 1, zone: ""};
+
+            cursor.next().then(function (characterDocs) {
+                console.log('here is the character document ', characterDocs)
+            });
+            db.collection('account').updateOne(query, {
+                $push: {
+                    acctCharArr: {
+                        charName: characterName,
+                        age: characterAge,
+                        race: characterRace,
+                        archetype: characterClass,
+                        items: [],
+                        location: characterLocation
+
+                    }
+                }
+            }).then(function (updatedoc) {
+                console.log('character build', updatedoc)
+
+
+                /* res.render('character-select', {
+                 title: 'Character Account Select/Build',
+                 message: 'select or build your character',
+                 accountname: req.body.accountname,
+                 characters: result.acctCharArr
+                 });*/
+                res.redirect('/character-select');
+                client.close();
+            }).catch((err) => {
+                console.log(err)
+                client.close();
+            });
+
+
+        }else{
+            res.redirect('/login');
+        }
+
+    })
+
+
+});
+
+
+
 
 
 app.use('/babylon',checkJWT, express.static(path.join(__dirname + '/public/gameproj')));
@@ -182,106 +319,13 @@ app.get('/babylon', checkJWT,
 
             res.sendFile(path.join(__dirname + '/public/gameproj/index.html'));
 
-        }
-    }
-);
-
-
-app.post('/babylon',
-    function (req, res) {
-
-        if(req.body.character != "" && req.jwt.username == req.body.accountname ){
-
-            mongo.connect(process.env.DB_CONN,function(err,client) {
-
-                const db = client.db('game');
-                var query = {"_id":req.body.accountname};
-                var cursor = db.collection('account').find(query);
-
-                if(req.body.character != ""){
-
-                    var characterProj = {acctCharArr: {$elemMatch:{charName: req.body.character}}};
-                    cursor.project(characterProj);
-                    cursor.toArray(function(err,docs) {
-
-                        if(!err){
-
-                            console.log("here is the element match array ",docs[0]);
-
-                            db.collection('account').update(query,{$set:{currSelectedChar:docs[0].acctCharArr[0]}}).then(function(updatedDoc){
-
-                                console.log('here is the update for the account ', updatedDoc.result);
-
-                                let transformDoc = {};
-                                transformDoc["_id"] = docs[0]._id;
-                                transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
-                                db.collection('gistate').insertOne(transformDoc, function(err,insertDoc) {
-                                    if(!err){
-                                        console.log('here is the doc inserted', insertDoc.result);
-                                        client.close();
-                                        res.redirect('/babylon');
-                                    }else{
-                                        console.log('here is the insert Error ' ,err)
-                                    }
-                                })
-                            }).catch((err)=>{console.log(err)});
-
-                        }else{
-                            client.close();
-                            res.redirect('/character-select');
-                        }
-
-                    });
-
-                }else if(req.body.charactername){
-                    var characterName = req.body.charactername;
-                    var characterRace = req.body.race;
-                    var characterAge = req.body.age;
-                    var characterClass = req.body.archetype;
-                    var characterLocation = {x:1,y:-1,z:1,zone:""};
-
-                    cursor.next().then(function(characterDocs){
-                        console.log('here is the character document ',characterDocs)
-                    });
-                    db.collection('account').updateOne(query,{$push:{acctCharArr:{
-                        charName: characterName,
-                        age: characterAge,
-                        race: characterRace,
-                        archetype: characterClass,
-                        items:[],
-                        location: characterLocation
-
-                    }}}).then(function(updatedoc){
-                        console.log('character build', updatedoc)
-
-
-                       /* res.render('character-select', {
-                            title: 'Character Account Select/Build',
-                            message: 'select or build your character',
-                            accountname: req.body.accountname,
-                            characters: result.acctCharArr
-                        });*/
-                        res.redirect('/character-select');
-                        client.close();
-                    }).catch((err)=>{console.log(err)});
-
-
-
-
-                }
-
-
-
-            });
-
-
         }else{
-            res.redirect('/character-select');
-            /* res.status(401).json({message:"passwords did not match"});*/
+            res.redirect('/login');
         }
-
     }
 );
+
+
 
 
 
