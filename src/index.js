@@ -187,7 +187,7 @@ app.get('/character-select',checkJWT, function (req, res) {
 
         cursor.toArray().then(function(docs) {
 
-            if(!err && docs.length > 0  ) {
+            console.log('inside the character-select query ', docs)
                 var result = docs[0];
                 res.render('character-select', {
                     title: 'Character Account Select/Build',
@@ -195,7 +195,7 @@ app.get('/character-select',checkJWT, function (req, res) {
                     accountname: result._id,
                     characters: result.acctCharArr
                 });
-            }
+
 
 
             client.close();
