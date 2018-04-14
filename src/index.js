@@ -263,7 +263,7 @@ app.post('/character-select',checkJWT, function (req, res) {
             let characterRace = req.body.race;
             let characterAge = req.body.age;
             let characterClass = req.body.archetype;
-            let characterLocation = {x: 1, y: -1, z: 1, zone: ""};
+            let characterLocation = {x: 1, y: 1, z: 1, zone: ""};
 
             cursor.toArray().then(function (characterDocs) {
                 console.log('here is the character document ', characterDocs)

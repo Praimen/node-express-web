@@ -1,3 +1,11 @@
 h1{
     color:red;
 }
+
+body{
+    padding:10px;
+}
+
+div,input,label{
+    margin:2px 4px;
+}
