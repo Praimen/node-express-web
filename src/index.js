@@ -349,7 +349,7 @@ function loadRoomNPCS(socket,roomName){
         cursor.forEach(
             function(doc){
                 console.log('here is the NPC doc', doc);
-                if(doc.location.zone != roomName){
+                if(doc.location.zone == roomName){
                     socket.emit('render_npc',doc);
                 }
 
