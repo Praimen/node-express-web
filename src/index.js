@@ -339,7 +339,7 @@ var usersConnected = {};
 function loadRoomNPCS(socket,roomName){
 
     mongo.connect(process.env.DB_CONN,function(err,client){
-        console.log('trying to connect to mongodb')
+        console.log('trying to connect to mongodb to load npcs')
         const db = client.db('game');
 
         var query = {};
@@ -348,6 +348,7 @@ function loadRoomNPCS(socket,roomName){
 
         cursor.forEach(
             function(doc){
+                console.log('here is the NPC doc', doc);
                 if(doc.location.zone != roomName){
                     socket.emit('render_npc',doc);
                 }
