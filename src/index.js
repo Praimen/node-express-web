@@ -238,7 +238,7 @@ app.post('/character-select',checkJWT, function (req, res) {
                         let transformDoc = {};
                         transformDoc["_id"] = docs[0]._id;
                         transformDoc["currSelectedChar"] = docs[0].acctCharArr[0];
-                        db.collection('gistate').insertOne(transformDoc, function (err, insertDoc) {
+                        db.collection('giplayers').insertOne(transformDoc, function (err, insertDoc) {
                             if (!err) {
                                 console.log('here is the doc inserted', insertDoc.result);
                                 client.close();
@@ -333,6 +333,36 @@ var roomName;
 //key:value  --> key:client , value:room's client
 var usersConnected = {};
 
+
+
+
+function loadRoomNPCS(socket,roomName){
+
+    mongo.connect(process.env.DB_CONN,function(err,client){
+        console.log('trying to connect to mongodb')
+        const db = client.db('game');
+
+        var query = {};
+
+        let cursor = db.collection('ginpcs').find(query);
+
+        cursor.forEach(
+            function(doc){
+                if(doc.location.zone != roomName){
+                    socket.emit('render_npc',doc);
+                }
+
+            },
+            function(err){
+                console.log(err)
+                return  client.close();
+            }
+        )
+
+    });
+
+}
+
 function loadOtherPlayer(socket,acctID){
 
     mongo.connect(process.env.DB_CONN,function(err,client){
@@ -341,7 +371,7 @@ function loadOtherPlayer(socket,acctID){
 
         var query = {};
 
-        let cursor = db.collection('gistate').find(query);
+        let cursor = db.collection('giplayers').find(query);
 
         cursor.forEach(
             function(doc){
@@ -381,7 +411,7 @@ io.on('connection', function(socket){
             const db = client.db('game');
             var query = {"_id":player.id};
 
-            db.collection('gistate').update(query,{
+            db.collection('giplayers').update(query,{
                 $set:{
                     "currSelectedChar.location.x": player.position.x,
                     "currSelectedChar.location.y": player.position.y,
@@ -418,13 +448,14 @@ io.on('connection', function(socket){
             console.log('trying to connect to mongodb')
             const db = client.db('game');
             console.log('push account to array',acctID);
-            db.collection('gistate').find({"_id":acctID}).toArray(function(err,docs) {
+            db.collection('giplayers').find({"_id":acctID}).toArray(function(err,docs) {
 
 
                 if(!err ){
                     console.log('is the array push working',docs[0]);
                     io.in(roomName).emit('player_joined_gi', docs[0]);
                     loadOtherPlayer(socket,acctID)
+                    loadRoomNPCS(socket,roomName)
                 }else{
                     console.log('here is the error ',err)
                 }
@@ -519,14 +550,14 @@ io.on('connection', function(socket){
             console.log('trying to connect to mongodb');
             const db = client.db('game');
 
-            db.collection('gistate').find({"_id":playerID}).toArray(function(err,resultDoc){
+            db.collection('giplayers').find({"_id":playerID}).toArray(function(err,resultDoc){
                 console.log('here is the gi resultDoc', resultDoc[0]);
                 if(!err){
                     let character = resultDoc[0].currSelectedChar;
                     db.collection('account').updateOne({"_id": playerID, "acctCharArr.charName": character.charName },
                         {$set:{"acctCharArr.$.location":character.location}}).then(function(doc){
 
-                            db.collection('gistate').deleteOne({"_id":playerID}).then(function(deleteDoc){
+                            db.collection('giplayers').deleteOne({"_id":playerID}).then(function(deleteDoc){
 
                                 socket.broadcast.emit('player_disc',playerID);
                                 console.log('removed the account from the instance',deleteDoc.result);
