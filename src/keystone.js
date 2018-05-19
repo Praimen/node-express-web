@@ -31,8 +31,7 @@ keystone.init({
 
 });
 
-require('./models');
-
+keystone.set('models', require('./models'));
 keystone.set('app', app);
 keystone.set('routes', require('./routes'));
 
