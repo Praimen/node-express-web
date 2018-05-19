@@ -7,6 +7,9 @@
     "build": "babel src -d ./",
     "serve": "pm2 start index.js -i max",
     "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-character-build && npm run build && npm run serve"
+    "key-build": "babel src/keystone.js -d ./",
+    "key-serve": "pm2 start keystone.js -i max",
+    "update-key-server": "pm2 stop keystone && pm2 kill && git reset --hard && git pull origin keystone-poc && npm run key-build && npm run key-serve"
   },
   "author": "",
   "license": "ISC",
