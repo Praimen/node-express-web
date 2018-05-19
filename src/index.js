@@ -71,7 +71,7 @@ app.all('/', function(req, res, next) {
 
 app.get('/',(req, res) =>{
   res.clearCookie('gameJWT');
-  res.redirect('/login');
+    res.sendFile(path.join(__dirname +'/public/special.html'))
 
 });
 
