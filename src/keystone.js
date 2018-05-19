@@ -27,14 +27,16 @@ keystone.init({
     'session': false,
     'auth': true,
     'user model': 'User',
-    'cookie secret': '(your secret here)'
+    'cookie secret': 'cookieSecret'
 
 });
 
-keystone.import('./models');
-keystone.set('app', app);
-keystone.set('routes', require('./routes'));
 
+
+keystone.import('./models');
+keystone.import('./routes')
+/*keystone.set('routes', require('./routes'));*/
+keystone.set('app', app);
 keystone.start();
 
 
