@@ -8,7 +8,7 @@ var server = require('http').Server(app);
 var bodyParser = require('body-parser');
 
 var keystone = require('keystone');
-var dbConnection = process.env.DB_CONN+'/keystone';
+var dbConnection = process.env.DB_CONN;
 keystone.init({
 
     'name': 'My Project',
@@ -34,7 +34,7 @@ keystone.init({
 
 
 keystone.import('./models');
-keystone.import('./routes')
+keystone.import('./routes');
 /*keystone.set('routes', require('./routes'));*/
 keystone.set('app', app);
 keystone.start();
