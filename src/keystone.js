@@ -6,6 +6,7 @@ var path = require('path');
 var mongo = require('mongodb').MongoClient;
 var server = require('http').Server(app);
 var bodyParser = require('body-parser');
+var routes = require('./routes/index');
 
 var keystone = require('keystone');
 var dbConnection = process.env.DB_CONN;
