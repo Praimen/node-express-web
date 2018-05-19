@@ -2,21 +2,44 @@ require('dotenv').config();
 const compression = require('compression');
 const express = require('express');
 const app = express();
-
+var path = require('path');
 var mongo = require('mongodb').MongoClient;
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
-var cookieParser = require('cookie-parser');
-
-var path = require('path');
 var bodyParser = require('body-parser');
-var expressJWT = require('express-jwt');
-var jwt = require('jsonwebtoken');
-var urlEncodedForm;
+
+var keystone = require('keystone');
+var dbConnection = process.env.DB_CONN+'/keystone';
+keystone.init({
+
+    'name': 'My Project',
+
+    'favicon': 'public/favicon.ico',
+    'port':4000,
+    'less': 'public',
+    'static': ['public'],
+
+    'views': 'templates/views',
+    'view engine': 'pug',
+
+    'auto update': true,
+    'mongo': dbConnection,
+
+    'session': false,
+    'auth': true,
+    'user model': 'User',
+    'cookie secret': '(your secret here)'
+
+});
+
+require('./models');
+
+keystone.set('app', app);
+keystone.set('routes', require('./routes'));
+
+keystone.start();
 
 
-var router = require('./router');
+/*var router = require('./router');
 
 var options = {
   dotfiles: 'ignore',
@@ -28,10 +51,11 @@ var options = {
   setHeaders: function (res, path, stat) {
     res.set('x-timestamp', Date.now())
   }
-};
+};*/
 
-server.listen(4000, () => console.log('Example app listening on port 4000!'));
+/*server.listen(4000, () => console.log('Example app listening on port 4000!'));*/
 
+/*
 
 
 app.set('view engine', 'pug');
@@ -118,7 +142,7 @@ app.post('/registration', function (req, res) {
     }else{
 
         res.render('registration', {title: 'Registration Form', message: 'Incorrect Registration Information'});
-        /* res.status(401).json({message:"passwords did not match"});*/
+        /!* res.status(401).json({message:"passwords did not match"});*!/
     }
 
 });
@@ -168,10 +192,11 @@ app.post('/login',(req,res)=>{
     }else{
 
 
-        /* res.status(401).json({message:"passwords did not match"});*/
+        /!* res.status(401).json({message:"passwords did not match"});*!/
     }
 
 })
+*/
 
 
 
