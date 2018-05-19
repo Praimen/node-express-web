@@ -37,6 +37,10 @@ keystone.import('./models');
 keystone.import('./routes');
 /*keystone.set('routes', require('./routes'));*/
 keystone.set('app', app);
+
+app.get('/', function(req, res, next) {
+    res.send('hello world');
+});
 keystone.start();
 
 
