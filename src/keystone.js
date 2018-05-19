@@ -34,13 +34,15 @@ keystone.init({
 
 
 keystone.import('./models');
-keystone.import('./routes');
+
 /*keystone.set('routes', require('./routes'));*/
 keystone.set('app', app);
 
-app.get('/', function(req, res, next) {
-    res.send('hello world');
-});
+app.use('/', routes(keystone));
+
+app.use('/keystone', require('keystone/admin/server/app/createStaticRouter.js')(keystone));
+app.use('/keystone', require('keystone/admin/server/app/createDynamicRouter.js')(keystone));
+
 keystone.start();
 
 
