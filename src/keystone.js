@@ -191,8 +191,12 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let policynumber = parseInt(req.body.policynumber);
             let query = {_id:policynumber};
             console.log(query)
+            var params = {
+                "title": req.body.policytitle,
+                $push:{"content": req.body.editorcontent }
+            }
 
-           let cursor = db.collection('policies').findOneAndUpdate(query,{title:req.body.policytitle, $push:{content:req.body.editorcontent}},{returnOriginal:false,upsert:true});
+           let cursor = db.collection('policies').findOneAndUpdate(query,params ,{returnOriginal:false,upsert:true});
 
            // let cursor = db.collection('policies').find({});
 
