@@ -188,9 +188,9 @@ app.post('/editor-test',checkJWT,(req,res)=>{
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('editor');
-            let policynumber = parseInt(req.body.policynumber);
+            let policynumber = Math.parseInt(req.body.policynumber);
             let query = {_id:policynumber};
-            console.log(query)
+            console.log(query);
             var params = {
                 "title": req.body.policytitle,
                 $push:{"content": req.body.editorcontent }
