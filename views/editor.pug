@@ -9,7 +9,7 @@ html
         h3= message
         form(method='POST')
             div
-                label(for='policytitle') Policy Number:
+                label(for='policytitle') Policy Title:
                 input(type='text' name='policytitle' value=policytitle)
             div
                 label(for='policynumber') Policy Number:
@@ -17,7 +17,7 @@ html
             div
                 textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
             div
-                button(type='submit') Submit
+                button(type='submit' class='sub-button') Submit
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='../scripts/ckeditor/ckeditor.js')

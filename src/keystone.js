@@ -194,16 +194,16 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let cursor = db.collection('policies').findOneAndUpdate(query,{content:{$push:req.body.editorcontent},_id:req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
 
 
-            cursor.toArray().then(function(result) {
+            cursor.then(function(result) {
 
-                console.log(result[0]);
+                console.log(result);
 
                 res.render('editor', {
                     title: 'Editor Test',
                     message: 'saved content: ',
-                    policynumber: result[0].policynumber,
-                    policytitle: result[0].policytitle,
-                    editorcontent: result[0].content[result[0].content.length - 1]
+                    policynumber: result.policynumber,
+                    policytitle: result.policytitle,
+                    editorcontent: result.content[result.content.length - 1]
                 });
 
                 client.close();
