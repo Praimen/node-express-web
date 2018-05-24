@@ -191,7 +191,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let query = {"_id":req.body.policynumber};
 
 
-            let cursor = db.collection('policies').findOneAndUpdate(query,{$push:{content:req.body.editorcontent},_id:req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
+            let cursor = db.collection('policies').findOneAndUpdate(query,{$push:{content:req.body.editorcontent},"_id":req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
 
 
             cursor.then(function(result) {
@@ -201,8 +201,8 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                 res.render('editor', {
                     title: 'Editor Test',
                     message: 'saved content: ',
-                    policynumber: result.policynumber,
-                    policytitle: result.policytitle,
+                    policynumber: result._id,
+                    policytitle: result.title,
                     editorcontent: result.content[result.content.length - 1]
                 });
 
