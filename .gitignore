@@ -10,3 +10,4 @@ gameproj
 index.js
 .env
 /scripts/ckeditor
+ckeditor/
