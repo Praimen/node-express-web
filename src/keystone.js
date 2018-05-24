@@ -195,16 +195,16 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
             let cursor = db.collection('policies').find(query);
 
-            cursor.then(function(result) {
-
-                console.log(result);
+            cursor.toArray(function(result) {
+                var rs = rsult[0]
+                console.log(rs);
 
                 res.render('editor', {
                     title: 'Editor Test',
-                    message: 'saved content: '+  result.title,
-                    policynumber: result._id,
-                    policytitle: result.title,
-                    editorcontent: result.content[result.content.length - 1]
+                    message: 'saved content: '+ rs.title,
+                    policynumber: rs._id,
+                    policytitle: rs.title,
+                    editorcontent: rs.content[rs.content.length - 1]
                 });
                 client.close();
 
