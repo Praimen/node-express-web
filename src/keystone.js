@@ -201,7 +201,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
            // let cursor = db.collection('policies').find({});
 
             cursor.then(function(result) {
-                var rs = result;
+                var rs = result.value;
                 console.log(rs);
 
                 res.render('editor', {
