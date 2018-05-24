@@ -188,11 +188,12 @@ app.post('/editor-test',checkJWT,(req,res)=>{
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('editor');
-            let query = {"_id":req.body.policynumber};
+            let query = {_id:req.body.policynumber};
 
 
-            let cursor = db.collection('policies').findOneAndUpdate(query,{$push:{content:req.body.editorcontent},"_id":req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
+           // let cursor = db.collection('policies').findOneAndUpdate(query,{$push:{content:req.body.editorcontent},_id:req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
 
+            let cursor = db.collection('policies').findOne(query);
 
             cursor.then(function(result) {
 
@@ -200,7 +201,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
                 res.render('editor', {
                     title: 'Editor Test',
-                    message: 'saved content: ',
+                    message: 'saved content: '+  result.title,
                     policynumber: result._id,
                     policytitle: result.title,
                     editorcontent: result.content[result.content.length - 1]
