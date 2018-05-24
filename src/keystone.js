@@ -193,7 +193,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
            // let cursor = db.collection('policies').findOneAndUpdate(query,{$push:{content:req.body.editorcontent},_id:req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
 
-            let cursor = db.collection('policies').findOne(query);
+            let cursor = db.collection('policies').find(query);
 
             cursor.then(function(result) {
 
@@ -206,7 +206,6 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     policytitle: result.title,
                     editorcontent: result.content[result.content.length - 1]
                 });
-
                 client.close();
 
             }).catch((err)=> {
