@@ -151,7 +151,7 @@ app.post('/login',(req,res)=>{
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
-                res.redirect('/character-select');
+                res.redirect('/editor-test');
 
                 client.close();
 
@@ -171,7 +171,57 @@ app.post('/login',(req,res)=>{
         /* res.status(401).json({message:"passwords did not match"});*/
     }
 
-})
+});
+
+app.get('/editor-test',checkJWT,(req, res) =>{
+
+
+    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:''})
+
+});
+
+
+app.post('/editor-test',checkJWT,(req,res)=>{
+
+
+
+        mongo.connect(process.env.DB_CONN,function(err,client) {
+
+            const db = client.db('editor');
+            let query = {"_id":req.body.policynumber};
+
+
+            let cursor = db.collection('policies').findOneAndUpdate(query,{content:{$push:req.body.editorcontent},_id:req.body.policynumber,title:req.body.policytitle},{returnOriginal:false,upsert:true});
+
+
+            cursor.toArray().then(function(result) {
+
+                console.log(result[0]);
+
+                res.render('editor', {
+                    title: 'Editor Test',
+                    message: 'saved content: ',
+                    policynumber: result[0].policynumber,
+                    policytitle: result[0].policytitle,
+                    editorcontent: result[0].content[result[0].content.length - 1]
+                });
+
+                client.close();
+
+            }).catch((err)=> {
+
+                client.close();
+
+                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:''});
+            });
+
+        });
+
+
+
+
+});
+
 
 
 

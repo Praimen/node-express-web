@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='/styles/main.css')
+        link(rel='stylesheet',href='/styles/editor.css')
+    body.editor
+        h2= title
+        h3= message
+        form(method='POST')
+            div
+                label(for='policytitle') Policy Number:
+                input(type='text' name='policytitle')=policytitle
+            div
+                label(for='policynumber') Policy Number:
+                input(type='text' name='policynumber')=policynumber
+            div
+                textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
+            div
+                button(type='submit') Submit
+
+
+        script(src='../scripts/ckeditor.js')
+        script(src='/scripts/editor.js')
