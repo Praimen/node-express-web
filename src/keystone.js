@@ -196,7 +196,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                 $push:{"content": req.body.editorcontent }
             }
 
-           let cursor = db.collection('policies').findOneAndUpdate(query,params ,{returnOriginal:false});
+           let cursor = db.collection('policies').updateOne(query,params);
 
            // let cursor = db.collection('policies').find({});
 
