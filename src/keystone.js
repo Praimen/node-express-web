@@ -192,7 +192,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let query = {_id: policynumber};
             console.log(query);
             var params = {
-                "title": req.body.policytitle,
+                $set:{"title": req.body.policytitle},
                 $push:{"content": req.body.editorcontent }
             }
 
