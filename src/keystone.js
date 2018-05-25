@@ -282,9 +282,9 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                 };
 
                 if(contentVersionNum){
-                    contentVersion = rs.content[contentVersionNum].bodytext;
+                    contentVersion = rs.content[contentVersionNum];
                 }else{
-                    contentVersion = rs.content[rs.content.length - 1].bodytext;
+                    contentVersion = rs.content[rs.content.length - 1];
                 }
 
                 pageRenderObj.editorcontent = contentVersion.bodytext;
