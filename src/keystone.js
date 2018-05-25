@@ -16,7 +16,7 @@ var jwt = require('jsonwebtoken');
 var urlEncodedForm;
 
 
-var router = require('./router');
+
 
 var options = {
   dotfiles: 'ignore',
@@ -173,7 +173,68 @@ app.post('/login',(req,res)=>{
 
 });
 
+
+app.param('policynumber', function (req, res, next, value) {
+
+
+    next();
+});
+
+app.get('/editor-test/:policynumber', function (req, res, next) {
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('editor');
+        let policynumber = req.policynumber;
+
+        let query = {_id: policynumber};
+        var project;
+
+        project = {
+            _id:1,
+            title:1,
+            content:1,
+            contentversion:1
+        }
+
+
+        let cursor = db.collection('policies').findOne(query,{projection:project});
+
+        // let cursor = db.collection('policies').find({});
+
+        cursor.then(function(result) {
+            let rs = result;
+            console.log(rs);
+
+            let pageRenderObj = {
+                title: 'Editor Test',
+                message: 'saved content: '+ rs.title,
+                policynumber: rs._id,
+                policytitle: rs.title,
+                contentversionarr: rs.content
+            }
+
+            pageRenderObj.editorcontent = rs.content[rs.contentversion];
+            pageRenderObj.currentversion = rs.contentversion;
+
+
+            res.render('editor',pageRenderObj );
+            client.close();
+
+        }).catch((err)=> {
+
+            client.close();
+
+            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:''});
+        });
+
+    });
+
+});
+
 app.get('/editor-test',checkJWT,(req, res) =>{
+
+
 
 
     res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:''})
@@ -189,28 +250,54 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
             const db = client.db('editor');
             let policynumber = req.body.policynumber;
+            let contentVersionNum = (req.body.currentversion != "") ? parseInt(req.body.currentversion,10): 0;
             let query = {_id: policynumber};
-            console.log(query);
-            var params = {
-                $set:{"title": req.body.policytitle},
-                $push:{"content": req.body.editorcontent }
+            var params, project;
+            if(contentVersionNum){
+                params = {
+                    $set:{"currentversion": contentVersionNum}
+                }
+            }else{
+                params = {
+                    $set:{"title": req.body.policytitle},
+                    $push:{"content": req.body.editorcontent }
+                }
+            }
+            project = {
+                _id:1,
+                title:1,
+                content:1,
+                contentversion:1
             }
 
-           let cursor = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,upsert:true});
+
+           let cursor = db.collection('policies').findOneAndUpdate(query,params,{projection:project,upsert:true});
 
            // let cursor = db.collection('policies').find({});
 
             cursor.then(function(result) {
-                var rs = result.value;
+                let rs = result.value;
                 console.log(rs);
 
-                res.render('editor', {
+                let pageRenderObj = {
                     title: 'Editor Test',
                     message: 'saved content: '+ rs.title,
                     policynumber: rs._id,
                     policytitle: rs.title,
-                    editorcontent: rs.content[rs.content.length - 1]
-                });
+                    contentversionarr: rs.content
+                }
+
+                if(contentVersionNum){
+                    pageRenderObj.editorcontent = rs.content[contentVersionNum];
+
+                }else{
+                    pageRenderObj.editorcontent = rs.content[rs.content.length - 1]
+                }
+
+                pageRenderObj.currentversion = rs.contentversion;
+
+
+                res.render('editor',pageRenderObj );
                 client.close();
 
             }).catch((err)=> {
