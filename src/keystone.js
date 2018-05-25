@@ -54,8 +54,6 @@ function checkJWT(req,res,next) {
 }
 
 
-
-
 app.use(express.static(path.join(__dirname,'public'),options));
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: false,limit: '5mb' }));
@@ -82,7 +80,6 @@ app.get('/registration',(req, res) =>{
 app.post('/registration', function (req, res) {
 
     if(req.body.username != "" && req.body.password != ""){
-
 
         
         mongo.connect(process.env.DB_CONN,function(err,client) {
@@ -176,9 +173,8 @@ app.post('/login',(req,res)=>{
 
 
 app.param('policynumber', function (req, res, next, value) {
-
-    req.policynumber = value;
-
+    req.body.policynumber = value;
+    console.log(req.body.policynumber)
     next();
 });
 
@@ -187,17 +183,17 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
-        let policynumber = req.policynumber;
+        let policynumber = req.body.policynumber;
         console.log('policy number', policynumber)
         let query = {_id: policynumber};
-        var project;
+        let project;
 
         project = {
             _id:1,
             title:1,
             content:1,
             contentversion:1
-        }
+        };
 
 
         let cursor = db.collection('policies').findOne(query,{projection:project});
@@ -205,7 +201,7 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
         // let cursor = db.collection('policies').find({});
 
         cursor.then(function(result) {
-            let rs = result;
+            let rs = result.value;
             console.log(rs);
 
             let pageRenderObj = {
@@ -214,10 +210,11 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content
-            }
+            };
 
-            pageRenderObj.editorcontent = rs.content[rs.contentversion];
+            pageRenderObj.editorcontent = rs.content[rs.contentversion].bodytext;
             pageRenderObj.currentversion = rs.contentversion;
+            pageRenderObj.note = rs.content[rs.contentversion].note;
 
 
             res.render('editor',pageRenderObj );
@@ -227,7 +224,7 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
 
             client.close();
 
-            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',contentversionarr:[]})
+            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',note:'',contentversionarr:[]})
         });
 
     });
@@ -235,17 +232,11 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
 });
 
 app.get('/editor-test',checkJWT,(req, res) =>{
-
-
-
-
-    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:'',contentversionarr:[]})
-
+    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
 });
 
 
 app.post('/editor-test',checkJWT,(req,res)=>{
-
 
 
         mongo.connect(process.env.DB_CONN,function(err,client) {
@@ -254,7 +245,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let policynumber = req.body.policynumber;
             let contentVersionNum = (req.body.currentversion != "") ? parseInt(req.body.currentversion,10): 0;
             let query = {_id: policynumber};
-            var params, project;
+            let params, project;
             if(contentVersionNum){
                 params = {
                     $set:{"currentversion": contentVersionNum}
@@ -262,7 +253,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             }else{
                 params = {
                     $set:{"title": req.body.policytitle},
-                    $push:{"content": req.body.editorcontent }
+                    $push:{"content": {versiondate: new Date(),note:req.body.note,bodytext:req.body.editorcontent} }
                 }
             }
             project = {
@@ -270,7 +261,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                 title:1,
                 content:1,
                 contentversion:1
-            }
+            };
 
 
            let cursor = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project,upsert:true});
@@ -279,6 +270,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
             cursor.then(function(result) {
                 let rs = result.value;
+                let contentVersion;
                 console.log(result);
 
                 let pageRenderObj = {
@@ -287,32 +279,28 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     policynumber: rs._id,
                     policytitle: rs.title,
                     contentversionarr: rs.content
-                }
+                };
 
                 if(contentVersionNum){
-                    pageRenderObj.editorcontent = rs.content[contentVersionNum];
-
+                    contentVersion = rs.content[contentVersionNum].bodytext;
                 }else{
-                    pageRenderObj.editorcontent = rs.content[rs.content.length - 1]
+                    contentVersion = rs.content[rs.content.length - 1].bodytext;
                 }
 
+                pageRenderObj.editorcontent = contentVersion.bodytext;
+                pageRenderObj.note = contentVersion.note;
                 pageRenderObj.currentversion = rs.contentversion;
 
-
-                res.render('editor',pageRenderObj );
+                res.render('editor',pageRenderObj);
                 client.close();
 
             }).catch((err)=> {
 
                 client.close();
-
-                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',contentversionarr:[]})
+                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',note:'',contentversionarr:[]})
             });
 
         });
-
-
-
 
 });
 

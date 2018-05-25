@@ -17,14 +17,18 @@ html
                     input(type='text' name='policynumber' value=policynumber)
                 div
                     textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
+                div
+                    label(for='versionnote') Policy Number:
+                    input(type='text' name='note' value=note)
                 div(class='button-row')
                     input(type='hidden' name='currentversion' value=currentversion)
                     button(type='submit' class='sub-button') Submit
 
         div(class='version-list')
             ol
-                each val in contentversionarr
-                    li= val
+                each content in contentversionarr
+                    li= content.versiondate
+                        div= content.note
                 else
                     li No other versions
 
