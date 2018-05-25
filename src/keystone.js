@@ -176,6 +176,7 @@ app.post('/login',(req,res)=>{
 
 app.param('policynumber', function (req, res, next, value) {
 
+    req.policynumber = value;
 
     next();
 });
@@ -186,7 +187,7 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
 
         const db = client.db('editor');
         let policynumber = req.policynumber;
-
+        console.log('policy number', policynumber)
         let query = {_id: policynumber};
         var project;
 
@@ -225,7 +226,7 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
 
             client.close();
 
-            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:''});
+            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',contentversionarr:[]})
         });
 
     });
@@ -237,7 +238,7 @@ app.get('/editor-test',checkJWT,(req, res) =>{
 
 
 
-    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:''})
+    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:'',contentversionarr:[]})
 
 });
 
@@ -271,13 +272,13 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             }
 
 
-           let cursor = db.collection('policies').findOneAndUpdate(query,params,{projection:project,upsert:true});
+           let cursor = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project,upsert:true});
 
            // let cursor = db.collection('policies').find({});
 
             cursor.then(function(result) {
                 let rs = result.value;
-                console.log(rs);
+                console.log(result);
 
                 let pageRenderObj = {
                     title: 'Editor Test',
@@ -304,7 +305,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
                 client.close();
 
-                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:''});
+                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',contentversionarr:[]})
             });
 
         });

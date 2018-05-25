@@ -7,7 +7,7 @@ html
     body.editor
         h2= title
         h3= message
-        form(method='POST')
+        form(method='POST' action='/editor-test')
             div(class='editor-container')
                 div
                     label(for='policytitle') Policy Title:
@@ -18,12 +18,12 @@ html
                 div
                     textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
                 div(class='button-row')
-                    input(type='hidden' name='currentversion')
+                    input(type='hidden' name='currentversion' value=currentversion)
                     button(type='submit' class='sub-button') Submit
 
         div(class='version-list')
             ol
-                each val in #{contentversionarr}
+                each val in contentversionarr
                     li= val
                 else
                     li No other versions
