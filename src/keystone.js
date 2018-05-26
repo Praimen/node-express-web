@@ -298,7 +298,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
 });
 
 
-app.post(['/editor-test'],checkJWT,(req,res)=>{
+app.post('/editor-test',checkJWT,(req,res)=>{
 
     let policyNumber = req.body.policynumber;
     let contentVersionNum = (isNaN(parseInt(req.body.currentversion,10))) ? 0 : parseInt(req.body.currentversion,10);
