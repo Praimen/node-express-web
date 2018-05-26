@@ -172,18 +172,15 @@ app.post('/login',(req,res)=>{
 });
 
 
-app.param('policynumber', function (req, res, next, value) {
-    req.body.policynumber = value;
-    console.log(req.body.policynumber)
-    next();
-});
 
-app.get('/editor-test/:policynumber', function (req, res, next) {
+
+app.get('/view-policy/:policynumber', function (req, res, next) {
+
 
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
-        let policynumber = req.body.policynumber;
+        let policynumber = req.params.policynumber;
         console.log('policy number', policynumber)
         let query = {_id: policynumber};
         let project;
@@ -205,7 +202,7 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
             console.log(rs);
 
             let pageRenderObj = {
-                title: 'Editor Test',
+                title: 'View Policy',
                 message: 'saved content: '+ rs.title,
                 policynumber: rs._id,
                 policytitle: rs.title,
@@ -217,26 +214,32 @@ app.get('/editor-test/:policynumber', function (req, res, next) {
             pageRenderObj.note = rs.content[rs.contentversion].note;
 
 
-            res.render('editor',pageRenderObj );
+            res.render('view-policy',pageRenderObj );
             client.close();
 
         }).catch((err)=> {
 
             client.close();
 
-            res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',note:'',contentversionarr:[]})
+            res.redirect('/policy-list')
         });
 
     });
 
 });
 
+
+app.get('/policy-list',checkJWT,(req, res) =>{
+    res.redirect('/editor-test')
+});
+
+
 app.get('/editor-test',checkJWT,(req, res) =>{
     res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
 });
 
 
-app.post('/editor-test',checkJWT,(req,res)=>{
+app.post(['/editor-test'],checkJWT,(req,res)=>{
 
 
         mongo.connect(process.env.DB_CONN,function(err,client) {

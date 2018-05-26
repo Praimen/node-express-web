@@ -7,7 +7,7 @@ html
     body.editor
         h2= title
         h3= message
-        form(method='POST' action='/editor-test')
+        form(id='policy-form' method='POST' action='/editor-test')
             div(class='editor-container')
                 div
                     label(for='policytitle') Policy Title:
@@ -18,17 +18,27 @@ html
                 div
                     textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
                 div
-                    label(for='versionnote') Policy Number:
+                div
+                div
+                    label(for='note') Version Notes:
                     input(type='text' name='note' value=note)
-                div(class='button-row')
+                div.button-row
                     input(type='hidden' name='currentversion' value=currentversion)
-                    button(type='submit' class='sub-button') Submit
+                    div.cancel-button
+                        button(type='button' class='cancel-btn') Cancel
+                    div.save-button
+                        button(type='button' class='save-btn') Save & Continue Editing
+                    div.new-button
+                        button(type='button' class='new-btn') Save & New Policy
+                    div.view-button
+                        button(type='button' class='view-btn') Save and View
+
 
         div(class='version-list')
             ol
                 each content in contentversionarr
                     li= content.versiondate
-                        div= content.note
+                        span(class='version-note')=content.note
                 else
                     li No other versions
 
