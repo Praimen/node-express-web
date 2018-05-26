@@ -243,7 +243,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
 
     let policyNumber = req.params.policynumber ;
     let contentVersionNum = parseInt(req.params.currentversion,10);
-
+    console.log('here are the policynumbner %s and the version %s', policyNumber, contentVersionNum);
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
