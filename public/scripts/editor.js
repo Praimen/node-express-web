@@ -9,12 +9,17 @@ $(function(){
 
     $('button.cancel-btn').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val()
-        window.location('/editor-test/'+policyNumber)
+        let currentVersionNum = $('input[name=currentversion]').val() || '0';
+        if(policyNumber && currentVersionNum){
+            window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
+        }else{
+            window.location = '/editor-test/';
+        }
 
     })
 
     $('button.save-btn').on('click',function(){
-        $('form').attr('action','/editor-test/')
+        $('#policy-form').attr('action','/editor-test/').submit()
     })
 
     $('button.new-btn').on('click',function(){

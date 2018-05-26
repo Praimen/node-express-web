@@ -239,71 +239,108 @@ app.get('/editor-test',checkJWT,(req, res) =>{
 });
 
 
+app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
+
+    let policyNumber = req.params.policynumber ;
+    let contentVersionNum = parseInt(req.params.currentversion,10);
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('editor');
+        let query = {_id: policyNumber},
+        project = {
+            _id:1,
+            title:1,
+            content:1,
+            contentversion:1
+        };
+
+        let cursor = db.collection('policies').find({query,project});
+
+        cursor.then(function (result) {
+            let rs = result.value;
+            let contentVersion;
+            console.log(result);
+
+            let pageRenderObj = {
+                title: 'Editor Test',
+                message: 'saved content: ' + rs.title,
+                policynumber: rs._id,
+                policytitle: rs.title,
+                contentversionarr: rs.content
+            };
+
+            if (contentVersionNum) {
+                contentVersion = rs.content[contentVersionNum];
+            } else {
+                contentVersion = rs.content[rs.content.length - 1];
+            }
+
+            pageRenderObj.editorcontent = contentVersion.bodytext;
+            pageRenderObj.note = contentVersion.note;
+            pageRenderObj.currentversion = rs.contentversion;
+
+            res.render('editor', pageRenderObj);
+        }).catch((err) => {
+
+            client.close();
+            res.render('editor', {
+                title: 'Editor Test',
+                message: 'editor contents not saved: ' + err,
+                policynumber: '',
+                policytitle: '',
+                note: '',
+                contentversionarr: []
+            })
+        });
+
+    })
+});
+
+
 app.post(['/editor-test'],checkJWT,(req,res)=>{
 
+    let policyNumber = req.body.policynumber;
+    let contentVersionNum = (isNaN(parseInt(req.body.currentversion,10))) ? 0 : parseInt(req.body.currentversion,10);
 
+    if(policyNumber){
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('editor');
-            let policynumber = req.body.policynumber;
-            let contentVersionNum = (req.body.currentversion != "") ? parseInt(req.body.currentversion,10): 0;
-            let query = {_id: policynumber};
-            let params, project;
-            if(contentVersionNum){
-                params = {
-                    $set:{"currentversion": contentVersionNum}
-                }
-            }else{
-                params = {
-                    $set:{"title": req.body.policytitle},
+
+            let query = {_id: policyNumber};
+            let params = {
+                    $set:{"title": req.body.policytitle,"currentversion": contentVersionNum},
                     $push:{"content": {versiondate: new Date(),note:req.body.note,bodytext:req.body.editorcontent} }
-                }
-            }
-            project = {
-                _id:1,
-                title:1,
-                content:1,
-                contentversion:1
-            };
-
-
-           let cursor = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project,upsert:true});
-
-           // let cursor = db.collection('policies').find({});
-
-            cursor.then(function(result) {
-                let rs = result.value;
-                let contentVersion;
-                console.log(result);
-
-                let pageRenderObj = {
-                    title: 'Editor Test',
-                    message: 'saved content: '+ rs.title,
-                    policynumber: rs._id,
-                    policytitle: rs.title,
-                    contentversionarr: rs.content
                 };
 
-                if(contentVersionNum){
-                    contentVersion = rs.content[contentVersionNum];
-                }else{
-                    contentVersion = rs.content[rs.content.length - 1];
-                }
 
-                pageRenderObj.editorcontent = contentVersion.bodytext;
-                pageRenderObj.note = contentVersion.note;
-                pageRenderObj.currentversion = rs.contentversion;
 
-                res.render('editor',pageRenderObj);
+
+            let cursor = db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
+            cursor.then(function (result) {
+                console.log(result);
+                res.redirect('/editor-test/'+policyNumber+'/'+contentVersionNum);
                 client.close();
 
             }).catch((err)=> {
-
                 client.close();
-                res.render('editor', {title: 'Editor Test', message: 'editor contents not saved: '+ err,policynumber:'',policytitle:'',note:'',contentversionarr:[]})
-            });
-
+                res.render('editor', {
+                    title: 'Editor Test',
+                    message: 'editor contents not saved: ' + err,
+                    policynumber: '',
+                    policytitle: '',
+                    note: '',
+                    contentversionarr: []
+                })
+            })
         });
+
+
+    }else{
+        res.redirect('/editor-test')
+    }
+
 
 });
 
