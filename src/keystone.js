@@ -255,7 +255,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
             contentversion:1
         };
 
-        let cursor = db.collection('policies').findOne({query,project});
+        let cursor = db.collection('policies').findOne(query,{projection:project});
 
         cursor.then(function (result) {
             let rs = result;
