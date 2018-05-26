@@ -198,7 +198,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
         // let cursor = db.collection('policies').find({});
 
         cursor.then(function(result) {
-            let rs = result.value;
+            let rs = result;
             console.log(rs);
 
             let pageRenderObj = {
@@ -258,7 +258,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
         let cursor = db.collection('policies').findOne({query,project});
 
         cursor.then(function (result) {
-            let rs = result.value;
+            let rs = result;
             let contentVersion;
             console.log(result);
 
