@@ -268,6 +268,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content
+                currentversion : rs.contentversion
             };
 
 
@@ -281,7 +282,6 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
             console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
             pageRenderObj.editorcontent = contentVersion.bodytext;
             pageRenderObj.note = contentVersion.note;
-            pageRenderObj.currentversion = rs.contentversion;
 
             res.render('editor', pageRenderObj);
         }).catch((err) => {
