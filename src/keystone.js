@@ -267,7 +267,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
                 message: 'saved content: ' + rs.title,
                 policynumber: rs._id,
                 policytitle: rs.title,
-                contentversionarr: rs.content
+                contentversionarr: rs.content,
                 currentversion : rs.contentversion
             };
 
