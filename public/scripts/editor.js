@@ -19,7 +19,7 @@ $(function(){
     });
 
     $('button.save-btn').on('click',function(){
-        $('input[name=currentversion]').val($('.version-list li').length())
+        $('input[name=currentversion]').val($('.version-list li').length)
         $('#policy-form').attr('action','/editor-test/').submit()
     });
 
