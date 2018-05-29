@@ -16,15 +16,15 @@ $(function(){
             window.location = '/editor-test/';
         }
 
-    })
+    });
 
     $('button.save-btn').on('click',function(){
         $('#policy-form').attr('action','/editor-test/').submit()
-    })
+    });
 
     $('button.new-btn').on('click',function(){
         $('#policy-form').attr('action','/editor-test')
-    })
+    });
 
     $('button.view-btn').on('click',function(){
 
