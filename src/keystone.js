@@ -270,12 +270,15 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
                 contentversionarr: rs.content
             };
 
-            if (contentVersionNum) {
+
+            if(rs.content[contentVersionNum]){
                 contentVersion = rs.content[contentVersionNum];
             } else {
                 contentVersion = rs.content[rs.content.length - 1];
             }
-            console.log('Content version d% shoudl be s%',contentVersionNum,rs.content[contentVersionNum]);
+
+
+            console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
             pageRenderObj.editorcontent = contentVersion.bodytext;
             pageRenderObj.note = contentVersion.note;
             pageRenderObj.currentversion = rs.contentversion;
