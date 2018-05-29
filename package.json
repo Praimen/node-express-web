@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src -d ./",
-    "serve": "pm2 start index.js -i max",
+    "serve": "pm2 start index.js -i 1",
+    "stop-index": "pm2 stop index",
+    "stop-keystone": "pm2 stop keystone",
     "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-character-build && npm run build && npm run serve",
-    "key-serve": "pm2 start keystone.js -i max",
-    "update-key-server": "pm2 stop keystone && pm2 kill && git reset --hard && git pull origin editor-test && npm run build && npm run key-serve"
+    "key-serve": "pm2 start keystone.js -i 0",
+    "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin editor-test && npm run build && npm run key-serve && npm run serve"
   },
   "author": "",
   "license": "ISC",
