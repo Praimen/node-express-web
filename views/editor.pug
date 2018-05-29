@@ -27,17 +27,18 @@ html
                     div.cancel-button
                         button(type='button' class='cancel-btn') Cancel
                     div.save-button
-                        button(type='button' class='save-btn') Save & Continue Editing
+                        button(type='button' class='save-btn') Save
                     div.new-button
-                        button(type='button' class='new-btn') Save & New Policy
+                        button(type='button' class='new-btn')  New Policy
                     div.view-button
-                        button(type='button' class='view-btn') Save and View
+                        button(type='button' class='view-btn') View
 
 
         div(class='version-list')
             ol
                 each content in contentversionarr
-                    li= content.versiondate
+                    li
+                        span(class='version-date')=content.versiondate
                         span(class='version-note')=content.note
                 else
                     li No other versions

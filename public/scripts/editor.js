@@ -9,7 +9,7 @@ $(function(){
 
     $('button.cancel-btn').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val()
-        let currentVersionNum = $('input[name=currentversion]').val() || '0';
+        let currentVersionNum = $('input[name=currentversion]').val();
         if(policyNumber && currentVersionNum){
             window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
         }else{
@@ -19,6 +19,7 @@ $(function(){
     });
 
     $('button.save-btn').on('click',function(){
+        $('input[name=currentversion]').val($('.version-list li').length())
         $('#policy-form').attr('action','/editor-test/').submit()
     });
 
