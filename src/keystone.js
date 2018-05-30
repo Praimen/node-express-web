@@ -250,6 +250,8 @@ app.get('/policy-list',(req, res) =>{
             console.log(rs);
 
             let pageRenderObj = {
+                title: "Policy List",
+                message: 'here is the list of policies',
                 policylistarr: rs
             };
 
