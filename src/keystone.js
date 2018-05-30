@@ -257,7 +257,7 @@ app.get('/policy-list',(req, res) =>{
 
 
 
-            res.render('view-policy', pageRenderObj );
+            res.render('policy-list', pageRenderObj );
             client.close();
 
         }).catch((err)=> {

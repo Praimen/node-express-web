@@ -11,12 +11,12 @@ html
 
         div(class='version-list')
             ul
-              each policy in policylistarr
-                  li
+                each policy in policylistarr
+                    li
                       span(class='version-date')=policy._id
                       span(class='version-note')=policy.title
-              else
-                  li No other versions
+                else
+                    li No other versions
 
 
 
