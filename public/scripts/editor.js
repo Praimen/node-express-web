@@ -24,12 +24,11 @@ $(function(){
     });
 
     $('button.new-btn').on('click',function(){
-        $('#policy-form').attr('action','/editor-test')
+        window.location = '/editor-test/';
     });
 
     $('button.view-btn').on('click',function(){
-
-        $('form').attr('action','/editor-test/')
+        window.location = '/policy-list';
     })
 
 })

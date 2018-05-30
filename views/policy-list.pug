@@ -1,0 +1,24 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet',href='//keystone.forgegraphics.com/styles/main.css')
+        link(rel='stylesheet',href='/styles/policy-list.css')
+    body.editor
+        h2= title
+        h3= message
+
+
+        div(class='version-list')
+            ul
+              each policy in policylistarr
+                  li
+                      span(class='version-date')=policy._id
+                      span(class='version-note')=content.title
+              else
+                  li No other versions
+
+
+
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(type='text/javascript' src='/scripts/policy-list.js')

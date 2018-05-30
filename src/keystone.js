@@ -174,7 +174,7 @@ app.post('/login',(req,res)=>{
 
 
 
-app.get('/view-policy/:policynumber', function (req, res, next) {
+app.get('/policy-list/:policynumber', function (req, res, next) {
 
 
     mongo.connect(process.env.DB_CONN,function(err,client) {
@@ -187,9 +187,9 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 
         project = {
             _id:1,
-            title:1,
-            content:1,
-            contentversion:1
+            title: 1,
+            content: 1,
+            contentversion: 1
         };
 
 
@@ -202,19 +202,16 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
             console.log(rs);
 
             let pageRenderObj = {
-                title: 'View Policy',
-                message: 'saved content: '+ rs.title,
+                title: 'Policy #' +rs._id,
+                message: 'last modified: '+ rs.content[rs.contentversion].date,
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content
             };
 
             pageRenderObj.editorcontent = rs.content[rs.contentversion].bodytext;
-            pageRenderObj.currentversion = rs.contentversion;
-            pageRenderObj.note = rs.content[rs.contentversion].note;
 
-
-            res.render('view-policy',pageRenderObj );
+            res.render('view-policy', pageRenderObj );
             client.close();
 
         }).catch((err)=> {
@@ -229,13 +226,52 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 });
 
 
-app.get('/policy-list',checkJWT,(req, res) =>{
-    res.redirect('/editor-test')
+app.get('/policy-list',(req, res) =>{
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('editor');
+
+        let query = {};
+        let project;
+
+        project = {
+            _id:1,
+            title: 1
+        };
+
+
+        let cursor = db.collection('policies').find(query,{projection:project});
+
+        // let cursor = db.collection('policies').find({});
+
+        cursor.toArray().then(function(result) {
+            let rs = result;
+            console.log(rs);
+
+            let pageRenderObj = {
+                policylistarr: rs
+            };
+
+
+
+            res.render('view-policy', pageRenderObj );
+            client.close();
+
+        }).catch((err)=> {
+
+            client.close();
+
+
+        });
+
+    });
+
 });
 
 
 app.get('/editor-test',checkJWT,(req, res) =>{
-    res.render('editor', {title: 'Editor Test', message: 'update your content',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
+    res.render('editor', {title: 'Editor Test', message: 'Enter a new Policy',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
 });
 
 
@@ -289,7 +325,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
             client.close();
             res.render('editor', {
                 title: 'Editor Test',
-                message: 'editor contents not saved: ' + err,
+                message: 'Policy was not submitted' + err,
                 policynumber: '',
                 policytitle: '',
                 note: '',
