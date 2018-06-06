@@ -174,14 +174,14 @@ app.post('/login',(req,res)=>{
 
 
 
-app.get('/policy-list/:policynumber', function (req, res, next) {
+app.get('/view-policy/:policynumber', function (req, res, next) {
 
 
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
         let policynumber = req.params.policynumber;
-        console.log('policy number', policynumber)
+        console.log('policy number', policynumber);
         let query = {_id: policynumber};
         let project;
 
@@ -209,7 +209,7 @@ app.get('/policy-list/:policynumber', function (req, res, next) {
                 contentversionarr: rs.content
             };
 
-            pageRenderObj.editorcontent = rs.content[rs.contentversion].bodytext;
+            pageRenderObj.policycontent = rs.content[rs.contentversion].bodytext;
 
             res.render('view-policy', pageRenderObj );
             client.close();
@@ -252,10 +252,11 @@ app.get('/policy-list',(req, res) =>{
             let pageRenderObj = {
                 title: "Policy List",
                 message: 'here is the list of policies',
-                policylistarr: rs
+                policylistarr: rs,
+                policytitle:'',
+                policynumber:'',
+                policycontent:''
             };
-
-
 
             res.render('policy-list', pageRenderObj );
             client.close();

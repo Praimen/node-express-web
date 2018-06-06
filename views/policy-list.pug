@@ -9,16 +9,19 @@ html
         h3= message
 
 
-        div(class='version-list')
+        div.policy-list
             ul
                 each policy in policylistarr
                     li
-                      span(class='version-date')=policy._id
-                      span(class='version-note')=policy.title
-                else
-                    li No other versions
+                        a(href="view-policy/"+policy._id class="policy-link")
+                            span(class='policy-list-number')=policy._id
+                            span(class='policy-list-title')=policy.title
 
 
+        div.policy-view
+            div.policy-title= policytitle
+            div.policy-number= policynumber
+            div.policy-content= policycontent
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/policy-list.js')
