@@ -261,7 +261,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
             client.close();
 
         }).catch((err)=> {
-
+            console.log('policy view error ', err);
             client.close();
 
             res.redirect('/policy-list')
