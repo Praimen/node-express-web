@@ -255,7 +255,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                 contentversionarr: rs.content
             };
 
-            pageRenderObj.policycontent = rs.content[rs.contentversion].bodytext;
+            pageRenderObj.policycontent = rs.content[rs.currentversion].bodytext;
 
             res.render('view-policy', pageRenderObj );
             client.close();
