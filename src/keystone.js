@@ -172,6 +172,52 @@ app.post('/login',(req,res)=>{
 });
 
 
+app.get('/policy-list',(req, res) =>{
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('editor');
+
+        let query = {};
+        let project;
+
+        project = {
+            _id:1,
+            title: 1
+        };
+
+
+        let cursor = db.collection('policies').find(query,{projection:project});
+
+        // let cursor = db.collection('policies').find({});
+
+        cursor.toArray().then(function(result) {
+            let rs = result;
+            console.log(rs);
+
+            let pageRenderObj = {
+                title: "Policy List",
+                message: 'here is the list of policies',
+                policylistarr: rs,
+                policytitle:'',
+                policynumber:'',
+                policycontent:''
+            };
+
+            res.render('policy-list', pageRenderObj );
+            client.close();
+
+        }).catch((err)=> {
+
+            client.close();
+
+
+        });
+
+    });
+
+});
+
 
 
 app.get('/view-policy/:policynumber', function (req, res, next) {
@@ -226,51 +272,6 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 });
 
 
-app.get('/policy-list',(req, res) =>{
-
-    mongo.connect(process.env.DB_CONN,function(err,client) {
-
-        const db = client.db('editor');
-
-        let query = {};
-        let project;
-
-        project = {
-            _id:1,
-            title: 1
-        };
-
-
-        let cursor = db.collection('policies').find(query,{projection:project});
-
-        // let cursor = db.collection('policies').find({});
-
-        cursor.toArray().then(function(result) {
-            let rs = result;
-            console.log(rs);
-
-            let pageRenderObj = {
-                title: "Policy List",
-                message: 'here is the list of policies',
-                policylistarr: rs,
-                policytitle:'',
-                policynumber:'',
-                policycontent:''
-            };
-
-            res.render('policy-list', pageRenderObj );
-            client.close();
-
-        }).catch((err)=> {
-
-            client.close();
-
-
-        });
-
-    });
-
-});
 
 
 app.get('/editor-test',checkJWT,(req, res) =>{
