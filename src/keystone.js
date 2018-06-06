@@ -235,7 +235,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
             _id:1,
             title: 1,
             content: 1,
-            contentversion: 1
+            currentversion: 1
         };
 
 
@@ -249,7 +249,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 
             let pageRenderObj = {
                 title: 'Policy #' +rs._id,
-                message: 'last modified: '+ rs.content[rs.contentversion].date,
+                message: 'last modified: '+ rs.content[rs.currentversion].versiondate,
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content
@@ -292,7 +292,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
             _id:1,
             title:1,
             content:1,
-            contentversion:1
+            currentversion:1
         };
 
         let cursor = db.collection('policies').findOne(query,{projection:project});
@@ -308,7 +308,7 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content,
-                currentversion : rs.contentversion
+                currentversion : rs.currentversion
             };
 
 
