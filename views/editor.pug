@@ -39,7 +39,7 @@ html
         div(class='version-list')
             ol
                 each content in contentversionarr
-                    li
+                    li.content-version
                         span(class='version-date')=content.versiondate
                         span(class='version-note')=content.note
                 else
