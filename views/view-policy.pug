@@ -8,9 +8,8 @@ html
         h2= title
         h3= message
 
-        div.policy-title= policytitle
-        div.policy-number= policynumber
-        div.policy-content!= policycontent
+
+        div.policy-content.cke_editable!= policycontent
 
         div.view-button
             button(type='button' class='view-btn') Policy List
