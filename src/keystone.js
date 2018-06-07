@@ -276,8 +276,9 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
 
     let policyNumber = req.params.policynumber ;
+    let contentVersionNum;
     if(req.params.currentversion){
-        let contentVersionNum = parseInt(req.params.currentversion,10);
+        contentVersionNum = parseInt(req.params.currentversion,10);
         console.log('here are the policynumbner %s and the version %s', policyNumber, contentVersionNum);
     }
 
