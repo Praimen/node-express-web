@@ -7,4 +7,11 @@ $(function(){
         window.location = '/policy-list';
     })
 
+    $('button.edit-btn').on('click',function(){
+        var URLArr = window.location.pathname.split('/');
+        var policyNumber = URLArr[2];
+        window.location = '/editor-test/'+policyNumber;
+
+    })
+
 });
