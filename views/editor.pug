@@ -7,6 +7,14 @@ html
     body.editor
         h2= title
         h3= message
+        div.policy-list
+            input(type='text' name='policysearch')
+            ul
+                li  retractable Policy List goes here
+
+
+
+        div.editor-form
         form(id='policy-form' method='POST' action='/editor-test')
             div(class='editor-container')
                 div
