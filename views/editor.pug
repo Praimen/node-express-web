@@ -19,26 +19,32 @@ html
 
         div.container.is-widescreen.editor-form
         form(id='policy-form' method='POST' action='/editor-test')
-            div.editor-container.columns
-                div.field
-                    label.label(for='policytitle') Policy Title:
-                    div.control.has-icons-right
-                        input(type='text' class="input" name='policytitle' value=policytitle)
-                        span.icon.is-small.is-right
-                            i.fas.fa-check
-                div.field
-                    label(for='policynumber') Policy Number:
-                    div.control.has-icons-right
-                        input(type='text' class="input" name='policynumber' value=policynumber)
-                        span.icon.is-small.is-right
-                            i.fas.fa-check
+            div.editor-container
+                div.columns
+                    div.field.column.is-10
+                        label.label(for='policytitle') Policy Title:
+                        div.control.has-icons-right
+                            input(type='text' class="input" name='policytitle' value=policytitle)
+                            span.icon.is-small.is-right
+                                i.fas.fa-check
+                    div.field.column.is-2
+                        label(for='policynumber') Policy Number:
+                        div.control.has-icons-right
+                            input(type='text' class="input" name='policynumber' value=policynumber)
+                            span.icon.is-small.is-right
+                                i.fas.fa-check
                 div
                     textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
-
-                div.field
-                    label(for='note') Version Notes:
-                    div.control
-                        input(type='text' class="input" name='note' value=note)
+                div.columns
+                    div.field.ishorizontal.column.is-10.is-offset-1
+                        div.field-label.is-normal
+                            label(for='note') Version Notes:
+                        div.field-body
+                            div.field
+                                div.control.has-icons-left
+                                    input(type='text' class="input" name='note' value=note)
+                                    span.icon.is-left
+                                        i.fas.fa-check
                 div.field.is-grouped
                     input(type='hidden' name='currentversion' value=currentversion)
                     div.control.cancel-button
