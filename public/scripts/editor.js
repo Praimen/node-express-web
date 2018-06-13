@@ -21,7 +21,8 @@ $(function(){
     CKEDITOR.replace( 'editor1',{
         stylesSet : 'Bulma_Styles',
         allowedContent : true,
-        contentsCss: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css'
+        contentsCss: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css',
+        bodyClass : 'content'
     } );
     //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
