@@ -15,16 +15,17 @@ $(function(){
 
     ] );
 
-    CKEDITOR.editorConfig = function( config ) {
-        config.stylesSet = 'Bulma_Styles';
-    };
+
 
     CKEDITOR.plugins.add( 'editor1', {
         init: function( editor ) {
             editor.addContentsCss( 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' );
         }
     } );
-    CKEDITOR.replace( 'editor1' );
+    
+    CKEDITOR.replace( 'editor1',{
+        stylesSet : 'Bulma_Styles'
+    } );
     //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
     $('<div class="preview content">'+ $('#editor1').val() + '</div>').appendTo('body');
