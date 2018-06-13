@@ -21,16 +21,16 @@ $(function(){
     CKEDITOR.replace( 'editor1',{
         stylesSet : 'Bulma_Styles',
         allowedContent : true,
-        contentsCss: ['/scripts/ckeditor/content.css','https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css']
+        contentsCss: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css'
     } );
     //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
     $('<div class="preview content">'+ $('#editor1').val() + '</div>').appendTo('body');
 
-    $('li.content-version').on('click',function(){
+    $('.version-list select').on('change',function(){
         let policyNumber = $('input[name=policynumber]').val();
-        let currentVersionNum = $(this).index();
-        console.log($(this).index())
+        let currentVersionNum = $(this).val();
+        console.log($(this).val());
         if(policyNumber && currentVersionNum){
             window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
         }

@@ -8,8 +8,11 @@ html
 
 
     body.editor.container.is-widescreen
-        h2.title.is-2= title
-        h3.sub-title.is-3= message
+        div.columns
+            div.column.is-8
+                h2.title.is-2= title
+                h3.sub-title.is-3= message
+
         div.editor-page-container.columns
             div.policy-list.column.is-3
                 div.field.column.is-10
@@ -21,8 +24,6 @@ html
 
                 ul
                     li  retractable Policy List goes here
-
-
 
             div.editor-form.column.is-9
                 form(id='policy-form' method='POST' action='/editor-test')
@@ -40,7 +41,7 @@ html
                                 input(type='text' class="input" name='policynumber' value=policynumber)
                                 span.icon.is-small.is-right
                                     i.fas.fa-check
-                    div.editor-container
+                    div.editor-container.panel
                         textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
                     div.columns
                         div.field.is-horizontal.column.is-10.is-offset-1
@@ -52,6 +53,17 @@ html
                                         input(type='text' class="input" name='note' value=note)
                                         span.icon.is-left
                                             i.fas.fa-check
+                    div.field
+                        div.control
+                            div.version-list.select is-info
+                                select
+                                    each content, index in contentversionarr
+                                        option(value=index)
+                                            span.version-date= content.versiondate
+                                            span.version-note= content.note
+                                    else
+                                        option(value='') Select Version
+
                     div.field.is-grouped
                         input(type='hidden' name='currentversion' value=currentversion)
                         div.control.cancel-button
@@ -66,14 +78,6 @@ html
                             button(type='button' class='button set-btn') Set Version as Current
 
 
-                    div.version-list
-                        select
-                            each content, index in contentversionarr
-                                option(value=index)
-                                    span.version-date= content.versiondate
-                                    span.version-note= content.note
-                            else
-                                option(value='') Select Version
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')
