@@ -12,14 +12,15 @@ html
         div.cke_editable
             div.policy-content!= policycontent
 
-        div.policy-title= policytitle
-        div.policy-number= policynumber
+        div.policy-content.cke_editable!= policycontent
 
         div.view-button
             button(type='button' class='view-btn') Policy List
+        div.edit-button
+            button(type='button' class='edit-btn') Edit Policy
 
 
-
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/view-policy.js')
         script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
 

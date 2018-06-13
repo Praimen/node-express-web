@@ -273,17 +273,15 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 
 
 
-
-app.get('/editor-test',checkJWT,(req, res) =>{
-    res.render('editor', {title: 'Editor Test', message: 'Enter a new Policy',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
-});
-
-
-app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
+app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
 
     let policyNumber = req.params.policynumber ;
-    let contentVersionNum = parseInt(req.params.currentversion,10);
-    console.log('here are the policynumbner %s and the version %s', policyNumber, contentVersionNum);
+    let contentVersionNum;
+    if(req.params.currentversion){
+        contentVersionNum = parseInt(req.params.currentversion,10);
+        console.log('here are the policynumbner %s and the version %s', policyNumber, contentVersionNum);
+    }
+
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
@@ -312,14 +310,15 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
             };
 
 
-            if(rs.content[contentVersionNum]){
+            if(contentVersionNum && rs.content[contentVersionNum]){
                 contentVersion = rs.content[contentVersionNum];
+                console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
             } else {
-                contentVersion = rs.content[rs.content.length - 1];
+                contentVersion = rs.content[rs.currentversion];
             }
 
 
-            console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
+
             pageRenderObj.editorcontent = contentVersion.bodytext;
             pageRenderObj.note = contentVersion.note;
 
@@ -335,9 +334,14 @@ app.get(['/editor-test/:policynumber/:currentversion'],checkJWT,(req,res)=>{
                 note: '',
                 contentversionarr: []
             })
+
         });
 
     })
+});
+
+app.get('/editor-test',checkJWT,(req, res) =>{
+    res.render('editor', {title: 'Editor Test', message: 'Enter a new Policy',policynumber:'',policytitle:'',note:'',contentversionarr:[]})
 });
 
 
@@ -356,8 +360,6 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     $set:{"title": req.body.policytitle,"currentversion": contentVersionNum},
                     $push:{"content": {versiondate: new Date(),note:req.body.note,bodytext:req.body.editorcontent} }
                 };
-
-
 
 
             let cursor = db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
