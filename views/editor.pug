@@ -2,8 +2,10 @@ doctype html
 html
     head
         title= title
-        link(rel='stylesheet',href='//keystone.forgegraphics.com/styles/main.css')
-        link(rel='stylesheet',href='/styles/editor.css')
+        link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
+        link(rel='stylesheet' href='/styles/editor.css')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
+
     body.editor
         h2= title
         h3= message
@@ -17,31 +19,36 @@ html
         div.editor-form
         form(id='policy-form' method='POST' action='/editor-test')
             div(class='editor-container')
-                div
-                    label(for='policytitle') Policy Title:
-                    input(type='text' name='policytitle' value=policytitle)
-                div
+                div.field
+                    label.label(for='policytitle') Policy Title:
+                    div.control has-icons-right
+                        input(type='text' name='policytitle' value=policytitle)
+                        span.icon.is-small.is-right
+                            i.fas.fa-check
+                div.field
                     label(for='policynumber') Policy Number:
-                    input(type='text' name='policynumber' value=policynumber)
+                    div.control has-icons-right
+                        input(type='text' name='policynumber' value=policynumber)
+                        span.icon.is-small.is-right
+                            i.fas.fa-check
                 div
                     textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
-                div
-                div
-                div
+
+                div.field
                     label(for='note') Version Notes:
                     input(type='text' name='note' value=note)
-                div.button-row
+                div.field.is-grouped
                     input(type='hidden' name='currentversion' value=currentversion)
-                    div.cancel-button
-                        button(type='button' class='cancel-btn') Cancel Edits
-                    div.save-button
-                        button(type='button' class='save-btn') Save Policy
-                    div.new-button
-                        button(type='button' class='new-btn') Create New Policy
-                    div.view-button
-                        button(type='button' class='view-btn') View Policies List
-                    div.set-version-button
-                        button(type='button' class='set-btn') Set Version as Current
+                    div.control.cancel-button
+                        button(type='button' class='button cancel-btn') Cancel Edits
+                    div.control.save-button
+                        button(type='button' class='button save-btn') Save Policy
+                    div.control.new-button
+                        button(type='button' class='button new-btn') Create New Policy
+                    div.control.view-button
+                        button(type='button' class='button view-btn') View Policies List
+                    div.control.set-version-button
+                        button(type='button' class='button set-btn') Set Version as Current
 
 
         div(class='version-list')
@@ -56,3 +63,4 @@ html
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')
         script(type='text/javascript' src='/scripts/editor.js')
+        script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
