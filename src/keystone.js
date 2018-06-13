@@ -43,13 +43,15 @@ app.use(cookieParser());
 function checkJWT(req,res,next) {
 
   if (req.cookies.gameJWT) {
-    var decoded = jwt.verify(req.cookies.gameJWT, process.env.JWT_SECRET);
+    let decoded = jwt.verify(req.cookies.gameJWT, process.env.JWT_SECRET);
     if (decoded) {
       req.jwt = decoded;
     }
     next();
   }else{
-    next(new Error('No JWT cookie found'));
+      let noJWT = new Error('No JWT cookie found')
+      res.render('login', {title: 'Login', message: noJWT})
+
   }
 }
 
@@ -68,7 +70,7 @@ app.all('/', function(req, res, next) {
 
 app.get('/',(req, res) =>{
   res.clearCookie('gameJWT');
-  res.redirect('/login');
+  res.redirect('/policy-list');
 
 });
 
@@ -149,7 +151,7 @@ app.post('/login',(req,res)=>{
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
-                res.redirect('/editor-test');
+                res.redirect('/policy-list');
 
                 client.close();
 
