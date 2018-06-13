@@ -6,12 +6,12 @@ html
         link(rel='stylesheet',href='//keystone.forgegraphics.com/styles/main.css')
         link(rel='stylesheet',href='/styles/policy-list.css')
 
-    body
+    body.container.is-widescreen
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
 
-        div.container.is-widescreen.policy-list
+        div.policy-list
             ul
                 each policy in policylistarr
                     li

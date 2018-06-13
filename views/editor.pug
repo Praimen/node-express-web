@@ -7,7 +7,7 @@ html
         link(rel='stylesheet' href='/styles/editor.css')
 
 
-    body.editor
+    body.editor.container.is-widescreen
         h2= title
         h3= message
         div.policy-list
@@ -17,56 +17,56 @@ html
 
 
 
-        div.container.is-widescreen.editor-form
-        form(id='policy-form' method='POST' action='/editor-test')
-            div.editor-container
-                div.columns
-                    div.field.column.is-10
-                        label.label(for='policytitle') Policy Title:
-                        div.control.has-icons-right
-                            input(type='text' class="input" name='policytitle' value=policytitle)
-                            span.icon.is-small.is-right
-                                i.fas.fa-check
-                    div.field.column.is-2
-                        label(for='policynumber') Policy Number:
-                        div.control.has-icons-right
-                            input(type='text' class="input" name='policynumber' value=policynumber)
-                            span.icon.is-small.is-right
-                                i.fas.fa-check
-                div
-                    textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
-                div.columns
-                    div.field.ishorizontal.column.is-10.is-offset-1
-                        div.field-label.is-normal
-                            label(for='note') Version Notes:
-                        div.field-body
-                            div.field
-                                div.control.has-icons-left
-                                    input(type='text' class="input" name='note' value=note)
-                                    span.icon.is-left
-                                        i.fas.fa-check
-                div.field.is-grouped
-                    input(type='hidden' name='currentversion' value=currentversion)
-                    div.control.cancel-button
-                        button(type='button' class='button cancel-btn') Cancel Edits
-                    div.control.save-button
-                        button(type='button' class='button save-btn') Save Policy
-                    div.control.new-button
-                        button(type='button' class='button new-btn') Create New Policy
-                    div.control.view-button
-                        button(type='button' class='button view-btn') View Policies List
-                    div.control.set-version-button
-                        button(type='button' class='button set-btn') Set Version as Current
+        div.editor-form
+            form(id='policy-form' method='POST' action='/editor-test')
+                div.editor-container
+                    div.columns
+                        div.field.column.is-10
+                            label.label(for='policytitle') Policy Title:
+                            div.control.has-icons-right
+                                input(type='text' class="input" name='policytitle' value=policytitle)
+                                span.icon.is-small.is-right
+                                    i.fas.fa-check
+                        div.field.column.is-2
+                            label.label(for='policynumber') Policy Number:
+                            div.control.has-icons-right
+                                input(type='text' class="input" name='policynumber' value=policynumber)
+                                span.icon.is-small.is-right
+                                    i.fas.fa-check
+                    div.columns
+                        textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
+                    div.columns
+                        div.field.is-horizontal.column.is-10.is-offset-1
+                            div.field-label
+                                label.label(for='note') Version Notes:
+                            div.field-body
+                                div.field
+                                    div.control.has-icons-left
+                                        input(type='text' class="input" name='note' value=note)
+                                        span.icon.is-left
+                                            i.fas.fa-check
+                    div.field.is-grouped
+                        input(type='hidden' name='currentversion' value=currentversion)
+                        div.control.cancel-button
+                            button(type='button' class='button cancel-btn') Cancel Edits
+                        div.control.save-button
+                            button(type='button' class='button save-btn') Save Policy
+                        div.control.new-button
+                            button(type='button' class='button new-btn') Create New Policy
+                        div.control.view-button
+                            button(type='button' class='button view-btn') View Policies List
+                        div.control.set-version-button
+                            button(type='button' class='button set-btn') Set Version as Current
 
 
-            div.version-list
-                ol
-                    each content in contentversionarr
-                        li.content-version
-                            span.version-date= content.versiondate
-                            span.version-note= content.note
-                    else
-                        li No other versions
+                div.version-list
+                    ol
+                        each content in contentversionarr
+                            li.content-version
+                                span.version-date= content.versiondate
+                                span.version-note= content.note
+                        else
+                            li No other versions
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')
