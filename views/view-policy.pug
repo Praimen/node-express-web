@@ -6,11 +6,11 @@ html
         link(rel='stylesheet',href='/styles/view-policy.css')
         link(rel='stylesheet',href='//keystone.forgegraphics.com/scripts/ckeditor/contents.css')
 
-    body.editor
-        input(type='text' class='search-policy')
+    body
+        input(type='text' class='search-policy input')
 
 
-        div.cke_editable
+        div.content.cke_editable
             div.policy-content!= policycontent
 
         div.view-button

@@ -22,7 +22,7 @@ $(function(){
             editor.addContentsCss( 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' );
         }
     } );
-    
+
     CKEDITOR.replace( 'editor1',{
         stylesSet : 'Bulma_Styles'
     } );
