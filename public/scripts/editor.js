@@ -17,7 +17,7 @@ $(function(){
 
 
 
- 
+
     CKEDITOR.replace( 'editor1',{
         stylesSet : 'Bulma_Styles',
         allowedContent : true,
@@ -25,7 +25,7 @@ $(function(){
     } );
     //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
-    $('<div class="preview content">'+ $('#editor1').val() + '</div>').appendTo('body');
+    $('<div class="preview content container is-widescreen">'+ $('#editor1').val() + '</div>').appendTo('body');
 
     $('li.content-version').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val();

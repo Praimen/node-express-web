@@ -11,25 +11,25 @@ html
         h2= title
         h3= message
         div.policy-list
-            input(type='text' name='policysearch')
+            input(type='text' class="input" name='policysearch')
             ul
                 li  retractable Policy List goes here
 
 
 
-        div.editor-form
+        div.container.is-widescreen.editor-form
         form(id='policy-form' method='POST' action='/editor-test')
             div(class='editor-container')
                 div.field
                     label.label(for='policytitle') Policy Title:
-                    div.control has-icons-right
-                        input(type='text' name='policytitle' value=policytitle)
+                    div.control.has-icons-right
+                        input(type='text' class="input" name='policytitle' value=policytitle)
                         span.icon.is-small.is-right
                             i.fas.fa-check
                 div.field
                     label(for='policynumber') Policy Number:
-                    div.control has-icons-right
-                        input(type='text' name='policynumber' value=policynumber)
+                    div.control.has-icons-right
+                        input(type='text' class="input" name='policynumber' value=policynumber)
                         span.icon.is-small.is-right
                             i.fas.fa-check
                 div
@@ -37,7 +37,8 @@ html
 
                 div.field
                     label(for='note') Version Notes:
-                    input(type='text' name='note' value=note)
+                    div.control
+                        input(type='text' class="input" name='note' value=note)
                 div.field.is-grouped
                     input(type='hidden' name='currentversion' value=currentversion)
                     div.control.cancel-button
