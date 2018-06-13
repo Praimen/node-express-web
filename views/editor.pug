@@ -15,7 +15,7 @@ html
 
         div.editor-page-container.columns
             div.policy-list.column.is-3
-                div.field.column.is-10
+                div.field
                     label.label(for='policysearch') Search:
                     div.control.has-icons-right
                         input(type='text' class="input" name='policysearch' placeholder='(Policy Number)')
@@ -55,7 +55,7 @@ html
                                             i.fas.fa-check
                     div.field
                         div.control
-                            div.version-list.select is-info
+                            div.version-list.select.is-info
                                 select
                                     each content, index in contentversionarr
                                         option(value=index)
