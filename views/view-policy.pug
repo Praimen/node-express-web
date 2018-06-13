@@ -3,8 +3,9 @@ html
     head
         title= title
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
-        link(rel='stylesheet',href='/styles/view-policy.css')
-        link(rel='stylesheet',href='//keystone.forgegraphics.com/scripts/ckeditor/contents.css')
+        link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
+        link(rel='stylesheet' href='/styles/view-policy.css')
+
 
     body.container.is-widescreen
         input(type='text' class='search-policy input')
@@ -12,10 +13,10 @@ html
 
         div.content.cke_editable
             div.policy-content!= policycontent
-
-            div.view-button
+        div.field.is-grouped
+            div.control.view-button
                 button(type='button' class='button view-btn') Policy List
-            div.edit-button
+            div.control.edit-button
                 button(type='button' class='button edit-btn') Edit Policy
 
 

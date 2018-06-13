@@ -10,9 +10,15 @@ html
     body.editor.container.is-widescreen
         h2.title.is-2= title
         h3.sub-title.is-3= message
-        div.editor-container.columns
+        div.editor-page-container.columns
             div.policy-list.column.is-3
-                input(type='text' class="input" name='policysearch')
+                div.field.column.is-10
+                    label.label(for='policysearch') Search:
+                    div.control.has-icons-right
+                        input(type='text' class="input" name='policysearch' placeholder='(Policy Number)')
+                        span.icon.is-small.is-right
+                            i.fas.fa-search
+
                 ul
                     li  retractable Policy List goes here
 
@@ -34,7 +40,7 @@ html
                                 input(type='text' class="input" name='policynumber' value=policynumber)
                                 span.icon.is-small.is-right
                                     i.fas.fa-check
-                    div.columns
+                    div.editor-container
                         textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
                     div.columns
                         div.field.is-horizontal.column.is-10.is-offset-1
@@ -61,13 +67,13 @@ html
 
 
                     div.version-list
-                        ol
-                            each content in contentversionarr
-                                li.content-version
+                        select
+                            each content, index in contentversionarr
+                                option(value=index)
                                     span.version-date= content.versiondate
                                     span.version-note= content.note
                             else
-                                li No other versions
+                                option(value='') Select Version
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')

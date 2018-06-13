@@ -1,9 +1,5 @@
 
-body{
-    padding:10px;
-}
 
-div,input,label{
-    margin:2px 4px;
+body ul,body ol{
+    padding: 0 2.5rem;
 }
-
