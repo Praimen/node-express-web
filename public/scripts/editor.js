@@ -3,9 +3,31 @@
  */
 
 $(function(){
-    CKEDITOR.replace( 'editor1' );
 
-    $('<div class="preview">'+ $('#editor1').val() + '</div>').appendTo('body');
+    CKEDITOR.stylesSet.add( 'Bulma_Styles', [
+        // Block-level styles
+        { name: 'Bulma H1 Title', element: 'h1', attributes: { 'class': 'title is-1' } },
+        { name: 'Bulma H2 Title', element: 'h2', attributes: { 'class': 'title is-2' } },
+        { name: 'Bulma H3 Title', element: 'h3', attributes: { 'class': 'title is-3' } },
+        { name: 'Bulma H1 Sub-Title', element: 'h1', attributes: { 'class': 'subtitle is-1' } },
+        { name: 'Bulma H2 Sub-Title', element: 'h2', attributes: { 'class': 'subtitle is-2' } },
+        { name: 'Bulma H3 Sub-Title', element: 'h3', attributes: { 'class': 'subtitle is-3' } },
+
+    ] );
+
+    CKEDITOR.editorConfig = function( config ) {
+        config.stylesSet = 'Bulma_Styles';
+    };
+
+    CKEDITOR.plugins.add( 'editor1', {
+        init: function( editor ) {
+            editor.addContentsCss( 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' );
+        }
+    } );
+    CKEDITOR.replace( 'editor1' );
+    //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
+
+    $('<div class="preview content">'+ $('#editor1').val() + '</div>').appendTo('body');
 
     $('li.content-version').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val();

@@ -2,17 +2,16 @@ doctype html
 html
     head
         title= title
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
         link(rel='stylesheet',href='/styles/view-policy.css')
         link(rel='stylesheet',href='//keystone.forgegraphics.com/scripts/ckeditor/contents.css')
-        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
+
     body.editor
         input(type='text' class='search-policy')
 
 
         div.cke_editable
             div.policy-content!= policycontent
-
-        div.policy-content.cke_editable!= policycontent
 
         div.view-button
             button(type='button' class='view-btn') Policy List
