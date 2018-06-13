@@ -8,18 +8,19 @@ html
 
 
     body.editor.container.is-widescreen
-        h2= title
-        h3= message
-        div.policy-list
-            input(type='text' class="input" name='policysearch')
-            ul
-                li  retractable Policy List goes here
+        h2.title.is-2= title
+        h3.sub-title.is-3= message
+        div.editor-container.columns
+            div.policy-list.column.is-3
+                input(type='text' class="input" name='policysearch')
+                ul
+                    li  retractable Policy List goes here
 
 
 
-        div.editor-form
-            form(id='policy-form' method='POST' action='/editor-test')
-                div.editor-container
+            div.editor-form.column.is-9
+                form(id='policy-form' method='POST' action='/editor-test')
+
                     div.columns
                         div.field.column.is-10
                             label.label(for='policytitle') Policy Title:
@@ -37,7 +38,7 @@ html
                         textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
                     div.columns
                         div.field.is-horizontal.column.is-10.is-offset-1
-                            div.field-label
+                            div.field-label.is-normal
                                 label.label(for='note') Version Notes:
                             div.field-body
                                 div.field
@@ -59,14 +60,14 @@ html
                             button(type='button' class='button set-btn') Set Version as Current
 
 
-                div.version-list
-                    ol
-                        each content in contentversionarr
-                            li.content-version
-                                span.version-date= content.versiondate
-                                span.version-note= content.note
-                        else
-                            li No other versions
+                    div.version-list
+                        ol
+                            each content in contentversionarr
+                                li.content-version
+                                    span.version-date= content.versiondate
+                                    span.version-note= content.note
+                            else
+                                li No other versions
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')
