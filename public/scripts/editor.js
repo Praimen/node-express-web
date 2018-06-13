@@ -17,14 +17,11 @@ $(function(){
 
 
 
-    CKEDITOR.plugins.add( 'editor1', {
-        init: function( editor ) {
-            editor.addContentsCss( 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' );
-        }
-    } );
-
+ 
     CKEDITOR.replace( 'editor1',{
-        stylesSet : 'Bulma_Styles'
+        stylesSet : 'Bulma_Styles',
+        allowedContent : true,
+        contentsCss: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css'
     } );
     //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
