@@ -344,7 +344,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
             let cursor2 = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project});
 
             cursor2.then(function (result2) {
-                let rs = result2;
+                let rs = result2.value;
                 console.log(result2);
                 let pageRenderObj = {
                     title: 'Editor Test',
