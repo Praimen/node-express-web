@@ -29,7 +29,7 @@ $(function(){
     $('<div class="preview content box">'+ $('#editor1').val() + '</div>').appendTo('body');
 
     //setting the version in the select box
-    $('.version-list select').val($('input[name=policynumber]').val());
+    $('.version-list select').val($('input[name=currentversion]').val());
 
 
     //change version on select

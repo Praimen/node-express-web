@@ -314,7 +314,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             if(contentVersionNum && rs.content[contentVersionNum]){
                 contentVersion = rs.content[contentVersionNum];
-                pageRenderObj.contentversion = contentVersionNum;
+                pageRenderObj.currentversion = contentVersionNum;
                 console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
             } else {
                 contentVersion = rs.content[rs.currentversion];
