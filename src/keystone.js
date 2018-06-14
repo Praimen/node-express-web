@@ -409,6 +409,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let query = {_id: policyNumber};
 
             let versionparams = {
+                $set:{"currentversion": contentVersionNum},
                 $push:{"versions": {note:req.body.note,bodytext:req.body.editorcontent} }
             };
 
