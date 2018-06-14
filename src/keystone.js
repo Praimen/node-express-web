@@ -343,7 +343,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 versiondetail:1
             };
 
-            let cursor2 = db.collection('policies').findOneAndUpdate(query,params,{projection:project});
+            let cursor2 = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project});
 
             cursor2.then(function (result2) {
                 let rs = result2;
@@ -414,7 +414,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             };
 
 
-            let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{upsert:true});
+            let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
 
             cursor.then(function (result) {
                 console.log(result);
