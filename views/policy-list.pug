@@ -2,6 +2,7 @@ doctype html
 html
     head
         title= title
+        link(rel='stylesheet' href='"https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
         link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
         link(rel='stylesheet' href='/styles/policy-list.css')
@@ -10,13 +11,10 @@ html
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
-        div.policy-list.column.is-3
+        div.policy-list.column.is-8.is-offset-2
             div.field
                 label.label(for='policysearch') Search:
-                div.control.has-icons-right
-                    input(type='text' class="input" name='policysearch' placeholder='(Policy Number)')
-                    span.icon.is-small.is-right
-                        i.fas.fa-search
+                select.policy-search
 
 
             ul
@@ -35,3 +33,4 @@ html
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/policy-list.js')
         script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js')

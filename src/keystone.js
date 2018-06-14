@@ -221,6 +221,45 @@ app.get('/policy-list',(req, res) =>{
 });
 
 
+app.get('/policy-list/search',(req, res) =>{
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('editor');
+
+        let query = {};
+        let project;
+
+        project = {
+            _id:1,
+            title: 1
+        };
+
+        let cursor = db.collection('policies').find(query,{projection:project, sort:{_id:1}});
+
+        // let cursor = db.collection('policies').find({});
+
+        cursor.toArray().then(function(result) {
+            let rs = result;
+            console.log(rs);
+            let jsonObj = {
+                "results": rs
+            };
+
+            res.json( jsonObj);
+            client.close();
+
+        }).catch((err)=> {
+
+            client.close();
+
+        });
+
+    });
+
+});
+
+
 
 app.get('/view-policy/:policynumber', function (req, res, next) {
 
