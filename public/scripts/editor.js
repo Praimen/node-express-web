@@ -46,8 +46,8 @@ $(function(){
 
     $('button.cancel-btn').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val();
-        let currentVersionNum = $('.version-list li').length - 1;
-        if(policyNumber && currentVersionNum){
+        let currentVersionNum = $('.version-list select > option').length - 1;
+        if(policyNumber && currentVersionNum >= 0){
             window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
         }else{
             window.location = '/editor-test/';

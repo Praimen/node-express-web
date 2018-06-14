@@ -8,16 +8,16 @@ html
 
 
     body.container.is-widescreen
-        input(type='text' class='search-policy input')
 
-
-        div.content.cke_editable
-            div.policy-content!= policycontent
         div.field.is-grouped
             div.control.view-button
                 button(type='button' class='button view-btn') Policy List
             div.control.edit-button
                 button(type='button' class='button edit-btn') Edit Policy
+
+        div.content.cke_editable
+            div.policy-content!= policycontent
+
 
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')

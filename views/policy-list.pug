@@ -10,8 +10,15 @@ html
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
+        div.policy-list.column.is-3
+            div.field
+                label.label(for='policysearch') Search:
+                div.control.has-icons-right
+                    input(type='text' class="input" name='policysearch' placeholder='(Policy Number)')
+                    span.icon.is-small.is-right
+                        i.fas.fa-search
 
-        div.policy-list
+
             ul
                 each policy in policylistarr
                     li
