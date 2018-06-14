@@ -189,7 +189,7 @@ app.get('/policy-list',(req, res) =>{
         };
 
 
-        let cursor = db.collection('policies').find(query,{projection:project});
+        let cursor = db.collection('policies').find(query,{projection:project, sort:{_id:1}});
 
         // let cursor = db.collection('policies').find({});
 
@@ -295,7 +295,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
             currentversion:1
         };
 
-        let cursor = db.collection('policies').findOne(query,{projection:project});
+        let cursor = db.collection('policies').findOne(query,{projection:project,sort:{content:-1}});
 
         cursor.then(function (result) {
             let rs = result;
