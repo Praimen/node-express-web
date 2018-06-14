@@ -2,19 +2,18 @@ doctype html
 html
     head
         title= title
-        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
         link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
         link(rel='stylesheet' href='/styles/policy-list.css')
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
 
     body.container.is-widescreen
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
         div.policy-list.column.is-8.is-offset-2
-            div.field
-                label.label(for='policysearch') Search:
-                select.policy-search
+            select(style='width:100%' class='policy-search')
 
 
             ul

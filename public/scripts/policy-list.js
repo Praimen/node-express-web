@@ -7,7 +7,8 @@ $(function(){
         window.location = '/policy-list';
     })
 
-    $('.policy-search').select2({
+    $('select.policy-search').select2({
+        theme: "classic",
         ajax: {
             url: 'http://keystone.forgegraphics.com/policy-list/search',
             dataType: 'json'
