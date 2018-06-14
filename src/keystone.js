@@ -255,7 +255,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                 _id:1,
                 title:1,
                 content:1,
-                versiondetail:1
+
             };
 
             let cursor2 = db.collection('policies').findOne(query,{projection:project});
@@ -265,13 +265,13 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
 
                 let pageRenderObj = {
                     title: 'Policy #' +rs._id,
-                    message: 'last modified: '+ rs.versiondetail[contentVersion].versiondate,
+                    message: 'last modified: ',
                     policynumber: rs._id,
                     policytitle: rs.title
                 };
 
                 pageRenderObj.policycontent = rs.content.bodytext;
-                pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
+               // pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
                 res.render('view-policy', pageRenderObj );
 
                 client.close();
@@ -338,29 +338,29 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 title:1,
                 currentversion:1,
                 content:1,
-                versiondetail:1
+
             };
 
             let cursor2 = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project});
 
             cursor2.then(function (result2) {
-                let rs = result2.value;
+                let rs2 = result2.value;
                 console.log(result2);
                 let pageRenderObj = {
                     title: 'Editor Test',
-                    message: 'Successfully saved content for: ' + rs.title,
-                    policynumber: rs._id,
-                    policytitle: rs.title,
-                    contentversionarr: rs.versiondetail,
+                    message: 'Successfully saved content for: ' + rs2.title,
+                    policynumber: rs2._id,
+                    policytitle: rs2.title,
+                    contentversionarr: rs.versions,
 
                 };
 
-                contentVersion = rs.content;
+                contentVersion = rs2.content;
                 pageRenderObj.currentversion = contentVersionNum;
-                console.log('Content version %d shoudl be %s',contentVersionNum,rs.content);
+                console.log('Content version %d shoudl be %s',contentVersionNum,rs2.content);
 
                 pageRenderObj.editorcontent = contentVersion.bodytext;
-                pageRenderObj.note = rs.versiondetail[contentVersionNum].note;
+                pageRenderObj.note = rs.versions[contentVersionNum].note;
 
                 res.render('editor', pageRenderObj);
                 client.close();
@@ -405,10 +405,10 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             const db = client.db('editor');
 
             let query = {_id: policyNumber};
-
+            //TODO aggregate maybe to find the length of the content and compare to version number being proposed by the frontend
             let versionparams = {
                 $set:{"currentversion": contentVersionNum},
-                $push:{"versions": {note:req.body.note,bodytext:req.body.editorcontent} }
+                $push:{"versions": {versiondate: new Date(),note:req.body.note,bodytext:req.body.editorcontent} }
             };
 
 
