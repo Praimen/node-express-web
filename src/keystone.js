@@ -345,7 +345,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             cursor2.then(function (result2) {
                 let rs = result2;
-                console.log(result);
+                console.log(result2);
                 let pageRenderObj = {
                     title: 'Editor Test',
                     message: 'Successfully saved content for: ' + rs.title,
