@@ -230,7 +230,7 @@ app.get('/policy-list/search',(req, res) =>{
         let query = {$text: { $search: '"\"'+searchTerm+'\""' }};
 
         let cursor =  db.collection('policies').aggregate([
-            { $match: { query } },
+            { $match:  query  },
             { $project: {id: "$_id", text:"$title"} }
         ])
 
