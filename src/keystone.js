@@ -308,15 +308,17 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 policynumber: rs._id,
                 policytitle: rs.title,
                 contentversionarr: rs.content,
-                currentversion : rs.currentversion
+
             };
 
 
             if(contentVersionNum && rs.content[contentVersionNum]){
                 contentVersion = rs.content[contentVersionNum];
+                pageRenderObj.contentversion = contentVersionNum;
                 console.log('Content version %d shoudl be %s',contentVersionNum,rs.content[contentVersionNum]);
             } else {
                 contentVersion = rs.content[rs.currentversion];
+                pageRenderObj.currentversion = rs.currentversion;
             }
 
 

@@ -24,10 +24,15 @@ $(function(){
         contentsCss: 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css',
         bodyClass : 'content'
     } );
-    //CKEDITOR.config.contentsCss = 'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css' ;
 
+    //TODO: preview area - may need this to move to template
     $('<div class="preview content box">'+ $('#editor1').val() + '</div>').appendTo('body');
 
+    //setting the version in the select box
+    $('.version-list select').val($('input[name=policynumber]').val());
+
+
+    //change version on select
     $('.version-list select').on('change',function(){
         let policyNumber = $('input[name=policynumber]').val();
         let currentVersionNum = $(this).val();
@@ -38,9 +43,10 @@ $(function(){
 
     });
 
+
     $('button.cancel-btn').on('click',function(){
         let policyNumber = $('input[name=policynumber]').val();
-        let currentVersionNum = $('input[name=currentversion]').val();
+        let currentVersionNum = $('.version-list li').length - 1;
         if(policyNumber && currentVersionNum){
             window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
         }else{
@@ -50,7 +56,7 @@ $(function(){
     });
 
     $('button.save-btn').on('click',function(){
-        $('input[name=currentversion]').val($('.version-list li').length);
+        $('input[name=currentversion]').val($('.version-list select > option').length);
         $('#policy-form').attr('action','/editor-test/').submit()
     });
 
@@ -59,6 +65,10 @@ $(function(){
     });
 
     $('button.view-btn').on('click',function(){
+        window.location = '/policy-list';
+    })
+
+    $('button.set-btn').on('click',function(){
         window.location = '/policy-list';
     })
 
