@@ -333,9 +333,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             let params = {
                 $set:{"content": rs.versions[contentVersionNum]}
-            };
-
-            project = {
+            }, project = {
                 _id:1,
                 title:1,
                 currentversion:1,
@@ -347,7 +345,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             cursor2.then(function (result2) {
                 let rs = result2;
-
+                console.log(result);
                 let pageRenderObj = {
                     title: 'Editor Test',
                     message: 'Successfully saved content for: ' + rs.title,
