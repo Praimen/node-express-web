@@ -17,4 +17,10 @@ $(function(){
         }
     });
 
+    $('select.policy-search').on('select2:select', function (e) {
+        let data = e.params.data;
+        console.log(data);
+        window.location = "/view-policy/"+data._id
+    });
+
 });
