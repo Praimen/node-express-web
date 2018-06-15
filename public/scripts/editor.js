@@ -69,7 +69,13 @@ $(function(){
     })
 
     $('button.set-btn').on('click',function(){
-        window.location = '/policy-list';
+        $.ajax({
+            method:"POST",
+            url: 'http://keystone.forgegraphics.com/version-update',
+
+        }).done(function(data){
+           console.log(data)
+        })
     })
 
 });

@@ -375,7 +375,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
             }
 
             let params = {
-                $set:{"content": rs.versions[contentVersionNum]}
+                $set:{"currentversion":contentVersionNum,"content": rs.versions[contentVersionNum]}
             }, project = {
                 _id:1,
                 title:1,
@@ -487,6 +487,55 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     note: '',
                     contentversionarr: []
                 })
+            })
+        });
+
+
+    }else{
+        res.redirect('/editor-test')
+    }
+
+
+});
+
+
+
+
+app.post('/version-update',checkJWT,(req,res)=>{
+
+    let policyNumber = req.body.policynumber;
+    let contentVersionNum = parseInt(req.body.currentversion,10);
+
+    if(policyNumber){
+        mongo.connect(process.env.DB_CONN,function(err,client) {
+
+            const db = client.db('editor');
+
+            let query = {_id: policyNumber};
+            let versionparams = {
+                $set:{"currentversion": contentVersionNum},
+            };
+
+
+            let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
+
+            cursor.then(function (result) {
+                let rs = result.value;
+                let cursor2 =  db.collection('policies').findOneAndUpdate(query,{$set:{"currentversion": rs.currentversion}},{upsert:true});
+
+                cursor2.then(function (result) {
+                    res.json({status:"updated"})
+                    client.close();
+                }).catch((err)=> {
+                    res.json({status:err})
+                    client.close();
+
+                })
+
+
+            }).catch((err)=> {
+                client.close();
+                res.json({status:err})
             })
         });
 

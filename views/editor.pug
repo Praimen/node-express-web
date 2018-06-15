@@ -72,7 +72,7 @@ html
                                     i.fas.fa-times
                                 span Cancel
                         div.control.save-button
-                            a.button.is-success.is-outlined.save-btn
+                            button.button.is-success.is-outlined.save-btn
                                 span.icon.is-small
                                     i.fas.fa-check
                                 span Save Policy
@@ -80,7 +80,10 @@ html
                         div.control.new-button
                             button(type='button' class='button new-btn') Create New Policy
                         div.control.view-button
-                            button(type='button' class='button view-btn') View Policies List
+                            button.button.is-success.is-outlined.view-btn
+                                span.icon.is-small
+                                    i.fas.fa-check
+                                span View Policy List
                         div.control.set-version-button
                             button(type='button' class='button set-btn') Set Version as Current
 
