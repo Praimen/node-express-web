@@ -364,6 +364,8 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             if(!contentVersionNum){
                 contentVersionNum = rs.currentversion;
+            }else{
+                contentVersionNum = 0;
             }
 
             let contentVersion,
