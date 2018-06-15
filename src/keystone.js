@@ -376,7 +376,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             cursor2.then(function (result) {
                 console.log(result);
-                let rs2 = result.value;
+                let rs2 = result;
 
                 let pageRenderObj = {
                     title: 'Editor Test',
