@@ -71,7 +71,7 @@ $(function(){
         $.ajax({
 
             url: 'http://keystone.forgegraphics.com/version-update',
-            data: {currentversion: $('input[name=currentversion]').val()}
+            data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val()}
         }).done(function(data){
            console.log(data)
         })

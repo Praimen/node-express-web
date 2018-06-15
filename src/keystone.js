@@ -497,7 +497,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
 
             const db = client.db('editor');
 
-            let query = {_id: policyNumber},
+            let query = {_id: req.query.policynumber},
                 versionparams = {
                     $set:{"currentversion": contentVersionNum}
                 },
