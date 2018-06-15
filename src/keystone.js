@@ -185,7 +185,7 @@ app.get('/policy-list',(req, res) =>{
 
         const db = client.db('editor');
 
-        let query = {};
+        let query = {content: { $not: { $eq: null } }};
         let project;
 
         project = {
@@ -292,19 +292,20 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                 _id:1,
                 title:1,
                 content:1,
+                contentversion:1
 
             };
 
             let cursor2 = db.collection('policies').findOne(query,{projection:project});
 
             cursor2.then(function (result2) {
-                let rs = result2;
+                let rs2 = result2;
 
                 let pageRenderObj = {
-                    title: 'Policy #' +rs._id,
+                    title: 'Policy #' +rs2._id,
                     message: 'last modified: ',
-                    policynumber: rs._id,
-                    policytitle: rs.title
+                    policynumber: rs2._id,
+                    policytitle: rs2.title
                 };
 
                 pageRenderObj.policycontent = rs.content.bodytext;
