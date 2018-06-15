@@ -14,21 +14,22 @@ html
                     h2.sub-title.is-4= message
 
             form(method='POST' action='/login')
-                div.field.column.is-10
-                    label.label(for='username') Username:
-                    div.control.has-icons-right
-                        input(type='text' class="input" name='username')
-                        span.icon.is-small.is-right
-                            i.fas.fa-check
-                div.field.column.is-2
-                    label.label(for='password') Password:
-                    div.control.has-icons-right
-                        input(type='password' class="input" name='password' )
-                        span.icon.is-small.is-right
-                            i.fas.fa-check
-                div.field.is-grouped
-                    div.control.submit-button
-                        button(type='submit' class='button sub-btn') Login
+                div.column.box.is-8.is-offset-2
+                    div.field.column.is-10.is-offset-1
+                        label.label(for='username') Username:
+                        div.control.has-icons-right
+                            input(type='text' class="input" name='username')
+                            span.icon.is-small.is-right
+                                i.fas.fa-check
+                    div.field.column.is-10.is-offset-1
+                        label.label(for='password') Password:
+                        div.control.has-icons-right
+                            input(type='password' class="input" name='password' )
+                            span.icon.is-small.is-right
+                                i.fas.fa-check
+                    div.field.is-grouped
+                        div.control.submit-button
+                            button(type='submit' class='button is-info is-outlined') Login
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='/scripts/main.js')

@@ -67,9 +67,16 @@ html
                     div.field.is-grouped
                         input(type='hidden' name='currentversion' value=currentversion)
                         div.control.cancel-button
-                            button(type='button' class='button cancel-btn') Cancel Edits
+                            button.button.is-warning.is-outlined.cancel-btn
+                                span.icon.is-small
+                                    i.fas.fa-times
+                                span Cancel
                         div.control.save-button
-                            button(type='button' class='button save-btn') Save Policy
+                            a.button.is-success.is-outlined.save-btn
+                                span.icon.is-small
+                                    i.fas.fa-check
+                                span Save Policy
+
                         div.control.new-button
                             button(type='button' class='button new-btn') Create New Policy
                         div.control.view-button
