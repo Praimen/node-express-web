@@ -2,21 +2,35 @@ doctype html
 html
     head
         title= title
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
         link(rel='stylesheet',href='/styles/main.css')
         link(rel='stylesheet',href='/styles/login.css')
-    body.login
-        h2= title
-        h3= message
-        form(method='POST' action='/login')
-            div
-                label(for='username') Username:
-                input(type='text' name='username')
-            div
-                label(for='password') Password:
-                input(type='password' name='password')
-            div
-                button(type='submit')
-                    Login
+    body.login..container.is-widescreen
 
+        div.login-form.column.is-8.is-offset-2
+            div.columns
+                div.column.is-8
+                    h1.title.is-3= title
+                    h2.sub-title.is-4= message
+
+            form(method='POST' action='/login')
+                div.field.column.is-10
+                    label.label(for='username') Username:
+                    div.control.has-icons-right
+                        input(type='text' class="input" name='username')
+                        span.icon.is-small.is-right
+                            i.fas.fa-check
+                div.field.column.is-2
+                    label.label(for='password') Password:
+                    div.control.has-icons-right
+                        input(type='password' class="input" name='password' )
+                        span.icon.is-small.is-right
+                            i.fas.fa-check
+                div.field.is-grouped
+                    div.control.submit-button
+                        button(type='submit' class='button sub-btn') Login
+
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(src='/scripts/main.js')
         script(src='/scripts/login.js')
+        script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')

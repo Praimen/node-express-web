@@ -151,7 +151,7 @@ app.post('/login',(req,res)=>{
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
-                res.redirect('/policy-list');
+                res.redirect(req.originalUrl);
 
                 client.close();
 
