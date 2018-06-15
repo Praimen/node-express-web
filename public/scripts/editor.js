@@ -71,7 +71,7 @@ $(function(){
 
         if($('button.pub-btn').hasClass('is-success')){
             $('button.pub-btn').removeClass('is-success').addClass('is-outlined is-link is-loading');
-            $('button.pub-btn .fas').removeClass('fa-check').addClass('fa-level-up');
+            $('button.pub-btn .fas').removeClass('fa-check').addClass('fa-angle-double-up');
         }
 
 
@@ -80,7 +80,7 @@ $(function(){
             data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val()}
         }).done(function(data){
             $('button.pub-btn').removeClass('is-loading is-outlined is-link').addClass('is-success');
-            $('button.pub-btn .fas').removeClass('fa-level-up').addClass('fa-check');
+            $('button.pub-btn .fas').removeClass('fa-angle-double-up').addClass('fa-check');
             console.log(data)
         })
     })
