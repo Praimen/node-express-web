@@ -308,7 +308,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                     policytitle: rs2.title
                 };
 
-                pageRenderObj.policycontent = rs.content.bodytext;
+                pageRenderObj.policycontent = rs2.content.bodytext;
                // pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
                 res.render('view-policy', pageRenderObj );
 
