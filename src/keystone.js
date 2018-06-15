@@ -172,8 +172,8 @@ app.post('/login',(req,res)=>{
 
     }else{
 
+        res.render('login', {title: 'Login Form', message: 'Incorrect Login Information '});
 
-        /* res.status(401).json({message:"passwords did not match"});*/
     }
 
 });
@@ -193,10 +193,7 @@ app.get('/policy-list',(req, res) =>{
             title: 1
         };
 
-
         let cursor = db.collection('policies').find(query,{projection:project, sort:{_id:1}});
-
-        // let cursor = db.collection('policies').find({});
 
         cursor.toArray().then(function(result) {
             let rs = result;
@@ -237,11 +234,8 @@ app.get('/policy-list/search',(req, res) =>{
         let cursor =  db.collection('policies').aggregate([
             { $match:  query  },
             { $project: {id: "$_id", text:"$title"} }
-        ])
+        ]);
 
-        //let cursor = db.collection('policies').find(query,{projection:project, sort:{_id:1}});
-
-        // let cursor = db.collection('policies').find({});
 
         cursor.toArray().then(function(result) {
             let rs = result;
@@ -367,28 +361,23 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
         cursor.then(function (result) {
             let rs = result;
-            let contentVersion;
-            console.log(result);
 
             if(!contentVersionNum){
                 contentVersionNum = rs.currentversion;
             }
 
-            let params = {
-                $set:{"currentversion":contentVersionNum,"content": rs.versions[contentVersionNum]}
-            }, project = {
-                _id:1,
-                title:1,
-                currentversion:1,
-                content:1,
+            let contentVersion,
+                project = {
+                    _id:1,
+                    title:1,
+                    currentversion:1
+                },
+                cursor2 = db.collection('policies').findOne(query,{projection:project});
 
-            };
+            cursor2.then(function (result) {
+                console.log(result);
+                let rs2 = result.value;
 
-            let cursor2 = db.collection('policies').findOneAndUpdate(query,params,{returnOriginal:false,projection:project});
-
-            cursor2.then(function (result2) {
-                let rs2 = result2.value;
-                console.log(result2);
                 let pageRenderObj = {
                     title: 'Editor Test',
                     message: 'Successfully saved content for: ' + rs2.title,
@@ -398,12 +387,11 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
                 };
 
-                contentVersion = rs2.content;
-                pageRenderObj.currentversion = contentVersionNum;
-                console.log('Content version %d shoudl be %s',contentVersionNum,rs2.content);
+                contentVersion = rs.versions[contentVersionNum];
 
+                pageRenderObj.currentversion = contentVersionNum;
                 pageRenderObj.editorcontent = contentVersion.bodytext;
-                pageRenderObj.note = rs.versions[contentVersionNum].note;
+                pageRenderObj.note = contentVersion.note;
 
                 res.render('editor', pageRenderObj);
                 client.close();
@@ -413,10 +401,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
 
             })
 
-
-
         }).catch((err) => {
-
             client.close();
             res.render('editor', {
                 title: 'Editor Test',
@@ -450,34 +435,31 @@ app.post('/editor-test',checkJWT,(req,res)=>{
             let query = {_id: policyNumber};
             //TODO aggregate maybe to find the length of the content and compare to version number being proposed by the frontend
             let versionparams = {
-                $set:{"currentversion": contentVersionNum},
+                $set:{"title": req.body.policytitle},
                 $push:{"versions": {versiondate: new Date(),note:req.body.note,bodytext:req.body.editorcontent} }
             };
-
-
             let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
 
             cursor.then(function (result) {
-                console.log(result);
 
-                let params = {
-                    $set:{"title": req.body.policytitle,"currentversion": contentVersionNum},
-                    $push:{"versiondetail": {versiondate: new Date(),note:req.body.note} }
-                };
-
-                let cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
+                let rs = result.value,
+                    params = {
+                        $set:{"title": req.body.policytitle,"currentversion": contentVersionNum,"content":rs.versions[rs.currentversion]}
+                    },
+                    cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
                 cursor2.then(function (result) {
+
                     res.redirect('/editor-test/'+policyNumber+'/'+contentVersionNum);
                     client.close();
+
                 }).catch((err)=> {
                     client.close();
 
                 })
 
-
-
             }).catch((err)=> {
+
                 client.close();
                 res.render('editor', {
                     title: 'Editor Test',
@@ -487,6 +469,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     note: '',
                     contentversionarr: []
                 })
+
             })
         });
 
@@ -511,17 +494,19 @@ app.post('/version-update',checkJWT,(req,res)=>{
 
             const db = client.db('editor');
 
-            let query = {_id: policyNumber};
-            let versionparams = {
-                $set:{"currentversion": contentVersionNum},
-            };
-
-
-            let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
+            let query = {_id: policyNumber},
+                versionparams = {
+                    $set:{"currentversion": contentVersionNum}
+                },
+                cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
 
             cursor.then(function (result) {
-                let rs = result.value;
-                let cursor2 =  db.collection('policies').findOneAndUpdate(query,{$set:{"currentversion": rs.currentversion}},{upsert:true});
+
+                let rs = result.value,
+                    versionparams = {
+                        $set:{"currentversion": rs.currentversion, "content":rs.versions[rs.currentversion]},
+                    },
+                    cursor2 =  db.collection('policies').findOneAndUpdate(query,versionparams,{upsert:true});
 
                 cursor2.then(function (result) {
                     res.json({status:"updated"})
