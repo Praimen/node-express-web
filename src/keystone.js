@@ -212,7 +212,7 @@ app.get('/policy-list',(req, res) =>{
             client.close();
 
         }).catch((err)=> {
-
+            console.log('policy-list error: ' + err);
             client.close();
 
 
@@ -248,7 +248,7 @@ app.get('/policy-list/search',(req, res) =>{
             client.close();
 
         }).catch((err)=> {
-
+            console.log('policy-list search error: ' + err);
             client.close();
 
         });
@@ -383,7 +383,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                     message: 'Successfully saved content for: ' + rs2.title,
                     policynumber: rs2._id,
                     policytitle: rs2.title,
-                    contentversionarr: rs.versions,
+                    contentversionarr: rs.versions
 
                 };
 
@@ -397,11 +397,13 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 client.close();
 
             }).catch((err)=> {
+                console.log(err)
                 client.close();
 
             })
 
         }).catch((err) => {
+            console.log(err)
             client.close();
             res.render('editor', {
                 title: 'Editor Test',
@@ -454,12 +456,13 @@ app.post('/editor-test',checkJWT,(req,res)=>{
                     client.close();
 
                 }).catch((err)=> {
+                    console.log(err)
                     client.close();
 
                 })
 
             }).catch((err)=> {
-
+                console.log(err)
                 client.close();
                 res.render('editor', {
                     title: 'Editor Test',

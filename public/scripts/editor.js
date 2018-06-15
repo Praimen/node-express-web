@@ -13,10 +13,7 @@ $(function(){
         { name: 'Bulma H2 Sub-Title', element: 'h2', attributes: { 'class': 'subtitle is-2' } },
         { name: 'Bulma H3 Sub-Title', element: 'h3', attributes: { 'class': 'subtitle is-3' } },
 
-    ] );
-
-
-
+    ]);
 
     CKEDITOR.replace( 'editor1',{
         stylesSet : 'Bulma_Styles',
@@ -31,7 +28,6 @@ $(function(){
     //setting the version in the select box
     $('.version-list select').val($('input[name=currentversion]').val());
 
-
     //change version on select
     $('.version-list select').on('change',function(){
         let policyNumber = $('input[name=policynumber]').val();
@@ -40,7 +36,6 @@ $(function(){
         if(policyNumber && currentVersionNum){
             window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
         }
-
     });
 
 
@@ -52,11 +47,15 @@ $(function(){
         }else{
             window.location = '/editor-test/';
         }
-
     });
 
     $('button.save-btn').on('click',function(){
-        $('input[name=currentversion]').val($('.version-list select > option').length);
+        let versions = $('.version-list select > option').length;
+        if( versions > 0){
+            $('input[name=currentversion]').val($('.version-list select > option').length);
+        }else{
+            $('input[name=currentversion]').val(0)
+        }
         $('#policy-form').attr('action','/editor-test/').submit()
     });
 
@@ -66,13 +65,12 @@ $(function(){
 
     $('button.view-btn').on('click',function(){
         window.location = '/policy-list';
-    })
+    });
 
-    $('button.set-btn').on('click',function(){
+    $('button.pub-btn').on('click',function(){
         $.ajax({
             method:"POST",
-            url: 'http://keystone.forgegraphics.com/version-update',
-
+            url: 'http://keystone.forgegraphics.com/version-update'
         }).done(function(data){
            console.log(data)
         })
