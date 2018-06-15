@@ -68,15 +68,19 @@ $(function(){
     });
 
     $('button.pub-btn').on('click',function(evt){
-        $('button.pub-btn .fas').removeClass('fas-check');
-        $(this).removeClass('is-success').addClass('is-outlined is-link is-loading');
+
+        if($('button.pub-btn').hasClass('is-success')){
+            $('button.pub-btn').removeClass('is-success').addClass('is-outlined is-link is-loading');
+            $('button.pub-btn .fas').removeClass('fa-check').addClass('fa-level-up');
+        }
+
 
         $.ajax({
             url: 'http://keystone.forgegraphics.com/version-update',
             data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val()}
         }).done(function(data){
-            $(evt.target).removeClass('is-loading is-outlined is-link').addClass('is-success');
-            $('button.pub-btn .fas').addClass('fas-check');
+            $('button.pub-btn').removeClass('is-loading is-outlined is-link').addClass('is-success');
+            $('button.pub-btn .fas').removeClass('fa-level-up').addClass('fa-check');
             console.log(data)
         })
     })
