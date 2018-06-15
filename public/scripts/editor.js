@@ -69,8 +69,9 @@ $(function(){
 
     $('button.pub-btn').on('click',function(){
         $.ajax({
-            method:"POST",
-            url: 'http://keystone.forgegraphics.com/version-update'
+
+            url: 'http://keystone.forgegraphics.com/version-update',
+            data: {currentversion: $('input[name=currentversion]').val()}
         }).done(function(data){
            console.log(data)
         })

@@ -487,12 +487,12 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
 
 
-app.post('/version-update',checkJWT,(req,res)=>{
+app.get('/version-update',checkJWT,(req,res)=>{
 
-    let policyNumber = req.body.policynumber;
-    let contentVersionNum = parseInt(req.body.currentversion,10);
 
-    if(policyNumber){
+    let contentVersionNum = parseInt(req.query.currentversion,10);
+
+
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('editor');
@@ -526,11 +526,6 @@ app.post('/version-update',checkJWT,(req,res)=>{
                 res.json({status:err})
             })
         });
-
-
-    }else{
-        res.redirect('/editor-test')
-    }
 
 
 });
