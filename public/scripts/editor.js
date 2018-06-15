@@ -67,13 +67,17 @@ $(function(){
         window.location = '/policy-list';
     });
 
-    $('button.pub-btn').on('click',function(){
-        $.ajax({
+    $('button.pub-btn').on('click',function(evt){
+        $('button.pub-btn .fas').removeClass('fas-check');
+        $(this).removeClass('is-success').addClass('is-outlined is-link is-loading');
 
+        $.ajax({
             url: 'http://keystone.forgegraphics.com/version-update',
             data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val()}
         }).done(function(data){
-           console.log(data)
+            $(evt.target).removeClass('is-loading is-outlined is-link').addClass('is-success');
+            $('button.pub-btn .fas').addClass('fas-check');
+            console.log(data)
         })
     })
 
