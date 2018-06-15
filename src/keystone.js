@@ -151,7 +151,12 @@ app.post('/login',(req,res)=>{
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
-                res.redirect(req.originalUrl);
+                if(req.body.pathname != "/login" && req.body.pathname != ""){
+                    res.redirect(req.body.pathname);
+                }else{
+                    res.redirect('/editor-test');
+                }
+
 
                 client.close();
 

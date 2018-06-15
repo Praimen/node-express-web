@@ -27,7 +27,10 @@ html
                             input(type='password' class="input" name='password' )
                             span.icon.is-small.is-right
                                 i.fas.fa-check
-                    div.field.is-grouped
+                    div.field.is-grouped.is-grouped-right
+                        input(type='hidden'  name='pathname' )
+                        div.control.cancel-button
+                            button(type='reset' class='button is-danger is-outlined') Cancel
                         div.control.submit-button
                             button(type='submit' class='button is-info is-outlined') Login
 
