@@ -15,12 +15,13 @@ html
             div.control.edit-button
                 button(type='button' class='button edit-btn') Edit Policy
 
-        div.content.cke_editable
+        div.content.box
             div.policy-content!= policycontent
 
 
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js')
         script(type='text/javascript' src='/scripts/view-policy.js')
         script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
 

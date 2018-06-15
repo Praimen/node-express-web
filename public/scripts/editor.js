@@ -23,7 +23,7 @@ $(function(){
     } );
 
     //TODO: preview area - may need this to move to template
-    $('<div class="preview content box">'+ $('#editor1').val() + '</div>').appendTo('body');
+    $($('#editor1').val()).appendTo('.preview.card .content');
 
     //setting the version in the select box
     $('.version-list select').val($('input[name=currentversion]').val());

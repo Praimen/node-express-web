@@ -43,6 +43,7 @@ html
                                     i.fas.fa-check
                     div.editor-container.panel
                         textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
+
                     div.columns
                         div.field.is-horizontal.column.is-10.is-offset-1
                             div.field-label.is-normal
@@ -53,37 +54,44 @@ html
                                         input(type='text' class="input" name='note' value=note)
                                         span.icon.is-left
                                             i.fas.fa-check
-                    div.field
-                        div.control
-                            div.version-list.select.is-info
-                                select
-                                    each content, index in contentversionarr
-                                        option(value=index)
-                                            span.version-date= content.versiondate
-                                            span.version-note= content.note
+
+                    div.columns
+                        div.field.is-horizontal.column.is-10.is-offset-1
+                            div.field-label.is-normal
+                                label.label(for='note') Versions:
+                            div.field-body
+                                div.field
+                                    div.control
+                                        div.version-list.select.is-info
+                                            select
+                                                each content, index in contentversionarr
+                                                    option(value=index)= content.versiondate + ' - ' + content.note
 
 
 
-                    div.field.is-grouped
+                    div.field.is-grouped.is-grouped-right
                         input(type='hidden' name='currentversion' value=currentversion)
+
                         div.control.cancel-button
-                            button.button.is-warning.is-outlined.cancel-btn(type='button')
+                            button.button.is-danger.is-outlined.cancel-btn(type='button')
                                 span.icon.is-small
                                     i.fas.fa-times
                                 span Cancel
+
+                        div.control.view-button
+                            button.button.is-info.is-outlined.view-btn(type='button')
+                                span.icon.is-small
+                                    i.fas.fa-check
+                                span Back To Policy List
+                        div.control.new-button
+                            button(type='button' class='button new-btn') Create New Policy
+
                         div.control.save-button
                             button.button.is-success.is-outlined.save-btn(type='button')
                                 span.icon.is-small
                                     i.fas.fa-check
                                 span Save Policy
 
-                        div.control.new-button
-                            button(type='button' class='button new-btn') Create New Policy
-                        div.control.view-button
-                            button.button.is-info.is-outlined.view-btn(type='button')
-                                span.icon.is-small
-                                    i.fas.fa-check
-                                span View Policy List
                         div.control.publish-button
                             button.button.is-link.is-outlined.pub-btn(type='button')
                                 span.icon.is-small
@@ -92,7 +100,19 @@ html
 
 
 
+            div.preview.card
+                header.card-header
+                    p.card-header-title Policy Edit Preview
+                div.card-content
+                    div.content
+
+            footer.footer
+                div.container
+                    div.content.has-text-centered
+                        p Proprietary Information of Blue Cross and Blue Shield of Alabama
+
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='/scripts/ckeditor/ckeditor.js')
+        script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js')
         script(type='text/javascript' src='/scripts/editor.js')
         script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
