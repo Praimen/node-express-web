@@ -25,8 +25,7 @@ var options = {
   index: false,
   redirect: false,
   setHeaders: function (res, path, stat) {
-    res.set('x-timestamp', Date.now()),
-    res.set('cache-control', 'public, no-cache, max-age=0')
+    res.set({'x-timestamp': Date.now(),'cache-control': 'public, no-cache, max-age=0'})
   }
 };
 
