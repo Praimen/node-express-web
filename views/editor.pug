@@ -43,7 +43,7 @@ html
                                     span.icon.is-small.is-right
                                         i.fas.fa-check
                         div.editor-container.panel
-                            textarea( id='editor1' rows='10' cols='80' name='editorcontent')=editorcontent
+                            textarea( id='editor1' style='display:none' rows='10' cols='80' name='editorcontent')=editorcontent
 
                         div.columns
                             div.field.is-horizontal.column.is-10.is-offset-1
@@ -83,7 +83,7 @@ html
                                 button.button.is-info.is-outlined.view-btn(type='button')
                                     span.icon.is-small
                                         i.fas.fa-check
-                                    span Back To Policy List
+                                    span View Policy
                             div.control.new-button
                                 button(type='button' class='button new-btn') Create New Policy
 
@@ -93,6 +93,12 @@ html
                                         i.fas.fa-check
                                     span Save Policy
 
+                        div.field.is-grouped.is-grouped-right
+                            div.control.draft-button
+                                button.button.is-link.is-outlined.draft-btn(type='button')
+                                    span.icon.is-small
+                                        i.fas.fa-angle-double-up
+                                    span Draft
                             div.control.publish-button
                                 button.button.is-link.is-outlined.pub-btn(type='button')
                                     span.icon.is-small

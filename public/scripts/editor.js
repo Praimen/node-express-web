@@ -64,7 +64,10 @@ $(function(){
     });
 
     $('button.view-btn').on('click',function(){
-        window.location = '/policy-list';
+
+        var URLArr = window.location.pathname.split('/');
+        var policyNumber = URLArr[2];
+        window.location = '/view-policy/'+policyNumber;
     });
 
     $('button.pub-btn').on('click',function(evt){
