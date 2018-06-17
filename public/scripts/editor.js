@@ -25,6 +25,11 @@ $(function(){
     //TODO: preview area - may need this to move to template
     $($('#editor1').val()).appendTo('.preview.card .content');
 
+
+    $('input[name=note]').on('change',function(){
+        $('button.save-btn').removeAttr('disabled');
+    })
+
     //setting the version in the select box
     $('.version-list select').val($('input[name=currentversion]').val());
 
@@ -51,6 +56,7 @@ $(function(){
 
     $('button.save-btn').on('click',function(){
         let versions = $('.version-list select > option').length;
+        $(this).attr('disabled','');
         if( versions > 0){
             $('input[name=currentversion]').val($('.version-list select > option').length);
         }else{
@@ -58,6 +64,8 @@ $(function(){
         }
         $('#policy-form').attr('action','/editor-test/').submit()
     });
+
+
 
     $('button.new-btn').on('click',function(){
         window.location = '/editor-test/';
@@ -74,16 +82,34 @@ $(function(){
 
         if($('button.pub-btn').hasClass('is-success')){
             $('button.pub-btn').removeClass('is-success').addClass('is-outlined is-link is-loading');
-            $('button.pub-btn .fas').removeClass('fa-check').addClass('fa-angle-double-up');
+            $('button.pub-btn .fas').removeClass('fa-check').addClass('fa-file-alt');
         }
 
 
         $.ajax({
             url: 'https://keystone.forgegraphics.com/version-update',
-            data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val()}
+            data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val(),draft:false}
         }).done(function(data){
             $('button.pub-btn').removeClass('is-loading is-outlined is-link').addClass('is-success');
-            $('button.pub-btn .fas').removeClass('fa-angle-double-up').addClass('fa-check');
+            $('button.pub-btn .fas').removeClass('fa-file-alt').addClass('fa-check');
+            console.log(data)
+        })
+    })
+
+    $('button.draft-btn').on('click',function(evt){
+
+        if($('button.draft-btn').hasClass('is-success')){
+            $('button.draft-btn').removeClass('is-success').addClass('is-outlined is-link is-loading');
+            $('button.draft-btn .fas').removeClass('fa-check').addClass('fa-file-alt');
+        }
+
+
+        $.ajax({
+            url: 'https://keystone.forgegraphics.com/version-update',
+            data: {currentversion: $('input[name=currentversion]').val(),policynumber:$('input[name=policynumber]').val(), draft:true}
+        }).done(function(data){
+            $('button.draft-btn').removeClass('is-loading is-outlined is-link').addClass('is-success');
+            $('button.draft-btn .fas').removeClass('fa-file-alt').addClass('fa-check');
             console.log(data)
         })
     })

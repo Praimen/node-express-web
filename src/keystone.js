@@ -156,7 +156,6 @@ app.post('/login',(req,res)=>{
                     res.redirect('/editor-test');
                 }
 
-
                 client.close();
 
             }).catch((err)=> {
@@ -229,11 +228,22 @@ app.get('/policy-list/search',(req, res) =>{
         const db = client.db('editor');
         let searchTerm = req.query.term;
         let query = {$text: { $search: '"\"'+searchTerm+'\""' }};
+        let cursor;
 
-        let cursor =  db.collection('policies').aggregate([
-            { $match:  query  },
-            { $project: {id: "$_id", text:"$title"} }
-        ]);
+        if(req.query.draft){
+            cursor =  db.collection('searchdraft').aggregate([
+                { $match:  query  },
+                { $project: {id: "$_id", text:"$title"} }
+            ]);
+
+        }else{
+
+            cursor =  db.collection('searchfinal').aggregate([
+                { $match:  query  },
+                { $project: {id: "$_id", text:"$title"} }
+            ]);
+        }
+
 
 
         cursor.toArray().then(function(result) {
@@ -258,7 +268,7 @@ app.get('/policy-list/search',(req, res) =>{
 
 
 
-app.get('/view-policy/:policynumber', function (req, res, next) {
+app.get(['/view-policy/:policynumber','/view-policy/:policynumber'], function (req, res, next) {
 
 
     mongo.connect(process.env.DB_CONN,function(err,client) {
@@ -273,6 +283,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
             _id:1,
             title: 1,
             currentversion:1,
+            currentdraftversion:1,
             versions:1
         };
 
@@ -283,17 +294,18 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
         cursor.then(function(result) {
             let rs = result;
             console.log(rs);
-            let contentVersion = rs.currentversion;
-
+            //let contentVersion = rs.currentversion;
+            let project = {
+                _id: 1,
+                title: 1
+            };
             let query = {_id: policynumber};
 
-            project = {
-                _id:1,
-                title:1,
-                content:1,
-                contentversion:1
-
-            };
+            if(req.query.draft){
+                project.draftcontent = 1;
+            }else{
+                project.content = 1;
+            }
 
             let cursor2 = db.collection('policies').findOne(query,{projection:project});
 
@@ -307,7 +319,8 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                     policytitle: rs2.title
                 };
 
-                pageRenderObj.policycontent = rs2.content.bodytext;
+                pageRenderObj.policycontent = rs2.content.bodytext || rs2.draftcontent.bodytext;
+
                // pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
                 res.render('view-policy', pageRenderObj );
 
@@ -446,7 +459,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
                 let rs = result.value,
                     params = {
-                        $set:{"title": req.body.policytitle,"currentversion": contentVersionNum,"content":rs.versions[rs.currentversion]}
+                        $set:{"title": req.body.policytitle,"currentversion": contentVersionNum}
                     },
                     cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
@@ -497,19 +510,58 @@ app.get('/version-update',checkJWT,(req,res)=>{
 
             const db = client.db('editor');
 
-            let query = {_id: req.query.policynumber},
+            let query = {_id: req.query.policynumber};
+
+            let versionparams;
+
+            if(req.query.draft){
+                versionparams = {
+                    $set:{"currentdraftversion": contentVersionNum}
+                };
+            }else{
                 versionparams = {
                     $set:{"currentversion": contentVersionNum}
-                },
-                cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
+                };
+            }
+
+            let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
 
             cursor.then(function (result) {
 
-                let rs = result.value,
+                let rs = result.value;
+                let versionparams ;
+                let staticParams = {
+                    "_id":rs._id,
+                    "title":rs.title
+                }
+                let dynamicParams;
+
+                if(req.query.draft){
+                    dynamicParams = {
+                        "currentdraftversion": rs.currentdraftversion,
+                        "draftcontent":rs.versions[rs.currentdraftversion]
+                    };
+
                     versionparams = {
-                        $set:{"currentversion": rs.currentversion, "content":rs.versions[rs.currentversion]},
-                    },
-                    cursor2 =  db.collection('policies').findOneAndUpdate(query,versionparams,{upsert:true});
+                        $set:{staticParams,dynamicParams}
+                    };
+                    db.collection('searchdraft').findOneAndUpdate(query,versionparams,{upsert:true})
+                }else{
+
+                    dynamicParams = {
+                        "currentversion": rs.currentversion,
+                        "content":rs.versions[rs.currentversion]
+                    };
+                    versionparams = {
+                        $set:{staticParams,dynamicParams}
+                    };
+                    db.collection('searchfinal').findOneAndUpdate(query,versionparams,{upsert:true})
+                }
+
+                let params = {
+                    $set:{staticParams,dynamicParams}
+                };
+                let cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
                 cursor2.then(function (result) {
                     res.json({status:"updated"})
