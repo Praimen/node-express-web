@@ -546,8 +546,8 @@ app.get('/version-update',checkJWT,(req,res)=>{
                     db.collection('searchdraft').findOneAndUpdate(query,versionparams,{upsert:true})
                 }else{
 
-                    dynamicParams.currentdraftversion = rs.currentversion;
-                    dynamicParams.draftcontent = rs.versions[rs.currentversion];
+                    dynamicParams.currentversion = rs.currentversion;
+                    dynamicParams.content = rs.versions[rs.currentversion];
 
                     versionparams = {
                         $set: dynamicParams
