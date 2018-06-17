@@ -322,7 +322,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                 if(req.query.draft){
                     pageRenderObj.policycontent =  rs2.draftcontent.bodytext;
                 }else{
-                    pageRenderObj.policycontent = rs2.content.bodytext 
+                    pageRenderObj.policycontent = rs2.content.bodytext
                 }
 
 

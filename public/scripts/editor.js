@@ -78,6 +78,13 @@ $(function(){
         window.location = '/view-policy/'+policyNumber;
     });
 
+    $('button.view-draft-btn').on('click',function(){
+
+        var URLArr = window.location.pathname.split('/');
+        var policyNumber = URLArr[2];
+        window.location = '/view-policy/'+policyNumber+'?draft=true';
+    });
+
     $('button.pub-btn').on('click',function(evt){
 
         if($('button.pub-btn').hasClass('is-success')){
