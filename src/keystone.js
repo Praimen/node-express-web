@@ -530,36 +530,33 @@ app.get('/version-update',checkJWT,(req,res)=>{
 
                 let rs = result.value;
                 let versionparams ;
-                let staticParams = {
+                var dynamicParams = {
                     "_id":rs._id,
                     "title":rs.title
-                }
-                let dynamicParams;
+                };
 
                 if(req.query.draft){
-                    dynamicParams = {
-                        "currentdraftversion": rs.currentdraftversion,
-                        "draftcontent":rs.versions[rs.currentdraftversion]
-                    };
+                    dynamicParams.currentdraftversion = rs.currentdraftversion;
+                    dynamicParams.draftcontent = rs.versions[rs.currentdraftversion];
+
 
                     versionparams = {
-                        $set:{staticParams,dynamicParams}
+                        $set: dynamicParams
                     };
                     db.collection('searchdraft').findOneAndUpdate(query,versionparams,{upsert:true})
                 }else{
 
-                    dynamicParams = {
-                        "currentversion": rs.currentversion,
-                        "content":rs.versions[rs.currentversion]
-                    };
+                    dynamicParams.currentdraftversion = rs.currentversion;
+                    dynamicParams.draftcontent = rs.versions[rs.currentversion];
+
                     versionparams = {
-                        $set:{staticParams,dynamicParams}
+                        $set: dynamicParams
                     };
                     db.collection('searchfinal').findOneAndUpdate(query,versionparams,{upsert:true})
                 }
 
                 let params = {
-                    $set:{staticParams,dynamicParams}
+                    $set: dynamicParams
                 };
                 let cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
