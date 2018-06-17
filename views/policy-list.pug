@@ -12,7 +12,7 @@ html
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
-        div.policy-tabs.tabs.is-centered.is-boxed.is-toggle
+        div.columns.policy-tabs.tabs.is-centered.is-boxed.is-toggle
             ul
                 li.final-tab.is-active
                     a
@@ -21,10 +21,10 @@ html
                     a
                         span Draft
 
-            div.policy-list.column.is-8.is-offset-2
-                select(style='width:100%' class='policy-search')
+        div.policy-list.columns.is-8.is-offset-2
+            select(style='width:100%' class='policy-search')
 
-
+        div.columns
             ul
                 each policy in policylistarr
                     li

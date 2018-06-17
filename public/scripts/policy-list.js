@@ -7,14 +7,19 @@ $(function(){
         window.location = '/policy-list';
     })
 
-    $('.policy-tabs .draft-tab').on('click',function(){
-        policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search?draft=true';
+    $('.policy-tabs li').on('click',function(){
+        $('.policy-tabs li').remove('is-active');
+        if($(this).hasClass('draft-tab')){
+            $(this).addClass('is-active')
+            policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search?draft=true';
+        }else{
+            $(this).addClass('is-active')
+            policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search';
+        }
+
     })
 
-    $('.policy-tabs .final-tab').on('click',function(){
 
-        policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search';
-    })
 
     $('select.policy-search').select2({
         minimumInputLength: 2,
