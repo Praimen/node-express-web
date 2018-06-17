@@ -8,7 +8,7 @@ $(function(){
     })
 
     $('.policy-tabs li').on('click',function(){
-        $('.policy-tabs li').remove('is-active');
+        $('.policy-tabs li').removeClass('is-active');
         if($(this).hasClass('draft-tab')){
             $(this).addClass('is-active')
             policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search?draft=true';
