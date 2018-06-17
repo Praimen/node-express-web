@@ -268,7 +268,7 @@ app.get('/policy-list/search',(req, res) =>{
 
 
 
-app.get(['/view-policy/:policynumber','/view-policy/:policynumber'], function (req, res, next) {
+app.get('/view-policy/:policynumber', function (req, res, next) {
 
 
     mongo.connect(process.env.DB_CONN,function(err,client) {
@@ -327,6 +327,7 @@ app.get(['/view-policy/:policynumber','/view-policy/:policynumber'], function (r
                 client.close();
             }).catch((err)=> {
                 client.close();
+                console.log(err)
                 let pageRenderObj = {
                     title: 'View Policy Error',
                     message: 'unable to view policy at this time: '+ err,
