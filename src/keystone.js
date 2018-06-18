@@ -388,6 +388,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
         let query = {_id: policyNumber},
         project = {
             _id:1,
+            title:1,
             versions:1,
             currentversion:1,
             currentdraftversion:1,
