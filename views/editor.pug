@@ -6,6 +6,10 @@ html
         link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
         link(rel='stylesheet' href='/styles/editor.css')
 
+        script.
+            var currentVersion = versionnum
+            var draftVersion = draftversionnum
+
 
     body.editor
         div.columns
@@ -67,11 +71,6 @@ html
                                                 select
                                                     each content, index in contentversionarr
                                                         -var date = content.versiondate
-                                                        if index == content.currentdraftversion
-                                                            option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
-                                                        else if index == content.currentversion
-                                                            option.final(value=index)= date + ' - ' + content.note + '(Final)'
-                                                        else
                                                             option(value=index)= date + ' - ' + content.note
 
                         div.field.is-grouped.is-grouped-right

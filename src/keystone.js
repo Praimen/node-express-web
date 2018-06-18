@@ -407,7 +407,9 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                     message: 'Successfully saved content for: ' + rs2.title,
                     policynumber: rs2._id,
                     policytitle: rs2.title,
-                    contentversionarr: rs.versions
+                    contentversionarr: rs.versions,
+                    draftversionnum: rs.currentdraftversion,
+                    versionnum: rs.currentversion
 
                 };
 
