@@ -87,11 +87,11 @@ $(function(){
     });
 
     $('button.plist-btn').on('click',function(){
-        window.location = '/policy-list/';
+        window.location = '/policy-list';
     });
 
     $('button.new-btn').on('click',function(){
-        window.location = '/editor-test/';
+        window.location = '/editor-test';
     });
 
     $('button.view-final-btn').on('click',function(){
