@@ -26,9 +26,9 @@ html
                             input(type='text' class="input" name='policysearch' placeholder='(Policy Number)')
                             span.icon.is-small.is-right
                                 i.fas.fa-search
-
+                    h4 Undrafted Policy List
                     ul
-                        li  retractable Policy List goes here
+
 
                 div.editor-form.column.is-9
                     form(id='policy-form' method='POST' action='/editor-test')
@@ -81,19 +81,30 @@ html
                         div.field.is-grouped.is-grouped-right
                             input(type='hidden' name='currentversion' value=currentversion)
 
+                            div.control.plist-button
+                                button.button.is-info.is-outlined.plist-btn.is-hidden(type='button')
+                                    span.icon.is-small
+                                        i.fas.fa-angle-double-left
+                                    span Policy List
 
                             div.control.view-draft-button
                                 button.button.is-warning.is-outlined.view-draft-btn.is-hidden(type='button')
                                     span.icon.is-small
                                         i.fas.fa-check
                                     span View Draft Policy
+
                             div.control.view-button
                                 button.button.is-info.is-outlined.view-final-btn.is-hidden(type='button')
                                     span.icon.is-small
                                         i.fas.fa-check
                                     span View Final Policy
+
                             div.control.new-button
-                                button(type='button' class='button new-btn') Create New Policy
+                                button.button.is-info.is-outlined.new-btn.is-hidden(type='button')
+                                    span.icon.is-small
+                                        i.fas.fa-file-alt
+                                    span Create New Policy
+
 
 
 
@@ -102,7 +113,7 @@ html
                                 button.button.is-danger.cancel-btn(type='button')
                                     span.icon.is-small
                                         i.fas.fa-times
-                                    span Cancel
+                                    span Cancel Edits
 
                             div.control.draft-button
                                 button.button.is-warning.draft-btn(type='button')

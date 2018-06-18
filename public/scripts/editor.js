@@ -32,7 +32,7 @@ $(function(){
     }).done(function(data){
         for (var i = 0; i < data.length; i++) {
             var obj = data[i];
-            var policyString = '<li><a name="editor-test/'+ obj._id +'">'+ obj._id +' - '+ obj.title +'</a></li>';
+            var policyString = '<li><a href="editor-test/'+ obj._id +'">'+ obj._id +' - '+ obj.title +'</a></li>';
         }
         $('.policy-list ul').append(policyString);
     })
@@ -86,7 +86,9 @@ $(function(){
         $('#policy-form').attr('action','/editor-test/').submit()
     });
 
-
+    $('button.back-btn').on('click',function(){
+        window.location = '/policy-list/';
+    });
 
     $('button.new-btn').on('click',function(){
         window.location = '/editor-test/';
