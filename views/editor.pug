@@ -71,6 +71,11 @@ html
                                                 select
                                                     each content, index in contentversionarr
                                                         -var date = content.versiondate
+                                                        if index == #{versionnum}
+                                                            option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
+                                                        else if index == #{draftversionnum}
+                                                            option.final(value=index)= date + ' - ' + content.note + '(Final)'
+                                                        else
                                                             option(value=index)= date + ' - ' + content.note
 
                         div.field.is-grouped.is-grouped-right
