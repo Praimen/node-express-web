@@ -3,6 +3,13 @@
  */
 $(function(){
 
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
     $('button.view-btn').on('click',function(){
         window.location = '/policy-list';
     })
@@ -10,7 +17,11 @@ $(function(){
     $('button.edit-btn').on('click',function(){
         var URLArr = window.location.pathname.split('/');
         var policyNumber = URLArr[2];
-        window.location = '/editor-test/'+policyNumber;
+        if(getUrlParameter('draft') == 'true'){
+            window.location = '/editor-test/'+policyNumber+'?draft=true';
+        }else{
+            window.location = '/editor-test/'+policyNumber;
+        }
 
     })
 
