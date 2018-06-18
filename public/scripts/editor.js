@@ -47,7 +47,7 @@ $(function(){
     }
 
 
-    $('input[name=note]').on('change',function(){
+    $('input[name=note]').on('input',function(){
         $('button.save-btn').removeAttr('disabled');
     })
 
