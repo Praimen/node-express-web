@@ -182,8 +182,13 @@ app.get('/policy-list',(req, res) =>{
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
+        let query;
+        if(req.query.uncat){
+            query = {content: {  $eq: null  }};
+        }else{
+            query = {content: { $not: { $eq: null } }};
+        }
 
-        let query = {content: { $not: { $eq: null } }};
         let project;
 
         project = {
@@ -197,16 +202,22 @@ app.get('/policy-list',(req, res) =>{
             let rs = result;
             console.log(rs);
 
-            let pageRenderObj = {
-                title: "Policy List",
-                message: 'here is the list of policies',
-                policylistarr: rs,
-                policytitle:'',
-                policynumber:'',
-                policycontent:''
-            };
+            if(req.query.uncat){
+                res.json(rs)
+            }else{
+                let pageRenderObj = {
+                    title: "Policy List",
+                    message: 'here is the list of policies',
+                    policylistarr: rs,
+                    policytitle:'',
+                    policynumber:'',
+                    policycontent:''
+                };
 
-            res.render('policy-list', pageRenderObj );
+                res.render('policy-list', pageRenderObj );
+            }
+
+
             client.close();
 
         }).catch((err)=> {
@@ -386,7 +397,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
             let rs = result;
 
             if(!contentVersionNum){
-                contentVersionNum = rs.currentversion || 0;
+                contentVersionNum = rs.currentdraftversion || 0;
             }
 
             let contentVersion,
@@ -472,7 +483,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
                 let rs = result.value,
                     params = {
-                        $set:{"title": req.body.policytitle,"currentversion": contentVersionNum}
+                        $set:{"title": req.body.policytitle,"currentdraftversion": contentVersionNum}
                     },
                     cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 

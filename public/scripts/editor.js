@@ -26,6 +26,23 @@ $(function(){
     $($('#editor1').val()).appendTo('.preview.card .content');
 
 
+
+    $.ajax({
+        url: 'https://keystone.forgegraphics.com/policy-list?uncat=true'
+    }).done(function(data){
+              console.log(data)
+    })
+
+
+    if(currentVersion >=0){
+        $('.view-final-btn').removeClass('is-hidden')
+    }
+
+    if(draftVersion >=0){
+        $('.view-draft-btn').removeClass('is-hidden')
+    }
+
+
     $('input[name=note]').on('change',function(){
         $('button.save-btn').removeAttr('disabled');
     })
@@ -71,7 +88,7 @@ $(function(){
         window.location = '/editor-test/';
     });
 
-    $('button.view-btn').on('click',function(){
+    $('button.view-final-btn').on('click',function(){
 
         var URLArr = window.location.pathname.split('/');
         var policyNumber = URLArr[2];

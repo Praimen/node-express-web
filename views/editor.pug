@@ -7,8 +7,8 @@ html
         link(rel='stylesheet' href='/styles/editor.css')
 
         script.
-            var currentVersion = #{versionnum}
-            var draftVersion = #{draftversionnum}
+            var currentVersion = #{versionnum};
+            var draftVersion = #{draftversionnum};
 
 
     body.editor
@@ -73,26 +73,22 @@ html
                                                         -var date = content.versiondate
                                                         if index == versionnum
                                                             option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
-                                                        else if index == draftversionnum
+                                                        if index == draftversionnum
                                                             option.final(value=index)= date + ' - ' + content.note + '(Final)'
-                                                        else
+                                                        if index != versionnum && index != draftversionnum
                                                             option(value=index)= date + ' - ' + content.note
 
                         div.field.is-grouped.is-grouped-right
                             input(type='hidden' name='currentversion' value=currentversion)
 
-                            div.control.cancel-button
-                                button.button.is-danger.is-outlined.cancel-btn(type='button')
-                                    span.icon.is-small
-                                        i.fas.fa-times
-                                    span Cancel
+
                             div.control.view-draft-button
-                                button.button.is-warning.is-outlined.view-draft-btn(type='button')
+                                button.button.is-warning.is-outlined.view-draft-btn.is-hidden(type='button')
                                     span.icon.is-small
                                         i.fas.fa-check
                                     span View Draft Policy
                             div.control.view-button
-                                button.button.is-info.is-outlined.view-btn(type='button')
+                                button.button.is-info.is-outlined.view-final-btn.is-hidden(type='button')
                                     span.icon.is-small
                                         i.fas.fa-check
                                     span View Final Policy
@@ -102,11 +98,12 @@ html
 
 
                         div.field.is-grouped.is-grouped-right
-                            div.control.save-button
-                                button.button.is-success.save-btn(type='button')
+                            div.control.cancel-button
+                                button.button.is-danger.cancel-btn(type='button')
                                     span.icon.is-small
-                                        i.fas.fa-check
-                                    span Save Policy
+                                        i.fas.fa-times
+                                    span Cancel
+
                             div.control.draft-button
                                 button.button.is-warning.draft-btn(type='button')
                                     span.icon.is-small
@@ -117,6 +114,11 @@ html
                                     span.icon.is-small
                                         i.fas.fa-file-alt
                                     span Publish To Final
+                            div.control.save-button
+                                button.button.is-success.save-btn(disabled='' type='button')
+                                    span.icon.is-small
+                                        i.fas.fa-check
+                                    span Save Policy
 
 
 
