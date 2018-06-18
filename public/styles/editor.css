@@ -1,1 +1,8 @@
-.editor-
+option.final{
+    font-weight: bold;
+}
+
+option.final{
+    font-weight: bold;
+    font-style: italic;
+}

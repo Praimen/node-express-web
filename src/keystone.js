@@ -560,6 +560,9 @@ app.get('/version-update',checkJWT,(req,res)=>{
                     "_id":rs._id,
                     "title":rs.title
                 };
+                let policyState = {
+                    status: "updated"
+                }
 
                 if(req.query.draft){
                     dynamicParams.currentdraftversion = rs.currentdraftversion;
@@ -570,6 +573,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
                         $set: dynamicParams
                     };
                     db.collection('searchdraft').findOneAndUpdate(query,versionparams,{upsert:true})
+                    policyState.final = 'draft'
                 }else{
 
                     dynamicParams.currentversion = rs.currentversion;
@@ -579,6 +583,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
                         $set: dynamicParams
                     };
                     db.collection('searchfinal').findOneAndUpdate(query,versionparams,{upsert:true})
+                    policyState.final = 'final'
                 }
 
                 let params = {
@@ -587,7 +592,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
                 let cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
                 cursor2.then(function (result) {
-                    res.json({status:"updated"})
+                    res.json(policyState)
                     client.close();
                 }).catch((err)=> {
                     res.json({status:err})
