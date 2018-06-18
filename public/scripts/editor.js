@@ -32,7 +32,7 @@ $(function(){
     }).done(function(data){
         for (var i = 0; i < data.length; i++) {
             var obj = data[i];
-            var policyString = '<li><a href="editor-test/'+ obj._id +'">'+ obj._id +' - '+ obj.title +'</a></li>';
+            var policyString = '<li><a href="/editor-test/'+ obj._id +'">'+ obj._id +' - '+ obj.title +'</a></li>';
         }
         $('.policy-list ul').append(policyString);
     })
@@ -141,7 +141,7 @@ $(function(){
         }).done(function(data){
             $('button.draft-btn').removeClass('is-loading is-outlined is-link').addClass('is-success');
             $('button.draft-btn .fas').removeClass('fa-file-alt').addClass('fa-check');
-            $('button.view-final-btn').removeClass('is-hidden')
+            $('button.view-final-btn').removeClass('is-hidden');
             console.log(data)
         })
     })
