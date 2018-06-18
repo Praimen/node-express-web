@@ -193,7 +193,9 @@ app.get('/policy-list',(req, res) =>{
 
         project = {
             _id:1,
-            title: 1
+            title: 1,
+            currentversion:1,
+            currentdraftversion:1
         };
 
         let cursor = db.collection('policies').find(query,{projection:project, sort:{_id:1}});

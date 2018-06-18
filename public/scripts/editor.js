@@ -30,7 +30,11 @@ $(function(){
     $.ajax({
         url: 'https://keystone.forgegraphics.com/policy-list?uncat=true'
     }).done(function(data){
-              console.log(data)
+        for (var i = 0; i < data.length; i++) {
+            var obj = data[i];
+            var policyString = '<li><a name="editor-test/'+ obj._id +'">'+ obj._id +' - '+ obj.title +'</a></li>';
+        }
+        $('.policy-list ul').append(policyString);
     })
 
 
