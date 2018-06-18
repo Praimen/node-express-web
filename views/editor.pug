@@ -74,9 +74,9 @@ html
                                                 select
                                                     each content, index in contentversionarr
                                                         -var date = content.versiondate
-                                                        if index == versionnum
-                                                            option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
                                                         if index == draftversionnum
+                                                            option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
+                                                        if index == versionnum
                                                             option.final(value=index)= date + ' - ' + content.note + '(Final)'
                                                         if index != versionnum && index != draftversionnum
                                                             option(value=index)= date + ' - ' + content.note
