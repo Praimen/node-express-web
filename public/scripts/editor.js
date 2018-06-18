@@ -38,11 +38,11 @@ $(function(){
     })
 
 
-    if(currentVersion >=0){
+    if((currentVersion) && currentVersion >=0){
         $('.view-final-btn').removeClass('is-hidden')
     }
 
-    if(draftVersion >=0){
+    if((currentVersion) && draftVersion >=0){
         $('.view-draft-btn').removeClass('is-hidden')
     }
 
