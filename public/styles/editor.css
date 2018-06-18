@@ -2,7 +2,6 @@ option.final{
     font-weight: bold;
 }
 
-option.final{
-    font-weight: bold;
+option.draft{
     font-style: italic;
 }
