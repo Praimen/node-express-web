@@ -184,7 +184,7 @@ app.get('/policy-list',(req, res) =>{
         const db = client.db('editor');
         let query;
         if(req.query.uncat){
-            query = {content: {  $eq: null  }};
+            query = {draftcontent: {  $eq: null  }};
         }else{
             query = {content: { $not: { $eq: null } }};
         }
