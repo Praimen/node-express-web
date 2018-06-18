@@ -320,8 +320,10 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
                 };
 
                 if(req.query.draft){
+                    pageRenderObj.draft = true;
                     pageRenderObj.policycontent =  rs2.draftcontent.bodytext;
                 }else{
+                    pageRenderObj.draft = false;
                     pageRenderObj.policycontent = rs2.content.bodytext
                 }
 
@@ -375,6 +377,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
             _id:1,
             versions:1,
             currentversion:1,
+            currentdraftversion:1,
         };
 
         let cursor = db.collection('versions').findOne(query,{projection:project});
@@ -390,7 +393,8 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 project = {
                     _id:1,
                     title:1,
-                    currentversion:1
+                    currentversion:1,
+                    currentdraftversion:1
                 },
                 cursor2 = db.collection('policies').findOne(query,{projection:project});
 

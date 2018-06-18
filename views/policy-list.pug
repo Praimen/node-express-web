@@ -12,19 +12,19 @@ html
         h2.title.is-2= title
         h3.sub-title.is-3= message
 
-        div.columns.policy-tabs.tabs.is-centered.is-boxed.is-toggle
+        div.policy-tabs.tabs.is-centered.is-boxed.is-8.is-offset-2
             ul
                 li.final-tab.is-active
                     a
-                        span Final
+                        span Search Final Medical Policies
                 li.draft-tab
                     a
-                        span Draft
+                        span Search Draft Medical Policies
 
-        div.policy-list.columns.is-8.is-offset-2
+        div.policy-list.column.is-8.is-offset-2
             select(style='width:100%' class='policy-search')
 
-        div.columns
+        div.column.is-8.is-offset-2
             ul
                 each policy in policylistarr
                     li

@@ -66,9 +66,13 @@ html
                                             div.version-list.select.is-info.is-fullwidth
                                                 select
                                                     each content, index in contentversionarr
-                                                        option(value=index)= content.versiondate + ' - ' + content.note
-
-
+                                                        -var date = content.versiondate
+                                                        if index == content.currentdraftversion
+                                                            option.draft(value=index)= date + ' - ' + content.note + '(Draft)'
+                                                        else if index == content.currentversion
+                                                            option.final(value=index)= date + ' - ' + content.note + '(Final)'
+                                                        else
+                                                            option(value=index)= date + ' - ' + content.note
 
                         div.field.is-grouped.is-grouped-right
                             input(type='hidden' name='currentversion' value=currentversion)
