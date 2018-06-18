@@ -38,11 +38,11 @@ $(function(){
     })
 
 
-    if((currentVersion) && currentVersion >=0){
+    if((typeof currentVersion !== "undefined") && currentVersion >=0){
         $('.view-final-btn').removeClass('is-hidden')
     }
 
-    if((currentVersion) && draftVersion >=0){
+    if((typeof draftVersion !== "undefined") && draftVersion >=0){
         $('.view-draft-btn').removeClass('is-hidden')
     }
 
