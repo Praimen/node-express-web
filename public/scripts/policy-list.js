@@ -5,7 +5,7 @@ $(function(){
 
     var policyType = 'final';
     var policyQueryString = {
-        final:'',
+        final:'?final=true',
         draft:'?draft=true'
     };
     var policyURL = {
