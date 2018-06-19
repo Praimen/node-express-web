@@ -73,6 +73,6 @@ $(function(){
 
     });
 
-    loadPolicyList()
+    loadPolicyList(policyQueryString.final)
 
 });
