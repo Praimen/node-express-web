@@ -221,10 +221,6 @@ app.get('/policy-list',(req, res) =>{
                 res.render('policy-list', pageRenderObj );
             }
 
-
-
-
-
             client.close();
 
         }).catch((err)=> {
@@ -288,89 +284,60 @@ app.get('/policy-list/search',(req, res) =>{
 
 app.get('/view-policy/:policynumber', function (req, res, next) {
 
-
     mongo.connect(process.env.DB_CONN,function(err,client) {
 
         const db = client.db('editor');
         let policynumber = req.params.policynumber;
-        console.log('policy number', policynumber);
-        let query = {_id: policynumber};
-        let project;
 
-        project = {
-            _id:1,
-            title: 1,
-            currentversion:1,
-            currentdraftversion:1,
-            versions:1
+        let project = {
+            _id: 1,
+            title: 1
         };
+        let query = {_id: policynumber};
 
-        let cursor = db.collection('versions').findOne(query,{projection:project});
+        if(req.query.draft){
+            project.draftcontent = 1;
+        }else{
+            project.content = 1;
+        }
 
+        let cursor = db.collection('policies').findOne(query,{projection:project});
 
-
-        cursor.then(function(result) {
+        cursor.then(function (result) {
             let rs = result;
-            console.log(rs);
-            //let contentVersion = rs.currentversion;
-            let project = {
-                _id: 1,
-                title: 1
+            console.log(rs)
+            let pageRenderObj = {
+                title: 'Policy #' +rs._id,
+                message: 'last modified: ',
+                policynumber: rs._id,
+                policytitle: rs.title
             };
-            let query = {_id: policynumber};
 
             if(req.query.draft){
-                project.draftcontent = 1;
+                pageRenderObj.draft = true;
+                pageRenderObj.policycontent =  rs.draftcontent.bodytext;
             }else{
-                project.content = 1;
+                pageRenderObj.draft = false;
+                pageRenderObj.policycontent = rs.content.bodytext
             }
 
-            let cursor2 = db.collection('policies').findOne(query,{projection:project});
 
-            cursor2.then(function (result2) {
-                let rs2 = result2;
+           // pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
+            res.render('view-policy', pageRenderObj );
 
-                let pageRenderObj = {
-                    title: 'Policy #' +rs2._id,
-                    message: 'last modified: ',
-                    policynumber: rs2._id,
-                    policytitle: rs2.title
-                };
-
-                if(req.query.draft){
-                    pageRenderObj.draft = true;
-                    pageRenderObj.policycontent =  rs2.draftcontent.bodytext;
-                }else{
-                    pageRenderObj.draft = false;
-                    pageRenderObj.policycontent = rs2.content.bodytext
-                }
-
-
-
-               // pageRenderObj.date = rs.versiondetail[contentVersion].versiondate;
-                res.render('view-policy', pageRenderObj );
-
-                client.close();
-            }).catch((err)=> {
-                client.close();
-                console.log(err)
-                let pageRenderObj = {
-                    title: 'View Policy Error',
-                    message: 'unable to view policy at this time: '+ err,
-                    policynumber: "",
-                    policytitle: ""
-                };
-
-                res.render('view-policy', pageRenderObj );
-            })
-
-
-        }).catch((err)=> {
-            console.log('policy view error ', err);
             client.close();
+        }).catch((err)=> {
+            client.close();
+            console.log(err)
+            let pageRenderObj = {
+                title: 'View Policy Error',
+                message: 'unable to view policy at this time: '+ err,
+                policynumber: "",
+                policytitle: ""
+            };
 
-
-        });
+            res.render('view-policy', pageRenderObj );
+        })
 
     });
 
@@ -408,44 +375,28 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
                 contentVersionNum = rs.currentdraftversion || 0;
             }
 
-            let contentVersion,
-                project = {
-                    _id:1,
-                    title:1,
-                    currentversion:1,
-                    currentdraftversion:1
-                },
-                cursor2 = db.collection('policies').findOne(query,{projection:project});
+            var contentVersion = rs.versions[contentVersionNum];
 
-            cursor2.then(function (result) {
-                console.log(result);
-                let rs2 = result;
+            let pageRenderObj = {
+                title: 'Editor Test',
+                message: 'Successfully saved content for: ' + rs.title,
+                policynumber: rs._id,
+                policytitle: rs.title,
+                contentversionarr: rs.versions,
+                draftversionnum: rs.currentdraftversion,
+                versionnum: rs.currentversion
 
-                let pageRenderObj = {
-                    title: 'Editor Test',
-                    message: 'Successfully saved content for: ' + rs2.title,
-                    policynumber: rs2._id,
-                    policytitle: rs2.title,
-                    contentversionarr: rs.versions,
-                    draftversionnum: rs.currentdraftversion,
-                    versionnum: rs.currentversion
+            };
 
-                };
 
-                contentVersion = rs.versions[contentVersionNum];
+            pageRenderObj.currentversion = contentVersionNum;
+            pageRenderObj.editorcontent = contentVersion.bodytext;
+            pageRenderObj.note = contentVersion.note;
 
-                pageRenderObj.currentversion = contentVersionNum;
-                pageRenderObj.editorcontent = contentVersion.bodytext;
-                pageRenderObj.note = contentVersion.note;
+            res.render('editor', pageRenderObj);
+            client.close();
 
-                res.render('editor', pageRenderObj);
-                client.close();
 
-            }).catch((err)=> {
-                console.log(err)
-                client.close();
-
-            })
 
         }).catch((err) => {
             console.log(err)
