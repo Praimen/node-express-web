@@ -185,6 +185,8 @@ app.get('/policy-list',(req, res) =>{
         let query;
         if(req.query.uncat){
             query = {draftcontent: {  $eq: null  }};
+        }else if (req.query.draft){
+            query = {draftcontent: { $not: { $eq: null } }};
         }else{
             query = {content: { $not: { $eq: null } }};
         }

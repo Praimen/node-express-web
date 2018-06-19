@@ -2,8 +2,20 @@
  * Created by Praimen on 5/29/2018.
  */
 $(function(){
-    var policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search';
+
     var policyType = 'final';
+    var policyQueryString = {
+        final:'',
+        draft:'?draft=true'
+    };
+    var policyURL = {
+        search: 'https://keystone.forgegraphics.com/policy-list/search',
+        policylist: 'https://keystone.forgegraphics.com/policy-list',
+    };
+    var policyListSearchURL = policyURL.search,
+        policyListStaticURL = policyURL.policylist;
+
+
     $('button.view-btn').on('click',function(){
         window.location = '/policy-list';
     })
@@ -13,14 +25,31 @@ $(function(){
         if($(this).hasClass('draft-tab')){
             policyType = 'draft';
             $(this).addClass('is-active')
-            policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search?draft=true';
+
+            policyListStaticURL = policyURL.policylist + policyQueryString[policyType];
+            policyListSearchURL = policyURL.search + policyQueryString[policyType];
         }else{
             policyType = 'final';
-            $(this).addClass('is-active')
-            policyListSearchURL = 'https://keystone.forgegraphics.com/policy-list/search';
+            $(this).addClass('is-active');
+            policyListStaticURL = policyURL.policylist + policyQueryString[policyType];
+            policyListSearchURL = policyURL.search + policyQueryString[policyType];
         }
 
+        $.ajax({
+            url: policyListStaticURL
+        }).done(function(data){
+            let queryString = policyQueryString[policyType];
+            var policyListString;
+            for (let i = 0; i < data.length; i++) {
+                let obj = data[i];
+                policyListString += '<li><a href="/view-policy/'+ obj._id + queryString+'">'+ obj._id +' - '+ obj.title +'</a></li>';
+            }
+            $('.policy-list ul').empty().append(policyListString);
+        })
+
     })
+
+
 
 
 
