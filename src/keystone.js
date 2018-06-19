@@ -208,18 +208,20 @@ app.get('/policy-list',(req, res) =>{
 
             if(req.query.uncat || req.query.draft || req.query.final){
                 res.json(rs)
+            }else{
+                let pageRenderObj = {
+                    title: "Policy List",
+                    message: 'here is the list of policies',
+                    policylistarr: rs,
+                    policytitle:'',
+                    policynumber:'',
+                    policycontent:''
+                };
+
+                res.render('policy-list', pageRenderObj );
             }
 
-            let pageRenderObj = {
-                title: "Policy List",
-                message: 'here is the list of policies',
-                policylistarr: rs,
-                policytitle:'',
-                policynumber:'',
-                policycontent:''
-            };
 
-            res.render('policy-list', pageRenderObj );
 
 
 
@@ -367,7 +369,7 @@ app.get('/view-policy/:policynumber', function (req, res, next) {
             console.log('policy view error ', err);
             client.close();
 
-            res.redirect('/policy-list')
+
         });
 
     });
@@ -599,7 +601,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
                     res.json(policyState)
                     client.close();
                 }).catch((err)=> {
-                    res.json({status:err})
+
                     client.close();
 
                 })
