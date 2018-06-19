@@ -442,7 +442,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
 
                 let rs = result.value,
                     params = {
-                        $set:{"title": req.body.policytitle,"currentdraftversion": contentVersionNum}
+                        $set:{"title": req.body.policytitle}
                     },
                     cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
 
