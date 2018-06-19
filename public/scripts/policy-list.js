@@ -15,6 +15,19 @@ $(function(){
     var policyListSearchURL = policyURL.search,
         policyListStaticURL = policyURL.policylist;
 
+    function loadPolicyList(){
+        $.ajax({
+            url: policyListStaticURL
+        }).done(function(data){
+            let queryString = policyQueryString[policyType];
+            var policyListString ='';
+            for (let i = 0; i < data.length; i++) {
+                let obj = data[i];
+                policyListString += '<li><a href="/view-policy/'+ obj._id + queryString+'">'+ obj._id +' - '+ obj.title +'</a></li>';
+            }
+            $('.policy-list ul').empty().append(policyListString);
+        })
+    }
 
     $('button.view-btn').on('click',function(){
         window.location = '/policy-list';
@@ -35,18 +48,7 @@ $(function(){
             policyListSearchURL = policyURL.search + policyQueryString[policyType];
         }
 
-        $.ajax({
-            url: policyListStaticURL
-        }).done(function(data){
-            let queryString = policyQueryString[policyType];
-            var policyListString;
-            for (let i = 0; i < data.length; i++) {
-                let obj = data[i];
-                policyListString += '<li><a href="/view-policy/'+ obj._id + queryString+'">'+ obj._id +' - '+ obj.title +'</a></li>';
-            }
-            $('.policy-list ul').empty().append(policyListString);
-        })
-
+        loadPolicyList()
     })
 
 
@@ -73,5 +75,7 @@ $(function(){
         }
 
     });
+
+    loadPolicyList()
 
 });
