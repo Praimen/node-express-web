@@ -206,20 +206,20 @@ app.get('/policy-list',(req, res) =>{
             let rs = result;
             console.log(rs);
 
-            if(req.query.uncat){
+            //if(req.query.uncat || req.query.draft){
                 res.json(rs)
-            }else{
-                let pageRenderObj = {
-                    title: "Policy List",
-                    message: 'here is the list of policies',
-                    policylistarr: rs,
-                    policytitle:'',
-                    policynumber:'',
-                    policycontent:''
-                };
+            //}
+            let pageRenderObj = {
+                title: "Policy List",
+                message: 'here is the list of policies',
+                policylistarr: rs,
+                policytitle:'',
+                policynumber:'',
+                policycontent:''
+            };
 
-                res.render('policy-list', pageRenderObj );
-            }
+            res.render('policy-list', pageRenderObj );
+
 
 
             client.close();
