@@ -17,7 +17,7 @@ $(function(){
 
     function loadPolicyList(){
         $.ajax({
-            url: function(){ return policyListStaticURL},
+            url: function(){ return policyListStaticURL}(),
         }).done(function(data){
             let queryString = policyQueryString[policyType];
             var policyListString ='';
