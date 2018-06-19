@@ -17,7 +17,7 @@ $(function(){
 
     function loadPolicyList(){
         $.ajax({
-            url: policyListStaticURL
+            url: function(){ return policyListStaticURL},
         }).done(function(data){
             let queryString = policyQueryString[policyType];
             var policyListString ='';
@@ -50,7 +50,7 @@ $(function(){
         minimumInputLength: 2,
         ajax: {
             delay: 250,
-            url: policyListSearchURL,
+            url:function(){ return policyListSearchURL},
             dataType: 'json'
             // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
         }
