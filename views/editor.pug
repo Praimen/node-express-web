@@ -6,12 +6,25 @@ html
         link(rel='stylesheet' href='//keystone.forgegraphics.com/styles/main.css')
         link(rel='stylesheet' href='/styles/editor.css')
 
-        if versionnum
+
             script.
-                var currentVersion = #{versionnum} ;
-        if draftversionnum
-            script.
-                var draftVersion = #{draftversionnum} ;
+                var currentVersion, draftVersion;
+                try{
+                    currentVersion = #{versionnum};
+                }catch(e){
+
+                }
+
+                try {
+                    draftVersion = #{draftversionnum};
+                } catch (e) {
+
+                }
+
+
+
+
+
 
 
     body.editor
