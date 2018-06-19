@@ -12,8 +12,8 @@ $(function(){
         search: 'https://keystone.forgegraphics.com/policy-list/search',
         policylist: 'https://keystone.forgegraphics.com/policy-list',
     };
-    var policyListSearchURL = policyURL.search,
-        policyListStaticURL = policyURL.policylist;
+    var policyListSearchURL = policyURL.search + policyQueryString[policyType],
+        policyListStaticURL = policyURL.policylist + policyQueryString[policyType];
 
     function loadPolicyList(){
         $.ajax({
@@ -38,21 +38,12 @@ $(function(){
         if($(this).hasClass('draft-tab')){
             policyType = 'draft';
             $(this).addClass('is-active')
-
-            policyListStaticURL = policyURL.policylist + policyQueryString[policyType];
-            policyListSearchURL = policyURL.search + policyQueryString[policyType];
         }else{
             policyType = 'final';
             $(this).addClass('is-active');
-            policyListStaticURL = policyURL.policylist + policyQueryString[policyType];
-            policyListSearchURL = policyURL.search + policyQueryString[policyType];
         }
-
         loadPolicyList()
     })
-
-
-
 
 
     $('select.policy-search').select2({
