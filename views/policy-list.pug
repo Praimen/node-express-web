@@ -26,17 +26,12 @@ html
 
         div.policy-list.column.is-8.is-offset-2
             ul
-                each policy in policylistarr
-                    li
-                        a(href="view-policy/"+policy._id class="policy-link")
-                            span(class='policy-list-number')=policy._id
-                            span(class='policy-list-title')=policy.title
 
 
-            div.policy-view
-                div.policy-title= policytitle
-                div.policy-number= policynumber
-                div.policy-content= policycontent
+        div.policy-view
+            div.policy-title= policytitle
+            div.policy-number= policynumber
+            div.policy-content= policycontent
 
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js')
