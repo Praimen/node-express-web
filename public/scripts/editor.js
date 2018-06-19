@@ -39,11 +39,11 @@ $(function(){
     })
 
 
-    if((typeof currentVersion !== "undefined") && currentVersion >=0){
+    if((currentVersion !== '') && parseInt(currentVersion,10)  >=0){
         $('.view-final-btn').removeClass('is-hidden')
     }
 
-    if((typeof draftVersion !== "undefined") && draftVersion >=0){
+    if((draftVersion !== '') && parseInt(draftVersion,10) >=0){
         $('.view-draft-btn').removeClass('is-hidden')
     }
 
