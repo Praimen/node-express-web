@@ -1,0 +1,11 @@
+
+.policy-menu{
+    z-index:100;
+    background-color: #1d75b3;
+    padding: 1rem;
+    left:50%;
+    top:0%;
+    position: fixed;
+    transform:translateX(-50%) translateY(0px);
+ }
+
