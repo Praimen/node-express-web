@@ -40,11 +40,11 @@ $(function(){
         if($(this).hasClass('draft-tab')){
             $(this).addClass('is-active')
             policyListSearchURL = policyURL.search + policyQueryString.draft;
-            loadPolicyList(policyQueryString.draft)
+           // loadPolicyList(policyQueryString.draft)
         }else{
             $(this).addClass('is-active');
             policyListSearchURL = policyURL.search + policyQueryString.final;
-            loadPolicyList(policyQueryString.final)
+           // loadPolicyList(policyQueryString.final)
         }
 
     })
@@ -73,6 +73,6 @@ $(function(){
 
     });
 
-    loadPolicyList(policyQueryString.final)
+    //loadPolicyList(policyQueryString.final)
 
 });

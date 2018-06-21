@@ -8,31 +8,39 @@ html
         link(rel='stylesheet' href='/styles/policy-list.css')
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
 
-    body.container.is-widescreen
-        h2.title.is-2= title
-        h3.sub-title.is-3= message
+    body.is-widescreen
+        div.container
+            h2.title.is-2= title
+            h3.sub-title.is-3= message
 
-        div.policy-tabs.tabs.is-centered.is-boxed.is-8.is-offset-2
-            ul
-                li.final-tab.is-active
-                    a
-                        span Search Final Medical Policies
-                li.draft-tab
-                    a
-                        span Search Draft Medical Policies
+            div.policy-tabs.tabs.is-centered.is-boxed.is-8.is-offset-2
+                ul
+                    li.final-tab.is-active
+                        a
+                            span Search Final Medical Policies
+                    li.draft-tab
+                        a
+                            span Search Draft Medical Policies
 
-        div.column.is-8.is-offset-2
-            select(style='width:100%' class='policy-search')
+            div.column.is-8.is-offset-2
+                select(style='width:100%' class='policy-search')
 
-        div.policy-list.column.is-8.is-offset-2
-            ul
+            div.policy-list.column.is-8.is-offset-2
+                ul
 
 
-        div.policy-view
-            div.policy-title= policytitle
-            div.policy-number= policynumber
-            div.policy-content= policycontent
+            div.policy-view
+                div.policy-title= policytitle
+                div.policy-number= policynumber
+                div.policy-content= policycontent
 
+        video(autoplay loop id="video-background" muted plays-inline)
+            source(src="https://player.vimeo.com/external/158148793.hd.mp4?s=8e8741dbee251d5c35a759718d4b0976fbf38b6f&profile_id=119&oauth2_token_id=57447761" type="video/mp4")
+
+        footer.footer
+            div.container
+                div.content.has-text-centered
+                    p Proprietary Information of Blue Cross and Blue Shield of Alabama
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js')
         script(type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js')
         script(type='text/javascript' src='/scripts/policy-list.js')
