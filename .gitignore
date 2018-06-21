@@ -11,3 +11,6 @@ index.js
 .env
 /scripts/ckeditor
 ckeditor/
+public/styles/Medical_Outline_SVG/
+public/images/
+
