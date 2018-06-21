@@ -1,5 +1,5 @@
-#video-background {
-    /*  making the video fullscreen  */
+/*#video-background {
+    !*  making the video fullscreen  *!
     position: fixed;
     right: 0;
     bottom: 0;
@@ -9,16 +9,16 @@
     height: auto;
     opacity: .05;
     z-index: -100;
-}
+}*/
 
-body {
+/*body {
 
-    /*  Background fallback in case of IE8 & down, or in case video doens't load, such as with slower connections  */
+    !*  Background fallback in case of IE8 & down, or in case video doens't load, such as with slower connections  *!
 
     background-attachment: fixed;
     background-size: cover;
     background-color: rgba(135, 167, 187, 0.1);
-}
+}*/
 
 .container{
     /*margin-bottom: 20rem;*/
@@ -26,4 +26,23 @@ body {
 
 .policy-tabs{
     padding-bottom: 3rem;
+}
+
+.fixed-title{
+    position: fixed;
+}
+.fixed-title h1{
+    color:whitesmoke;
+    margin-top: 1em;
+    padding-left:1em;
+    width:40rem;
+    background-color: rgba(89,177,232,0.51);
+}
+
+.fixed-image{
+    width:100%;
+    height: 800px;
+    background-attachment: fixed;
+    background-size:cover;
+    background-color: url('/images/background/rp-clipboard-editing.jpg');
 }
