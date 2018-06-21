@@ -10,7 +10,7 @@
     "stop-keystone": "pm2 stop keystone",
     "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-character-build && npm run build && npm run serve",
     "key-serve": "pm2 start keystone.js -i 0",
-    "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin editor-test && npm run build && npm run key-serve && npm run serve"
+    "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin theming && npm run build && npm run key-serve && npm run serve"
   },
   "author": "",
   "license": "ISC",
