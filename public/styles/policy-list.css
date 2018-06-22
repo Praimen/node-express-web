@@ -29,7 +29,7 @@
 }
 
 .policy-search{
-    right: 50%;
+    background-color: rgba(43, 50, 56, 0.25);
 }
 
 .fixed-title{
@@ -72,7 +72,7 @@
 .page-container{
     position: absolute;
     top: 0;
-    transform: translateY(150%);
+    transform: translateY(50%);
 }
 
 .select2-element{
@@ -81,4 +81,8 @@
 
 .trans-blue{
     background-color: rgba(89,177,232,0.5);
+}
+footer{
+    position: fixed;
+    bottom: -50px;
 }
