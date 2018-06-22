@@ -52,9 +52,11 @@ $(function(){
 
     $('select.policy-search').select2({
         containerCssClass:'column is-6 select2-element',
-        containerCss:'width:""',
+
         minimumInputLength: 2,
-       
+        dropdownAutoWidth:true,
+        dropdownCssClass:'select2-dropdown-element',
+
         dropdownParent:$('.policy-search'),
         ajax: {
             delay: 250,
