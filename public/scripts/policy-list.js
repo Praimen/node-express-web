@@ -56,6 +56,7 @@ $(function(){
         minimumInputLength: 2,
         dropdownAutoWidth:true,
         dropdownCssClass:'select2-dropdown-element',
+        dropdownCss:'',
         dropdownParent:$('.policy-search'),
         ajax: {
             delay: 250,
