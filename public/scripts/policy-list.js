@@ -66,7 +66,7 @@ $(function(){
     //$("select.select2").data('select2').dropdown.$dropdown.addClass('select2-dropdown-element')
     //$("select.select2").data('select2').container.$container.addClass('column is-6 select2-element')
 
-    $('select.policy-search').on('select2:select', function (e) {
+    $('.policy-search select').on('select2:select', function (e) {
         let data = e.params.data;
         console.log(data);
         if($('.policy-tabs li.final-tab').hasClass('is-active')){

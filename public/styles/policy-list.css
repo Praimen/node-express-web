@@ -75,13 +75,12 @@
     transform: translateY(50%);
 }
 
-.select2-element{
-    background-color: rgba(43, 50, 56, 0.25);
-}
 
 .trans-blue{
     background-color: rgba(89,177,232,0.5);
 }
+
+
 footer.footer{
     padding: 0;
     position: fixed;
@@ -95,6 +94,8 @@ footer.footer{
     color: #fff;
     z-index: 1;
 }
+
+
 
 .select2-container--default .select2-selection--single {
     background-color: #fafafa;
