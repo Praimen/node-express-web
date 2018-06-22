@@ -9,18 +9,16 @@ html
         link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
 
     body.is-widescreen
-        div.fixed-title
-            h1.title.is-1= title
-            h6.sub-title.is-6= message
-
-
         div.fixed-image
             div.image-overlay
+        div.fixed-title
+            h1.title.is-1= title
+            h6.subtitle.is-6= message
 
-        div.page-container.column
+        div.page-container.column.is-12
 
 
-            div.policy-tabs.tabs.is-centered.is-8.is-offset-2
+            div.policy-tabs.tabs.is-centered.is-toggle
                 ul
                     li.final-tab.is-active
                         a
@@ -29,9 +27,12 @@ html
                         a
                             span Draft Medical Policies
 
-            div.column.is-8.is-offset-2
-                h3.subtitle.is-4 Search Medical Policies
-                select(style='width:100%' class='policy-search')
+            div.columns.search-band
+                div.trans-blue.column.is-2
+                div.trans-blue.left-of-search.column.is-1
+                select(style='width:100%' class='column is-6 is-offset-3 policy-search')
+                div.trans-blue.column.right-of-search.is-1
+                div.trans-blue.column.right-of-search.is-2
 
             div.policy-list.column.is-8.is-offset-2
                 ul

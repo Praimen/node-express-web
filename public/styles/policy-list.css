@@ -28,6 +28,10 @@
     padding-bottom: 3rem;
 }
 
+.policy-search{
+    right: 50%;
+}
+
 .fixed-title{
     position: fixed;
     margin-top: 1rem;
@@ -55,9 +59,23 @@
     background-image: url('/images/backgrounds/rp-clipboard-editing.jpg');
 }
 
-image-overlay{
+.image-overlay{
     width:100%;
     height:100%;
     background-color: #0d418c;
     opacity:.3;
+}
+
+.page-container{
+    position: absolute;
+    top: 0;
+    transform: translateY(150%);
+}
+
+.select2-element{
+    background-color: rgba(43, 50, 56, 0.25);
+}
+
+.trans-blue{
+    background-color: rgba(89,177,232,0.5);
 }
