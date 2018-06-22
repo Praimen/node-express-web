@@ -38,7 +38,7 @@ $(function(){
     $('.policy-tabs li').on('click',function(){
         $('.policy-tabs li').removeClass('is-active');
         if($(this).hasClass('draft-tab')){
-            $(this).addClass('is-active')
+            $(this).addClass('is-active');
             policyListSearchURL = policyURL.search + policyQueryString.draft;
             loadPolicyList(policyQueryString.draft)
         }else{
@@ -51,11 +51,9 @@ $(function(){
 
 
     $('select.policy-search').select2({
-        containerCssClass:'column is-6 select2-element',
-
+        width:'""',
         minimumInputLength: 2,
-        dropdownAutoWidth:true,
-        dropdownCssClass:'select2-dropdown-element',
+
 
         dropdownParent:$('.policy-search'),
         ajax: {
@@ -67,6 +65,9 @@ $(function(){
             // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
         }
     });
+
+    $("select.select2").data('select2').dropdown.$dropdown.addClass('select2-dropdown-element')
+    $("select.select2").data('select2').container.$container.addClass('column is-6 select2-element')
 
     $('select.policy-search').on('select2:select', function (e) {
         let data = e.params.data;
