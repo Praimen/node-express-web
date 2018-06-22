@@ -82,7 +82,7 @@
 .trans-blue{
     background-color: rgba(89,177,232,0.5);
 }
-footer{
+footer.footer{
     padding: 0;
     position: fixed;
     bottom: 0px;
