@@ -50,7 +50,7 @@ $(function(){
     })
 
 
-    $('select.policy-search').select2({
+    $('.policy-search select').select2({
 
         minimumInputLength: 2,
         ajax: {
