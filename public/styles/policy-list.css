@@ -28,13 +28,7 @@ html,body{
     /*margin-bottom: 20rem;*/
 }
 
-.policy-tabs{
 
-}
-
-.policy-search{
-    background-color: rgba(169, 181, 191, 0.25);
-}
 
 .fixed-title{
     position: fixed;
@@ -76,21 +70,13 @@ html,body{
 .page-container{
     position: absolute;
     top: 0;
-    transform: translateY(50%);
+    transform: translateY(20rem);
 }
 
 
 .trans-blue{
     background-color: rgba(89,177,232,0.5);
 }
-
-
-footer.footer{
-    padding: 0;
-    position: fixed;
-    bottom: 0px;
-}
-
 
 .tabs.is-toggle li.is-active a {
     background-color: #0097f1;
@@ -114,3 +100,22 @@ footer.footer{
     border-radius: 0px;
     margin-top: -2rem;
 }
+
+
+.policy-tabs{
+
+}
+
+.policy-search{
+    background-color: rgba(169, 181, 191, 0.25);
+}
+
+
+footer.footer{
+    padding: 0;
+    position: fixed;
+    bottom: 0px;
+}
+
+
+
