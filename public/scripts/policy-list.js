@@ -51,6 +51,7 @@ $(function(){
 
 
     $('.policy-search select').select2({
+        width:'94%',
         dropdownParent: $('.policy-search'),
         minimumInputLength: 2,
         ajax: {
