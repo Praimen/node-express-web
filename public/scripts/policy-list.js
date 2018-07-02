@@ -52,6 +52,7 @@ $(function(){
 
     $('.policy-search select').select2({
         width:'94%',
+        dropdownCSSClass:'policy-dropdown',
         dropdownParent: $('.policy-search'),
         minimumInputLength: 2,
         ajax: {
