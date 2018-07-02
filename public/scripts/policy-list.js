@@ -51,7 +51,7 @@ $(function(){
 
 
     $('.policy-search select').select2({
-
+        dropdownParent: $('.policy-search'),
         minimumInputLength: 2,
         ajax: {
             delay: 250,

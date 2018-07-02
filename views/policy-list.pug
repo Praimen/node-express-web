@@ -9,17 +9,23 @@ html
         link(rel='stylesheet' href='/styles/policy-list.css')
 
 
-    body.is-widescreen
+    body.is-widescreen.hero
         div.fixed-image
             div.image-overlay
-        div.fixed-title
-            h1.title.is-1= title
-            h6.subtitle.is-6= message
-
-        div.page-container.column.is-12
 
 
-            div.policy-tabs.tabs.is-centered.is-toggle
+        div.page-container.container
+
+            div.fixed-title
+                h1.title.is-1
+                    span.first-word Medical
+                    span.second-word Policies
+
+                h6.subtitle.is-6= message
+
+            div.fixed-header
+
+            div.policy-tabs.column.is-8.is-offset-2.tabs.is-right.is-boxed
                 ul
                     li.final-tab.is-active
                         a
@@ -28,22 +34,20 @@ html
                         a
                             span Draft Medical Policies
 
-            div.columns.search-band
-                div.trans-blue.column.is-2
-                div.trans-blue.left-of-search.column.is-1
-                div.column.is-6.policy-search
+            div.columns.search-container
+
+                div.policy-search.column.is-8.is-offset-2
                     select(style='width:100%')
-                div.trans-blue.column.right-of-search.is-1
-                div.trans-blue.column.right-of-search.is-2
+
 
             div.policy-list.column.is-8.is-offset-2
                 ul
 
 
-            div.policy-view
-                div.policy-title= policytitle
-                div.policy-number= policynumber
-                div.policy-content= policycontent
+                div.policy-view
+                    div.policy-title= policytitle
+                    div.policy-number= policynumber
+                    div.policy-content= policycontent
 
         //- video(autoplay loop id="video-background" muted plays-inline)
             source(src="https://player.vimeo.com/external/158148793.hd.mp4?s=8e8741dbee251d5c35a759718d4b0976fbf38b6f&profile_id=119&oauth2_token_id=57447761" type="video/mp4")
