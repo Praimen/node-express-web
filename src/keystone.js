@@ -30,14 +30,7 @@ var options = {
   }
 };
 
-const esClient = new elasticsearch.Client({
-    host: '127.0.0.1:9200',
-    log: 'error'
-});
 
-const search = function search(index, body) {
-    return esClient.search({index: index, body: body});
-};
 
 server.listen(4000, () => console.log('Example app listening on port 4000!'));
 
@@ -246,6 +239,15 @@ app.get('/policy-list',(req, res) =>{
 
 
 app.get('/policy-list/search',(req, res) =>{
+
+    const esClient = new elasticsearch.Client({
+        host: 'localhost:9200',
+        log: 'error'
+    });
+
+    const search = function search(index, body) {
+        return esClient.search({index: index, body: body});
+    };
 
     let queryObj = {
         size: 5,
