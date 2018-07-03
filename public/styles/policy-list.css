@@ -29,9 +29,7 @@ html,body{
     width: 300px;
     height: 150px;
     top: -405px;
-    left: 20px;
     position: absolute;
-    transform: translate(29%,0);
     border-bottom: 7px solid #49a5d9;
     background: url(/images/BCBS_logo-mem.png) left 38px top 70px no-repeat #051731;
 }
@@ -148,6 +146,7 @@ h1 .second-word{
     border-radius: 0px;
     margin-top:-2rem;
     margin-left: 2.5rem;
+    box-shadow: 1px 1px 0 0 #cccccc;
 }
 
 .policy-list{

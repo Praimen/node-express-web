@@ -31,6 +31,13 @@ $(function(){
         })
     }
 
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
     $('button.view-btn').on('click',function(){
         window.location = '/policy-list';
     })
@@ -55,7 +62,7 @@ $(function(){
         dropdownCSSClass:'policy-dropdown',
         minimumInputLength: 2,
         ajax: {
-            delay: 500,
+            delay: 100,
             url: function(){
                 return policyListSearchURL
             },
@@ -78,6 +85,15 @@ $(function(){
 
     });
 
-    loadPolicyList(policyQueryString.final)
+    if(getUrlParameter('draft')){
+        $('.policy-tabs li.draft-tab').trigger('click')
+
+    }else{
+        $('.policy-tabs li.final-tab').trigger('click')
+    }
+
+
+
+
 
 });
