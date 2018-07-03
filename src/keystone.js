@@ -83,7 +83,7 @@ app.post('/registration', function (req, res) {
     if(req.body.username != "" && req.body.password != ""){
 
         
-        mongo.connect(process.env.DB_CONN,function(err,client) {
+        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
             const db = client.db('game');
 
@@ -137,7 +137,7 @@ app.post('/login',(req,res)=>{
     if(req.body.username != "" && req.body.password != ""){
 
 
-        mongo.connect(process.env.DB_CONN,function(err,client) {
+        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
             const db = client.db('game');
             let query = {"_id":req.body.username};
@@ -179,7 +179,7 @@ app.post('/login',(req,res)=>{
 
 app.get('/policy-list',(req, res) =>{
 
-    mongo.connect(process.env.DB_CONN,function(err,client) {
+    mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
         const db = client.db('editor');
         let query;
@@ -237,7 +237,7 @@ app.get('/policy-list',(req, res) =>{
 
 app.get('/policy-list/search',(req, res) =>{
 
-    mongo.connect(process.env.DB_CONN,function(err,client) {
+    mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
         const db = client.db('editor');
         let searchTerm = req.query.term;
@@ -284,7 +284,7 @@ app.get('/policy-list/search',(req, res) =>{
 
 app.get('/view-policy/:policynumber', function (req, res, next) {
 
-    mongo.connect(process.env.DB_CONN,function(err,client) {
+    mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
         const db = client.db('editor');
         let policynumber = req.params.policynumber;
@@ -354,7 +354,7 @@ app.get(['/editor-test/:policynumber','/editor-test/:policynumber/:currentversio
         console.log('here are the policynumbner %s and the version %s', policyNumber, contentVersionNum);
     }
 
-    mongo.connect(process.env.DB_CONN,function(err,client) {
+    mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
         const db = client.db('editor');
         let query = {_id: policyNumber},
@@ -426,7 +426,7 @@ app.post('/editor-test',checkJWT,(req,res)=>{
     let contentVersionNum = (isNaN(parseInt(req.body.currentversion,10))) ? 0 : parseInt(req.body.currentversion,10);
 
     if(policyNumber){
-        mongo.connect(process.env.DB_CONN,function(err,client) {
+        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
             const db = client.db('editor');
 
@@ -489,7 +489,7 @@ app.get('/version-update',checkJWT,(req,res)=>{
     let contentVersionNum = parseInt(req.query.currentversion,10);
 
 
-        mongo.connect(process.env.DB_CONN,function(err,client) {
+        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
             const db = client.db('editor');
 
