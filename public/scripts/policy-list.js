@@ -85,7 +85,7 @@ $(function(){
 
     });
 
-    if(getUrlParameter('draft')){
+    if(getUrlParameter('draft') || getUrlParameter('draft_view') ){
         $('.policy-tabs li.draft-tab').trigger('click')
 
     }else{

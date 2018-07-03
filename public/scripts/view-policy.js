@@ -13,7 +13,7 @@ $(function(){
     $('button.view-btn').on('click',function(){
 
         if(getUrlParameter('draft') == 'true'){
-            window.location = '/policy-list?draft=true';
+            window.location = '/policy-list?draft_view=true';
         }else{
             window.location = '/policy-list';
         }
