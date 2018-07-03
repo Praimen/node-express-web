@@ -26,14 +26,14 @@ html,body{
 }
 
 .fixed-header {
-    width: 335px;
+    width: 300px;
     height: 150px;
-    background-color: #051731;
     top: -405px;
+    left: 20px;
     position: absolute;
     transform: translate(29%,0);
-    border-bottom: 5px solid #49a5d9;
-    background: url('/images/BCBS_logo-mem.png') left top no-repeat #051731;
+    border-bottom: 7px solid #49a5d9;
+    background: url(/images/BCBS_logo-mem.png) left 38px top 70px no-repeat #051731;
 }
 
 .fixed-image{
@@ -83,6 +83,7 @@ h1 .second-word{
     width:90%;
     color: #fefefe;
     font-style: italic;
+    display: none;
 }
 
 .policy-tabs{
