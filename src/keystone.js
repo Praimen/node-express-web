@@ -86,7 +86,7 @@ app.post('/registration', function (req, res) {
     if(req.body.username != "" && req.body.password != ""){
 
         
-        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
+        mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('game');
 
@@ -140,7 +140,7 @@ app.post('/login',(req,res)=>{
     if(req.body.username != "" && req.body.password != ""){
 
 
-        mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
+        mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('game');
             let query = {"_id":req.body.username};
