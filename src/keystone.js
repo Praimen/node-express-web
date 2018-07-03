@@ -257,8 +257,8 @@ app.get('/policy-list/search',(req, res) =>{
             multi_match:{
                 query: req.query.term,
                 fields:['title','_id','content.bodytext'],
-                minimum_should_match: 3,
-                fuzziness: 2
+                minimum_should_match: 2
+
             }
 
         }
