@@ -66,13 +66,17 @@ $(function(){
     });
 
 
-    $('button.cancel-btn').on('click',function(){
+    $('button.cancel-btn').on('click',function() {
         let policyNumber = $('input[name=policynumber]').val();
         let currentVersionNum = $('.version-list select > option').length - 1;
-        if(policyNumber && currentVersionNum >= 0){
-            window.location = '/editor-test/'+policyNumber+'/'+currentVersionNum;
+        if (policyNumber){
+            if (currentVersionNum >= 0 ) {
+                window.location = '/editor-test/' + policyNumber + '/' + currentVersionNum;
+            }        else        {
+                window.location = '/editor-test/' + policyNumber
+            }
         }else{
-            window.location = '/editor-test/';
+            window.location = '/editor-test/'
         }
     });
 

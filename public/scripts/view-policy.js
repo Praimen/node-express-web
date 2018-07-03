@@ -11,7 +11,12 @@ $(function(){
     };
 
     $('button.view-btn').on('click',function(){
-        window.location = '/policy-list';
+
+        if(getUrlParameter('draft') == 'true'){
+            window.location = '/policy-list?draft=true';
+        }else{
+            window.location = '/policy-list';
+        }
     })
 
     $('button.edit-btn').on('click',function(){
