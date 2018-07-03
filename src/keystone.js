@@ -252,13 +252,17 @@ app.get('/policy-list/search',(req, res) =>{
     let queryObj = {
         size: 5,
         from: 0,
+        query:{
 
-        multi_match:{
-            query: req.query.term,
-            fields:['title','_id','content.bodytext']
-        },
-        minimum_should_match: 3,
-        fuzziness: 2
+            multi_match:{
+                query: req.query.term,
+                fields:['title','_id','content.bodytext']
+            },
+            minimum_should_match: 3,
+            fuzziness: 2
+        }
+
+
     };
 
     search('editor', queryObj)
