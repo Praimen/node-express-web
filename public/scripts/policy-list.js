@@ -55,7 +55,7 @@ $(function(){
         dropdownCSSClass:'policy-dropdown',
         minimumInputLength: 2,
         ajax: {
-            delay: 250,
+            delay: 500,
             url: function(){
                 return policyListSearchURL
             },

@@ -248,6 +248,7 @@ app.get('/policy-list/search',(req, res) =>{
     const search = function search(index, body) {
         return esClient.search({index: index, body: body});
     };
+    let resultsArray =[];
 
     let queryObj = {
         size: 5,
@@ -270,13 +271,25 @@ app.get('/policy-list/search',(req, res) =>{
         .then(results => {
             console.log(`found ${results.hits.total} items in ${results.took}ms`);
             console.log(`returned article titles:`);
-            results.hits.hits.forEach(
-                (hit, index) => console.log(
-                    `\t${queryObj.from + ++index} - ${hit._source.title}`
-                )
-            )
-        })
-        .catch(console.error);
+
+            let jsonObj = {
+                "results": resultsArray
+            };
+
+
+
+           results.hits.hits.forEach(
+                (hit, index) => {
+
+                        resultsArray.push({"id":hit._id,"text":hit._source.title})
+
+                }
+            );
+
+            return jsonObj;
+        }).then((jsonObj)=>{
+            res.json( jsonObj);
+        }).catch(console.error);
 
 
 
