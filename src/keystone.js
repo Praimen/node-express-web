@@ -2,6 +2,7 @@ require('dotenv').config();
 const compression = require('compression');
 const express = require('express');
 const app = express();
+const elasticsearch = require('elasticsearch');
 
 var mongo = require('mongodb').MongoClient;
 var server = require('http').Server(app);
@@ -27,6 +28,15 @@ var options = {
   setHeaders: function (res, path, stat) {
     res.set({'x-timestamp': Date.now(),'cache-control': 'public, no-cache, max-age=0'})
   }
+};
+
+const esClient = new elasticsearch.Client({
+    host: '127.0.0.1:9200',
+    log: 'error'
+});
+
+const search = function search(index, body) {
+    return esClient.search({index: index, body: body});
 };
 
 server.listen(4000, () => console.log('Example app listening on port 4000!'));
@@ -237,7 +247,33 @@ app.get('/policy-list',(req, res) =>{
 
 app.get('/policy-list/search',(req, res) =>{
 
-    mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
+    let queryObj = {
+        size: 5,
+        from: 0,
+
+        multi_match:{
+            query: req.query.term,
+            fields:['title','_id','content.bodytext']
+        },
+        minimum_should_match: 3,
+        fuzziness: 2
+    };
+
+    search('editor', queryObj)
+        .then(results => {
+            console.log(`found ${results.hits.total} items in ${results.took}ms`);
+            console.log(`returned article titles:`);
+            results.hits.hits.forEach(
+                (hit, index) => console.log(
+                    `\t${queryObj.from + ++index} - ${hit._source.title}`
+                )
+            )
+        })
+        .catch(console.error);
+
+
+
+    /*mongo.connect(process.env.DB_ATLAS_URI,function(err,client) {
 
         const db = client.db('editor');
         let searchTerm = req.query.term;
@@ -276,7 +312,7 @@ app.get('/policy-list/search',(req, res) =>{
 
         });
 
-    });
+    });*/
 
 });
 
