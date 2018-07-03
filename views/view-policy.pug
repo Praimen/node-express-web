@@ -7,20 +7,20 @@ html
         link(rel='stylesheet' href='/styles/view-policy.css')
 
 
-    body.container.is-widescreen
+    body.is-widescreen
 
+        div.container
+            div.policy-menu.field.is-grouped.is-grouped-right.column.is-12
+                div.control.view-button
+                    button(type='button' class='button view-btn') Policy List
+                div.control.edit-button
+                    button(type='button' class='button edit-btn') Edit Policy
 
-        div.policy-menu.field.is-grouped.is-grouped-right.column.is-12
-            div.control.view-button
-                button(type='button' class='button view-btn') Policy List
-            div.control.edit-button
-                button(type='button' class='button edit-btn') Edit Policy
-
-        div.preview.card.content
-            header.card-header
-                p.card-header-title= policynumber + ' - ' + policytitle
-            div.card-content
-                div.policy-content!= policycontent
+            div.preview.card.content
+                header.card-header
+                    p.card-header-title= policynumber + ' - ' + policytitle
+                div.card-content
+                    div.policy-content!= policycontent
 
 
 

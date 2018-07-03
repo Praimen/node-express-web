@@ -71,9 +71,9 @@ $(function(){
         let data = e.params.data;
         console.log(data);
         if($('.policy-tabs li.final-tab').hasClass('is-active')){
-            window.location = "/view-policy/"+data._id+policyQueryString.final
+            window.location = "/view-policy/"+data.id+policyQueryString.final
         }else if($('.policy-tabs li.draft-tab').hasClass('is-active')){
-            window.location = "/view-policy/"+data._id+policyQueryString.draft
+            window.location = "/view-policy/"+data.id+policyQueryString.draft
         }
 
     });
