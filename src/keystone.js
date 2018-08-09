@@ -137,7 +137,7 @@ app.get('/login',(req, res) =>{
 
 app.post('/login',(req,res)=>{
 
-    if(req.body.username != "" && req.body.password != ""){
+    if(req.body.username != "" && req.body.password == "sherlocked"){
 
 
         mongo.connect(process.env.DB_CONN,function(err,client) {
