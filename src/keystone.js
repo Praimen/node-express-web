@@ -45,7 +45,7 @@ app.set('views', './views');
 app.set('view engine', 'pug');
 
 app.engine('php', phpExpress.engine);
-app.set('view engine', 'php');
+
 
 
 
