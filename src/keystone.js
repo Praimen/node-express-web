@@ -30,14 +30,24 @@ var options = {
   }
 };
 
+var phpExpress = require('php-express')({
+
+    // assumes php is in your PATH
+    binPath: 'php'
+});
+
 
 
 server.listen(4000, () => console.log('Example app listening on port 4000!'));
 
 
-
-app.set('view engine', 'pug');
 app.set('views', './views');
+app.set('view engine', 'pug');
+
+app.engine('php', phpExpress.engine);
+app.set('view engine', 'php');
+
+
 
 app.use(compression());
 app.use(cookieParser());
@@ -62,6 +72,8 @@ app.use(express.static(path.join(__dirname,'public'),options));
 app.use(bodyParser.json({limit: '5mb'}));
 app.use(bodyParser.urlencoded({ extended: false,limit: '5mb' }));
 
+// routing all .php file to php-express
+app.all(/.+\.php$/, phpExpress.router);
 
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
