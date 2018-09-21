@@ -22,7 +22,7 @@ var urlEncodedForm;
 var options = {
   dotfiles: 'ignore',
   etag: false,
-  extensions: ['htm', 'html'],
+  extensions: ['htm', 'html','php'],
   index: false,
   redirect: false,
   setHeaders: function (res, path, stat) {
@@ -40,11 +40,13 @@ var phpExpress = require('php-express')({
 
 server.listen(4000, () => console.log('Example app listening on port 4000!'));
 
-
-app.set('views', './views');
-app.set('view engine', 'pug');
-
 app.engine('php', phpExpress.engine);
+app.set('view engine', 'php');
+app.set('view engine', 'pug');
+app.set('views', './views');
+
+
+
 
 
 
@@ -74,6 +76,9 @@ app.use(bodyParser.urlencoded({ extended: false,limit: '5mb' }));
 
 // routing all .php file to php-express
 app.all(/.+\.php$/, phpExpress.router);
+app.post(/.+\.php$/, (req,res)=>{
+    res.json();
+});
 
 app.all('/', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
