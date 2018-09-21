@@ -27,6 +27,13 @@ $(function(){
 
 
 
+
+    nanospell.ckeditor('editor1',{
+        dictionary:"en",
+        server:"php"  // can be php, asp, asp.net or java
+    });
+
+
     $.ajax({
         url: 'https://keystone.forgegraphics.com/policy-list?uncat=true'
     }).done(function(data){
