@@ -154,19 +154,19 @@ app.get('/login',(req, res) =>{
 
 app.post('/login',(req,res)=>{
 
-    if(req.body.username != "" && req.body.password == "sherlocked"){
+    if(req.body.username != "" && req.body.password != ""){
 
 
         mongo.connect(process.env.DB_CONN,function(err,client) {
 
             const db = client.db('game');
-            let query = {"_id":req.body.username};
+            let query = {"_id":req.body.username,"password":req.body.password};
             let projection = {"_id":1};
             let cursor = db.collection('account').find(query);
             cursor.project(projection);
 
             cursor.toArray().then(function(result) {
-                console.log('inside the login jwt')
+                console.log('inside the login jwt');
                 let jwtToken = jwt.sign({username:result[0]._id}, process.env.JWT_SECRET);
                 res.set('Authorization','Bearer '+ jwtToken);
                 res.cookie('gameJWT', jwtToken);
