@@ -2,50 +2,62 @@ doctype html
 html
     head
         title= title
+        link(rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css')
         link(rel='stylesheet',href='/styles/main.css')
         link(rel='stylesheet',href='/styles/character-select.css')
     body.login
-        h2= title
-        h3= message
-        form(method='POST' action='/character-select')
-            div.select-character
-                input(type='hidden' name='accountname' value= accountname)
-            div
-                label(for='character') Select Character:
-                select(name='character')
-                    option(value="") Please Select
-                    each character in characters
-                        option(value=character.charName)= character.charName
 
-            div
-                button(type='submit') Enter Game
+        div.column.is-8.is-offset-2
+            div.columns
+                div.column.is-8
+                    h2.title.is-3= title
+                    h3.sub-title.is-4= message
 
+                    form(method='POST' action='/character-select')
+                        div.select-character.column.box.is-8.is-offset-2
+                            div.field.column.is-10.is-offset-1
+                                label(for='username') Username:
+                                input(type='hidden' name='accountname' value= accountname)
+                            div.field.column.is-10.is-offset-1
+                                label(for='character') Select Character:
+                                select(name='character')
+                                    option(value="") Please Select
+                                    each character in characters
+                                        option(value=character.charName)= character.charName
 
-            div.build-character
-                div
-                    input(type='text' name='charactername' value="")
+                            div.control.enter-game-btn
+                                button(type='submit' class='button is-info is-outlined') Enter Game
+                    hr
+                    h3.sub-title.is-4 Create New Character
+                    form(method='POST' action='/character-select')
+                        div.build-character.column.box.is-8.is-offset-2
 
-                div
-                    label(for='race') Race:
-                    select(name='race')
-                        option(value="human") Human
-                        option(value="elf") Elf
-                        option(value="dragon") Dragon
-                        option(value="spider") Spider
+                            div.field.column.is-10.is-offset-1
+                                label(for='charactername') Character Name:
+                                input(type='text' name='charactername' value="")
 
-                div
-                    input(type='text' name='age' value="")
+                            div.field.column.is-10.is-offset-1
+                                label(for='race') Select Race:
+                                select(name='race')
+                                    option(value="human") Human
+                                    option(value="elf") Elf
+                                    option(value="dragon") Dragon
+                                    option(value="spider") Spider
 
-                div
-                    label(for='archetype') Guild:
-                    select(name='archetype')
-                        option(value="mage") Mage
-                        option(value="warrior") Warrior
-                        option(value="rogue") Rogue
-                        option(value="paladin") Paladin
+                            div.field.column.is-10.is-offset-1
+                                label(for='age') Age:
+                                input(type='text' name='age' value="")
 
-                div
-                    button(type='submit') Add Character
+                            div.field.column.is-10.is-offset-1
+                                label(for='archetype') Class:
+                                select(name='archetype')
+                                    option(value="mage") Mage
+                                    option(value="warrior") Warrior
+                                    option(value="rogue") Rogue
+                                    option(value="paladin") Paladin
+
+                            div.control.enter-game-btn
+                                button(type='submit') Create Character
 
         script(src='/scripts/main.js')
         script(src='/scripts/character-select.js')
