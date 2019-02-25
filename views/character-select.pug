@@ -15,9 +15,8 @@ html
 
                     form(method='POST' action='/character-select')
                         div.select-character.column.box.is-8.is-offset-2
-                            div.field.column.is-10.is-offset-1
-                                label(for='username') Username:
-                                input(type='hidden' name='accountname' value= accountname)
+                            input(type='hidden' name='accountname' value= accountname)
+
                             div.field.column.is-10.is-offset-1
                                 label(for='character') Select Character:
                                 select(name='character')
@@ -56,8 +55,9 @@ html
                                     option(value="rogue") Rogue
                                     option(value="paladin") Paladin
 
-                            div.control.enter-game-btn
-                                button(type='submit') Create Character
+                            div.control.create-char-btn
+                                button(type='submit' class='button is-info is-outlined') Create Character
 
-        script(src='/scripts/main.js')
-        script(src='/scripts/character-select.js')
+        script(type='text/javascript' src='/scripts/main.js')
+        script(type='text/javascript' src='/scripts/character-select.js')
+        script(type='text/javascript' src='https://use.fontawesome.com/releases/v5.0.7/js/all.js')
