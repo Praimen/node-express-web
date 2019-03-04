@@ -5,3 +5,4 @@ bower_components
 /test
 .log
 .idea/
+public/scripts/ckeditor/

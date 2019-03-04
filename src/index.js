@@ -4,6 +4,7 @@ const app = express();
 var subdomain = require('express-subdomain');
 var dropletRoute = express.Router();
 var keyStoneRoute = express.Router();
+var trainingRoute = express.Router();
 var path = require('path');
 var httpProxy = require('http-proxy');
 var birds = require('./birds');
@@ -13,6 +14,7 @@ var birds = require('./birds');
 var apiProxy = httpProxy.createProxyServer();
 var serverOne = 'http://165.227.109.107:3000';
 var serverTwo = 'http://165.227.109.107:4000';
+var serverThree = 'http://165.227.109.107:2000';
 
 var options = {
   dotfiles: 'ignore',
@@ -41,9 +43,15 @@ keyStoneRoute.all('/*',function(req, res){
     }
 );
 
+trainingRoute.all('/*',function(req, res){
+        apiProxy.web(req, res, {target: serverThree});
+    }
+);
+
 /*app.use('/', router);*/
-app.use(subdomain('droplet', dropletRoute));
+app.use(subdomain('droplet',  dropletRoute));
 app.use(subdomain('keystone', keyStoneRoute));
+app.use(subdomain('training', trainingRoute));
 app.use('/birds', birds);
 app.get('/', (req, res) => res.render('index', {title: 'Hey', message: 'Hello World!'}));
 
