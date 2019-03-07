@@ -8,7 +8,7 @@
     "serve": "pm2 start index.js -i 1",
     "stop-index": "pm2 stop index",
     "stop-keystone": "pm2 stop keystone",
-    "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-character-build && npm run build && npm run serve",
+    "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin test-angular-char-screen && npm run build && npm run serve",
     "key-serve": "pm2 start keystone.js -i 0",
     "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin test-angular-char-screen && npm run build && npm run key-serve && npm run serve"
   },
