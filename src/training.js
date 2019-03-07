@@ -79,7 +79,7 @@ app.all('/', function(req, res, next) {
 
 app.get('/',(req, res) =>{
   res.clearCookie('gameJWT');
-  res.redirect('/policy-list');
+  res.redirect('/login');
 
 });
 
@@ -183,6 +183,90 @@ app.post('/login',(req,res)=>{
         res.render('login', {title: 'Login Form', message: 'Incorrect Login Information '});
 
     }
+
+});
+
+app.get('/profile',checkJWT,(req,res)=>{
+
+
+    let contentVersionNum = parseInt(req.query.currentversion,10);
+
+
+    mongo.connect(process.env.DB_CONN,function(err,client) {
+
+        const db = client.db('training');
+
+        let query = {_id: req.query.policynumber};
+
+        let versionparams;
+
+        if(req.query.draft){
+            versionparams = {
+                $set:{"currentdraftversion": contentVersionNum}
+            };
+        }else{
+            versionparams = {
+                $set:{"currentversion": contentVersionNum}
+            };
+        }
+
+        let cursor = db.collection('versions').findOneAndUpdate(query,versionparams,{returnOriginal:false,upsert:true});
+
+        cursor.then(function (result) {
+
+            let rs = result.value;
+            let versionparams ;
+            var dynamicParams = {
+                "_id":rs._id,
+                "title":rs.title
+            };
+            let policyState = {
+                status: "updated"
+            }
+
+            if(req.query.draft){
+                dynamicParams.currentdraftversion = rs.currentdraftversion;
+                dynamicParams.draftcontent = rs.versions[rs.currentdraftversion];
+
+
+                versionparams = {
+                    $set: dynamicParams
+                };
+                db.collection('searchdraft').findOneAndUpdate(query,versionparams,{upsert:true})
+                policyState.final = 'draft'
+            }else{
+
+                dynamicParams.currentversion = rs.currentversion;
+                dynamicParams.content = rs.versions[rs.currentversion];
+
+                versionparams = {
+                    $set: dynamicParams
+                };
+                db.collection('searchfinal').findOneAndUpdate(query,versionparams,{upsert:true})
+                policyState.final = 'final'
+            }
+
+            let params = {
+                $set: dynamicParams
+            };
+            let cursor2 =  db.collection('policies').findOneAndUpdate(query,params,{upsert:true});
+
+            cursor2.then(function (result) {
+                res.json(policyState)
+                client.close();
+            }).catch((err)=> {
+
+                client.close();
+
+            })
+
+
+        }).catch((err)=> {
+            client.close();
+            res.json({status:err})
+        })
+    });
+
 
 });
 
