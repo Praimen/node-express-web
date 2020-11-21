@@ -10,7 +10,7 @@
     "stop-keystone": "pm2 stop keystone",
     "update-server": "pm2 stop index && pm2 kill && git reset --hard && git pull origin droplet-character-build && npm run build && npm run serve",
     "key-serve": "pm2 start keystone.js -i 0",
-    "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin test-angular-char-screen && npm run build && npm run key-serve && npm run serve"
+    "update-key-server": "npm run stop-keystone && npm run stop-index && pm2 kill && git reset --hard && git pull origin test-angular-upgrade && npm run build && npm run key-serve && npm run serve"
   },
   "author": "",
   "license": "ISC",
@@ -23,11 +23,11 @@
     "express-domain": "^1.0.5",
     "express-jwt": "^5.3.1",
     "he": "^1.1.1",
-    "http-proxy": "^1.16.2",
+    "http-proxy": "^1.18.1",
     "jsonwebtoken": "^8.2.0",
     "php-express": "0.0.3",
     "pug": "^2.0.0-rc.4",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
